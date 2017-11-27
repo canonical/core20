@@ -10,3 +10,6 @@ parts:
   boostrap:
     plugin: make
     source: .
+    build-packages:
+      - shellcheck
+      - debootstrap
