@@ -1,0 +1,12 @@
+name: base-18
+version: very-unstable
+summary: Runtime environment based on Ubuntu 18.04
+description: |
+  The base snap based on the Ubuntu 18.04 release.
+grade: devel
+confinement: strict
+
+parts:
+  boostrap:
+    plugin: make
+    source: .
