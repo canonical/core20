@@ -6,13 +6,14 @@ all: check
 
 install:
 	$(SUDO) debootstrap --variant=minbase bionic $(DESTDIR)
-	for f in ./hooks/[0-9]*; do \
-		cp -a $$f ./build/tmp; \
-		$(SUDO) chroot ./build /tmp/$$(basename $$f); \
-		rm -f ./build/tmp/$$(basename $$f); \
+	set -ex; for f in ./hooks/[0-9]*; do \
+		cp -a $$f $(DESTDIR)/tmp; \
+		$(SUDO) chroot $(DESTDIR) /tmp/$$(basename $$f); \
+		rm -f $(DESTDIR)/tmp/$$(basename $$f); \
 	done;
 	# only generate manifest file for lp build
 	if [ -e /build/base-18 ]; then \
+		echo $$f; \
 		$(SUDO) chroot ./build dpkg -l > /build/core/base-18-$$(date +%Y%m%d%H%M)_$(DPKG_ARCH).manifest; \
 	fi;
 check:
