@@ -1,20 +1,19 @@
 DPKG_ARCH := $(shell dpkg --print-architecture)
-SUDO := sudo
 
 all: check
 	# nothing
 
 install:
-	$(SUDO) debootstrap --variant=minbase bionic $(DESTDIR)
+	debootstrap --variant=minbase bionic $(DESTDIR)
 	set -ex; for f in ./hooks/[0-9]*; do \
 		cp -a $$f $(DESTDIR)/tmp; \
-		$(SUDO) chroot $(DESTDIR) /tmp/$$(basename $$f); \
+		chroot $(DESTDIR) /tmp/$$(basename $$f); \
 		rm -f $(DESTDIR)/tmp/$$(basename $$f); \
 	done;
 	# only generate manifest file for lp build
 	if [ -e /build/base-18 ]; then \
 		echo $$f; \
-		$(SUDO) chroot ./build dpkg -l > /build/core/base-18-$$(date +%Y%m%d%H%M)_$(DPKG_ARCH).manifest; \
+		cp $(DESTDIR)/usr/share/snappy/dpkg.list /build/base-18/base-18-$$(date +%Y%m%d%H%M)_$(DPKG_ARCH).manifest; \
 	fi;
 check:
 	id
