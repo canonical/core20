@@ -27,7 +27,7 @@ update-and-boot: kernel initrd ../base-18_very-unstable_amd64.snap
 		-snapshot \
 		-kernel kernel \
 		-initrd initrd \
-		-append "root=LABEL=writable snap_core=base-18_very-unstable_amd64.snap snap_kernel=pc-kernel.snap ro net.ifnames=0 init=/lib/systemd/systemd console=tty1"
+		-append "root=LABEL=writable snap_core=base-18_very-unstable_amd64.snap snap_kernel=pc-kernel.snap ro net.ifnames=0 init=/lib/systemd/systemd console=tty1 systemd.debug-shell=1"
 
 .PHONY: just-boot
 .ONESHELL: just-boot
@@ -43,7 +43,7 @@ just-boot: kernel initrd base-18/image.raw
 		-snapshot \
 		-kernel kernel \
 		-initrd initrd \
-		-append "root=LABEL=writable snap_core=base-18_very-unstable_amd64.snap snap_kernel=pc-kernel.snap ro net.ifnames=0 init=/lib/systemd/systemd console=tty1"
+		-append "root=LABEL=writable snap_core=base-18_very-unstable_amd64.snap snap_kernel=pc-kernel.snap ro net.ifnames=0 init=/lib/systemd/systemd console=tty1 systemd.debug-shell=1"
 
 .PHONY: clean
 clean:
