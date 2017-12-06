@@ -16,8 +16,11 @@ rm -rvf /etc/opt
 rm -rvf /etc/selinux
 
 # no need for old style init
-rm -rf /etc/rc*
+rm -rf /etc/rc[0-6S].d
 rm -rf /etc/init.d
+
+# remove alternatives for manual pages (easier)
+rm -f /etc/alternatives/*.gz
 
 # FIXME: undo all symlinks to /etc/alternatives and replace with their real
 # counterparts.

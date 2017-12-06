@@ -26,3 +26,9 @@ check:
 	# some things more readable
 	shellcheck -e SC2002 hooks/*
 
+
+# Display a report of files that are (still) present in /etc
+.PHONY: etc-report
+etc-report:
+	cd stage && find etc/
+	echo "Amount of cruft in /etc left: `find stage/etc/ | wc -l`"
