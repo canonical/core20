@@ -5,6 +5,7 @@ all: check
 	# nothing
 
 .PHONY: install
+install: DESTDIR?=$(error you must set DESTDIR)
 install:
 	debootstrap --variant=minbase bionic $(DESTDIR)
 	set -ex; for f in ./hooks/[0-9]*; do \
