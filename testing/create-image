@@ -46,10 +46,10 @@ mkdir -p "$D"/p2
 mkdir -p "$D"/p3
 
 # Expose individual partitions and mount the 3rd partition.
-loopNp3=$(kpartx -sav "$D"/image.raw | grep -E -o 'loop[0-9]+p3')
-mkfs.ext4 -U clear /dev/mapper/"$loopNp3"
-e2label /dev/mapper/"$loopNp3" writable
-mount /dev/mapper/"$loopNp3" "$D"/p3
+loopNp=$(kpartx -sav "$D"/image.raw | grep -E -o 'loop[0-9]+p' | head -n 1)
+mkfs.ext4 -U clear /dev/mapper/"${loopNp}3"
+e2label /dev/mapper/"${loopNp}3" writable
+mount /dev/mapper/"${loopNp}3" "$D"/p3
 
 # Create some stub directories.
 mkdir -p "$D"/p3/system-data/etc
