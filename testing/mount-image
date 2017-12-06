@@ -11,11 +11,3 @@ D="$1"
 # Expose individual partitions and mount the 3rd partition.
 loopNp3=$(kpartx -sav "$D"/image.raw | grep -E -o 'loop[0-9]+p3')
 mount /dev/mapper/"$loopNp3" "$D"/p3
-
-# Copy base-18 and pc-kernel snaps
-cp ../base-18_very-unstable_amd64.snap "$D"/p3/system-data/var/lib/snapd/snaps/
-cp --dereference pc-kernel.snap "$D"/p3/system-data/var/lib/snapd/snaps/
-
-# Unmount and detach partitions.
-umount "$D"/p3
-kpartx -sdv "$D"/image.raw

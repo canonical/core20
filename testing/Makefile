@@ -10,9 +10,12 @@ update-and-boot: kernel initrd ../base-18_very-unstable_amd64.snap
 		touch base-18/image.script
 		sudo ./create-image base-18
 	fi
-	# update (this puts the kernel and new base-18 snap inside)
-	sudo ./update-image base-18
-	# run via qemu
+	# Update (this puts the kernel and new base-18 snap inside)
+	sudo ./mount-image base-18
+	sudo cp ../base-18_very-unstable_amd64.snap base-18/p3/system-data/var/lib/snapd/snaps/
+	sudo cp --dereference pc-kernel.snap base-18/p3/system-data/var/lib/snapd/snaps/
+	sudo ./umount-image base-18
+	# Run the image using qemu
 	qemu-system-x86_64 \
 		-enable-kvm \
 		-smp 2 \
