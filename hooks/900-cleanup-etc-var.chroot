@@ -1,12 +1,22 @@
-#!/bin/sh -x
+#!/bin/sh
 
 set -e
 
 # Many things in the generated /etc directory are not really needed and are
 # clouding the view towards the work of eventually shipping with empty /etc
+echo "Cleaning up unneeded files in /etc
 
+# package manager related stuff
 rm -rvf /etc/apt
 rm -rvf /etc/dpkg
+
+# misc
 rm -rvf /etc/kernel
 rm -rvf /etc/opt
 rm -rvf /etc/selinux
+
+# no need for old style init
+rm -rf /etc/rc*
+rm -rf /etc/init.d
+
+# FIXME: undo all symlinks to /etc/alternatives and replace with their
