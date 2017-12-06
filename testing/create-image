@@ -24,9 +24,9 @@ unit: sectors
 first-lba: 34
 last-lba: 7577566
 
-$D/image.raw.img1 : start=        2048, size=        2048, type=21686148-6449-6E6F-744E-656564454649, uuid=0AF060CC-FAD9-4315-80BA-4FEEF35852F9, name="BIOS Boot"
-$D/image.raw.img2 : start=        4096, size=      102400, type=C12A7328-F81F-11D2-BA4B-00A0C93EC93B, uuid=D018FDC7-1FD8-47D3-9658-8073EDB82860, name="EFI System"
-$D/image.raw.img3 : start=      106496, size=     7471071, type=0FC63DAF-8483-4772-8E79-3D69D8477DE4, uuid=D8E9E393-2215-44F1-94B3-AEFF942E246F, name="writable"
+$D/image.raw.img1 : start=        2048, size=        2048, type=21686148-6449-6E6F-744E-656564454649, uuid=00000000-0000-0000-0000-000000000002, name="BIOS Boot"
+$D/image.raw.img2 : start=        4096, size=      102400, type=C12A7328-F81F-11D2-BA4B-00A0C93EC93B, uuid=00000000-0000-0000-0000-000000000003, name="EFI System"
+$D/image.raw.img3 : start=      106496, size=     7471071, type=0FC63DAF-8483-4772-8E79-3D69D8477DE4, uuid=00000000-0000-0000-0000-000000000004, name="writable"
 __SCRIPT__
 
 # Partition the disk according to the script.
@@ -47,7 +47,7 @@ mkdir -p "$D"/p3
 
 # Expose individual partitions and mount the 3rd partition.
 loopNp3=$(kpartx -sav "$D"/image.raw | grep -E -o 'loop[0-9]+p3')
-mkfs.ext4 /dev/mapper/"$loopNp3" 
+mkfs.ext4 -U clear /dev/mapper/"$loopNp3"
 e2label /dev/mapper/"$loopNp3" writable
 mount /dev/mapper/"$loopNp3" "$D"/p3
 
