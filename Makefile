@@ -5,6 +5,7 @@ all: check
 	# nothing
 
 .PHONY: install
+install: DESTDIR?=$(error you must set DESTDIR)
 install:
 	debootstrap --variant=minbase bionic $(DESTDIR)
 	set -ex; for f in ./hooks/[0-9]*; do \
@@ -21,7 +22,7 @@ install:
 .PHONY: check
 check:
 	id
-	# exlucde "useless cat" from checks, while useless also
+	# exclude "useless cat" from checks, while useless also
 	# some things more readable
 	shellcheck -e SC2002 hooks/*
 
