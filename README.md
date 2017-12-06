@@ -9,3 +9,10 @@ To build this snap locally you need snapcraft. The project must be built as real
 ```
 $ sudo snapcraft
 ```
+
+Once built you can boot it for testing inside qemu. You will need additional
+tool (see testing/README.md for details). To boot test your fresh snap:
+
+```
+$ make -C testing/
+```
