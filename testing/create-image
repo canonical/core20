@@ -47,9 +47,15 @@ mkdir -p "$D"/p3
 
 # Expose individual partitions and mount the 3rd partition.
 loopNp=$(kpartx -sav "$D"/image.raw | grep -E -o 'loop[0-9]+p' | head -n 1)
+mkfs.vfat /dev/mapper/"${loopNp}2"
 mkfs.ext4 -U clear /dev/mapper/"${loopNp}3"
 e2label /dev/mapper/"${loopNp}3" writable
+mount /dev/mapper/"${loopNp}2" "$D"/p2
 mount /dev/mapper/"${loopNp}3" "$D"/p3
+
+# Create some stub directories on the EFI system partition
+mkdir -p "$D"/p2/EFI/boot
+mkdir -p "$D"/p2/EFI/ubuntu
 
 # Create some stub directories.
 mkdir -p "$D"/p3/system-data/etc
@@ -91,5 +97,6 @@ mkdir -p "$D"/p3/system-data/var/lib/snapd/seed/snaps
 mkdir -p "$D"/p3/system-data/var/lib/snapd/snaps/partial
 mkdir -p "$D"/p3/system-data/var/lib/snapd/void
 
+umount "$D"/p2
 umount "$D"/p3
 kpartx -sdv "$D"/image.raw

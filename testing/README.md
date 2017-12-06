@@ -13,6 +13,7 @@ Required tools:
  - fdisk
  - kpartx
  - mkfs.ext4
+ - mkfs.vfat
  - mount and umount
  - qemu-img and qemu-system-x86-64
  - snap
