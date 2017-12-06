@@ -19,4 +19,5 @@ rm -rvf /etc/selinux
 rm -rf /etc/rc*
 rm -rf /etc/init.d
 
-# FIXME: undo all symlinks to /etc/alternatives and replace with their
+# FIXME: undo all symlinks to /etc/alternatives and replace with their real
+# counterparts.
