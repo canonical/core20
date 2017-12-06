@@ -22,5 +22,8 @@ rm -rf /etc/init.d
 # remove alternatives for manual pages (easier)
 rm -f /etc/alternatives/*.gz
 
+# tool configuration (unused)
+rm -f /etc/mke2fs.conf
+
 # FIXME: undo all symlinks to /etc/alternatives and replace with their real
 # counterparts.
