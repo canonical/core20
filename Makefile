@@ -21,7 +21,7 @@ install:
 .PHONY: check
 check:
 	id
-	# exlucde "useless cat" from checks, while useless also
+	# exclude "useless cat" from checks, while useless also
 	# some things more readable
 	shellcheck -e SC2002 hooks/*
 
