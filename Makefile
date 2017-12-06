@@ -31,3 +31,4 @@ check:
 .PHONY: etc-report
 etc-report:
 	cd stage && find etc/
+	echo "Amount of cruft in /etc left: `find stage/etc/ | wc -l`"
