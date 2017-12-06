@@ -4,7 +4,7 @@ set -e
 
 # Many things in the generated /etc directory are not really needed and are
 # clouding the view towards the work of eventually shipping with empty /etc
-echo "Cleaning up unneeded files in /etc
+echo "Cleaning up unneeded files in /etc"
 
 # package manager related stuff
 rm -rvf /etc/apt
