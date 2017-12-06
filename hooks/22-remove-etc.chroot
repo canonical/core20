@@ -1,0 +1,12 @@
+#!/bin/sh -x
+
+set -e
+
+# Many things in the generated /etc directory are not really needed and are
+# clouding the view towards the work of eventually shipping with empty /etc
+
+rm -rvf /etc/apt
+rm -rvf /etc/dpkg
+rm -rvf /etc/kernel
+rm -rvf /etc/opt
+rm -rvf /etc/selinux
