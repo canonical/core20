@@ -48,7 +48,7 @@ just-boot: kernel initrd base-18/image.raw
 .ONESHELL: background-start
 .PHONY: background-start
 background-start:
-	$(QEMU_CMD) </dev/null >/dev/null 2>&1 &
+	$(QEMU_CMD) -nographic </dev/null >/dev/null 2>&1 & # NOTE: The redirects are relevant for spread.
 	echo $$! >qemu.pid
 	sleep 10 # ballpark figure, enough to boot.
 
