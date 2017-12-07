@@ -10,12 +10,16 @@ To build this snap locally you need snapcraft. The project must be built as real
 $ sudo snapcraft
 ```
 
-Once built you can boot it for testing inside qemu. You will need additional
-tool (see testing/README.md for details). To boot test your fresh snap:
+# Testing locally
+
+Once built you can boot it for testing inside qemu and spread. You will need
+additional tool (see tests/lib/README.md for details). In order to prepare an
+image for either exploratory manual tests or for spread tests run this command:
 
 ```
-$ make -C tests/lib
+$ make update-image
 ```
 
-You can start to use spread as well. If you have a built image (done by the
-command above) you can just run `spread` to run the tests locally.
+With this available you can either run: `spread -debug -v` or `make -C
+tests/lib just-boot`, depending on what you want to do. The interactive (just
+boot) test should allow you to move to VT7 where a root shell awaits.
