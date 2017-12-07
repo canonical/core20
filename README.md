@@ -14,5 +14,8 @@ Once built you can boot it for testing inside qemu. You will need additional
 tool (see testing/README.md for details). To boot test your fresh snap:
 
 ```
-$ make -C testing/
+$ make -C tests/lib
 ```
+
+You can start to use spread as well. If you have a built image (done by the
+command above) you can just run `spread` to run the tests locally.
