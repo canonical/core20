@@ -1,0 +1,3 @@
+summary: Smoke test that ensures the system can boot in spread
+execute: |
+    true
