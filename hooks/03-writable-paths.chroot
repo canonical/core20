@@ -1,0 +1,57 @@
+#!/bin/sh
+set -e
+# XXX: we want to migrate away from writable paths but having _some_ support of
+# this for now lets us walk before we run.
+mkdir -p /etc/system-image
+cat > /etc/system-image/writable-paths << __WRITABLE__
+# --------------------------------------------------------------------
+# 1st column: Mount point
+# 2nd column: Path relative to root of persistent storage (or auto)
+# 3rd column: type => persistent|synced|temporary
+# 4th column: action => none|transition (transition requires persistent)
+# 5th column: mount flags
+#
+# See writable-paths(5) for full details.
+# --------------------------------------------------------------------
+/etc/apparmor.d/cache                   auto                    persistent  none        none
+/etc/dbus-1/system.d                    auto                    persistent  transition  none
+/etc/default/swapfile                   auto                    persistent  transition  none
+/etc/hosts                              auto                    persistent  transition  none
+/etc/init                               auto                    persistent  transition  none
+/etc/iproute2                           auto                    persistent  transition  none
+/etc/modprobe.d                         auto                    synced      none        none
+/etc/modules-load.d                     auto                    persistent  transition  none
+/etc/netplan                            auto                    persistent  transition  none
+/etc/network/if-up.d                    auto                    persistent  transition  none
+/etc/network/interfaces.d               auto                    persistent  transition  none
+/etc/rsyslog.d                          auto                    persistent  transition  none
+/etc/ssh                                auto                    persistent  transition  none
+/etc/sudoers.d                          auto                    persistent  transition  none
+/etc/systemd                            auto                    persistent  transition  none
+/etc/udev/rules.d                       auto                    persistent  transition  none
+/etc/writable                           auto                    synced      none        none
+/media                                  none                    temporary   none        defaults
+/mnt                                    none                    temporary   none        defaults
+/root                                   auto                    persistent  transition  none
+/tmp                                    none                    temporary   none        defaults
+/var/cache/apparmor                     auto                    persistent  transition  none
+/var/crash                              auto                    persistent  none        none
+/var/lib/apparmor                       auto                    persistent  transition  none
+/var/lib/console-conf                   auto                    persistent  transition  none
+/var/lib/dbus                           auto                    persistent  none        none
+/var/lib/dhcp                           auto                    persistent  none        none
+/var/lib/extrausers                     auto                    persistent  transition  none
+/var/lib/initramfs-tools                auto                    persistent  transition  none
+/var/lib/logrotate                      auto                    persistent  none        none
+/var/lib/misc                           auto                    persistent  transition  none
+/var/lib/sudo                           auto                    temporary   none        defaults,mode=0700
+/var/lib/system-image                   auto                    persistent  none        none
+/var/lib/systemd/random-seed            auto                    persistent  transition  none
+/var/lib/systemd/rfkill                 auto                    persistent  transition  none
+/var/lib/upower                         auto                    persistent  none        none
+/var/lib/ureadahead                     auto                    persistent  transition  none
+/var/lib/waagent                        auto                    persistent  transition  none
+/var/lib/whoopsie                       auto                    persistent  transition  none
+/var/log                                auto                    persistent  transition  none
+/var/tmp                                auto                    persistent  transition  none
+__WRITABLE__
