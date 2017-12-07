@@ -1,0 +1,102 @@
+#!/bin/sh
+set -uxe
+
+# This script requires root
+test "$(id -u)" -ne 0 && exit 1
+
+# This script requires an argument (directory name).
+test -z "${1:-}" && exit 1
+D="$1"
+
+# Create the directory where everything is kept.
+mkdir -p "$D"
+
+# Create a raw image.
+qemu-img create -q -f raw "$D"/image.raw 4G
+wipefs --all "$D"/image.raw
+
+# Describe the disk layout in a sfdisk-compatible script. 
+cat >"$D"/image.script << __SCRIPT__
+label: gpt
+label-id: 00000000-0000-0000-0000-000000000001
+device: $D/image.raw
+unit: sectors
+first-lba: 34
+last-lba: 7577566
+
+$D/image.raw.img1 : start=        2048, size=        2048, type=21686148-6449-6E6F-744E-656564454649, uuid=00000000-0000-0000-0000-000000000002, name="BIOS Boot"
+$D/image.raw.img2 : start=        4096, size=      102400, type=C12A7328-F81F-11D2-BA4B-00A0C93EC93B, uuid=00000000-0000-0000-0000-000000000003, name="EFI System"
+$D/image.raw.img3 : start=      106496, size=     7471071, type=0FC63DAF-8483-4772-8E79-3D69D8477DE4, uuid=00000000-0000-0000-0000-000000000004, name="writable"
+__SCRIPT__
+
+# Partition the disk according to the script.
+fdisk "$D"/image.raw << __INTERACTIVE__
+I
+$D/image.script
+w
+q
+__INTERACTIVE__
+
+# Use three-partition layout:
+# p1: bootloader raw partition, irrelevant for quick testing.
+# p2: EFI system partition, irrelevant for quick testing.
+# p3: writable partition, whole system is here.
+mkdir -p "$D"/p1
+mkdir -p "$D"/p2
+mkdir -p "$D"/p3
+
+# Expose individual partitions and mount the 3rd partition.
+loopNp=$(kpartx -sav "$D"/image.raw | grep -E -o 'loop[0-9]+p' | head -n 1)
+mkfs.vfat /dev/mapper/"${loopNp}2"
+mkfs.ext4 -U clear /dev/mapper/"${loopNp}3"
+e2label /dev/mapper/"${loopNp}3" writable
+mount /dev/mapper/"${loopNp}2" "$D"/p2
+mount /dev/mapper/"${loopNp}3" "$D"/p3
+
+# Create some stub directories on the EFI system partition
+mkdir -p "$D"/p2/EFI/boot
+mkdir -p "$D"/p2/EFI/ubuntu
+
+# Create some stub directories.
+mkdir -p "$D"/p3/system-data/etc
+mkdir -p "$D"/p3/system-data/var/lib/apparmor/profiles
+mkdir -p "$D"/p3/system-data/var/lib/cloud
+mkdir -p "$D"/p3/system-data/var/lib/console-conf
+mkdir -p "$D"/p3/system-data/var/lib/dbus
+mkdir -p "$D"/p3/system-data/var/lib/dhcp
+mkdir -p "$D"/p3/system-data/var/lib/extrausers
+mkdir -p "$D"/p3/system-data/var/lib/initramfs-tools
+mkdir -p "$D"/p3/system-data/var/lib/logrotate
+mkdir -p "$D"/p3/system-data/var/lib/misc
+mkdir -p "$D"/p3/system-data/var/lib/systemd
+mkdir -p "$D"/p3/system-data/var/lib/waagent
+mkdir -p "$D"/p3/system-data/var/log/console-conf
+mkdir -p "$D"/p3/system-data/var/log/fsck
+mkdir -p "$D"/p3/system-data/var/snap
+mkdir -p "$D"/p3/system-data/var/tmp
+mkdir -p "$D"/p3/user-data
+
+# Create snapd directory skeleton.
+mkdir -p "$D"/p3/system-data/var/lib/snapd/apparmor/snap-confine.d
+mkdir -p "$D"/p3/system-data/var/lib/snapd/assertions
+mkdir -p "$D"/p3/system-data/var/lib/snapd/auto-import
+mkdir -p "$D"/p3/system-data/var/lib/snapd/cookie
+mkdir -p "$D"/p3/system-data/var/lib/snapd/desktop/applications
+mkdir -p "$D"/p3/system-data/var/lib/snapd/device
+mkdir -p "$D"/p3/system-data/var/lib/snapd/device/private-keys-v1
+mkdir -p "$D"/p3/system-data/var/lib/snapd/environment
+mkdir -p "$D"/p3/system-data/var/lib/snapd/firstboot
+mkdir -p "$D"/p3/system-data/var/lib/snapd/hostfs
+mkdir -p "$D"/p3/system-data/var/lib/snapd/lib/gl
+mkdir -p "$D"/p3/system-data/var/lib/snapd/mount
+mkdir -p "$D"/p3/system-data/var/lib/snapd/repair
+mkdir -p "$D"/p3/system-data/var/lib/snapd/seccomp/bpf
+mkdir -p "$D"/p3/system-data/var/lib/snapd/seccomp/profiles
+mkdir -p "$D"/p3/system-data/var/lib/snapd/seed/assertions
+mkdir -p "$D"/p3/system-data/var/lib/snapd/seed/snaps
+mkdir -p "$D"/p3/system-data/var/lib/snapd/snaps/partial
+mkdir -p "$D"/p3/system-data/var/lib/snapd/void
+
+umount "$D"/p2
+umount "$D"/p3
+kpartx -sdv "$D"/image.raw

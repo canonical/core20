@@ -1,0 +1,36 @@
+#!/bin/sh -x
+
+set -e
+
+# Add an user with know name and password (ubuntu:ubuntu with password ubuntu)
+addgroup --gid 1000 ubuntu
+adduser --uid 1000 --gid 1000 --disabled-password --gecos "Ubuntu,,," ubuntu
+echo "ubuntu:ubuntu" | chpasswd
+usermod --append --groups sudo ubuntu
+
+# Install enable and configure systemd-{networkd,resolved}.
+# (They are in the systemd package which is already installed).
+systemctl enable systemd-networkd.service
+systemctl enable systemd-resolved.service
+
+cat > /etc/systemd/network/wired.network << __UNIT__
+[Match]
+Name=eth*
+Name=en*
+
+[Network]
+DHCP=yes
+__UNIT__
+
+ln -fs ../run/systemd/resolve/stub-resolv.conf /etc/resolv.conf
+
+# Install and enable ssh so that we can log in remotely.
+apt-get install -y openssh-server
+systemctl enable ssh.socket
+systemctl enable ssh.service
+
+# Install sudo for interactive poking as root. Spread requires password-less
+# sudo so configure that.
+apt-get install -y sudo
+echo "ubuntu ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/spread
+chmod 0444 /etc/sudoers.d/spread
