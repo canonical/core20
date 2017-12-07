@@ -9,8 +9,8 @@ install: DESTDIR?=$(error you must set DESTDIR)
 install:
 	debootstrap --variant=minbase bionic $(DESTDIR)
 	set -ex; for f in ./hooks/[0-9]*; do \
-		cp -a $$f $(DESTDIR)/tmp; \
-		chroot $(DESTDIR) /tmp/$$(basename $$f); \
+		cp -a $$f $(DESTDIR)/tmp && \
+		chroot $(DESTDIR) /tmp/$$(basename $$f) && \
 		rm -f $(DESTDIR)/tmp/$$(basename $$f); \
 	done;
 	# only generate manifest file for lp build
@@ -21,7 +21,6 @@ install:
 
 .PHONY: check
 check:
-	id
 	# exclude "useless cat" from checks, while useless also
 	# some things more readable
 	shellcheck -e SC2002 hooks/*
