@@ -31,3 +31,9 @@ check:
 etc-report:
 	cd stage && find etc/
 	echo "Amount of cruft in /etc left: `find stage/etc/ | wc -l`"
+
+.PHONY: update-image
+update-image:
+	sudo snapcraft clean
+	sudo snapcraft
+	sudo $(MAKE) -C tests/lib just-update
