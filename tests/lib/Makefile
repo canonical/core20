@@ -12,9 +12,17 @@ QEMU_CMD = qemu-system-x86_64 \
 	-initrd initrd \
 	-append "root=LABEL=writable snap_core=base-18_very-unstable_amd64.snap snap_kernel=pc-kernel.snap ro net.ifnames=0 init=/lib/systemd/systemd console=tty1 systemd.debug-shell=1"
 
+# Update (or build if missing) and boot the image
 .PHONY: update-and-boot
 .ONESHELL: update-and-boot
-update-and-boot: kernel initrd ../../base-18_very-unstable_amd64.snap
+update-and-boot:
+	$(MAKE) just-update
+	$(MAKE) just-boot
+
+# Update (or build if missing) the image.
+.PHONY: just-update
+.ONESHELL: just-update
+just-update: kernel initrd ../../base-18_very-unstable_amd64.snap
 	if [ ! -e base-18/image.raw ]; then
 		# Create some files and directories so that they are all owned by us.
 		mkdir -p base-18/p1
@@ -29,10 +37,14 @@ update-and-boot: kernel initrd ../../base-18_very-unstable_amd64.snap
 	sudo cp ../../base-18_very-unstable_amd64.snap base-18/p3/system-data/var/lib/snapd/snaps/
 	sudo cp --dereference pc-kernel.snap base-18/p3/system-data/var/lib/snapd/snaps/
 	sudo ./umount-image base-18
-	# Run the image using qemu
+
+# Just boot the image
+.PHONY: just-boot
+.ONESHELL: just-boot
+just-boot: kernel initrd base-18/image.raw
 	$(QEMU_CMD)
 
-# NOTE: The redirects are relevant for spread.
+# Start the image in the background. This is relevant for spread.
 .ONESHELL: background-start
 .PHONY: background-start
 background-start:
@@ -40,6 +52,7 @@ background-start:
 	echo $$! >qemu.pid
 	sleep 10 # ballpark figure, enough to boot.
 
+# Stop the image that (may be) running in the background. This is relevant for spread.
 .ONESHELL: background-stop
 .PHONY: background-stop
 background-stop:
@@ -47,11 +60,6 @@ background-stop:
 		kill "$$(cat qemu.pid)"
 		rm -f qemu.pid
 	fi
-
-.PHONY: just-boot
-.ONESHELL: just-boot
-just-boot: kernel initrd base-18/image.raw
-	$(QEMU_CMD)
 
 .PHONY: clean
 clean:
