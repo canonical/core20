@@ -103,4 +103,5 @@ core-snap/boot/initrd.img-core: core.snap
 kernel-snap/kernel.img: pc-kernel.snap
 	rm -rf kernel-snap
 	unsquashfs -dest kernel-snap -no-progress "$^" '/kernel.img' >/dev/null
+	sudo chmod 0644 "$^"
 	touch "$@"
