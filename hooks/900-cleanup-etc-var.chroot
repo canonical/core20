@@ -28,3 +28,7 @@ rm -f /etc/mke2fs.conf
 
 # FIXME: undo all symlinks to /etc/alternatives and replace with their real
 # counterparts.
+#
+# remove all alternatives for now to unbreak this snap, but replace this with
+# "unwinding" them
+rm -rf /etc/alternatives
