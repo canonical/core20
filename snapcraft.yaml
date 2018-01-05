@@ -5,6 +5,7 @@ description: |
   The base snap based on the Ubuntu 18.04 release.
 grade: devel
 confinement: strict
+type: base
 
 parts:
   boostrap:
