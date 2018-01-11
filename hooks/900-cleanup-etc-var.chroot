@@ -26,9 +26,13 @@ rm -f /etc/alternatives/*.gz
 # tool configuration (unused)
 rm -f /etc/mke2fs.conf
 
+# python deb install leftovers
+rm -rf /usr/local/lib/python*
+
 # FIXME: undo all symlinks to /etc/alternatives and replace with their real
 # counterparts.
 #
 # remove all alternatives for now to unbreak this snap, but replace this with
 # "unwinding" them
 rm -rf /etc/alternatives
+
