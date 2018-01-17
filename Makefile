@@ -8,9 +8,11 @@ all: check
 install: DESTDIR?=$(error you must set DESTDIR)
 install:
 	debootstrap --variant=minbase bionic $(DESTDIR)
-	set -ex; for f in ./hooks/[0-9]*; do \
+	set -ex; for f in ./hooks/[0-9]*.chroot; do \
 		cp -a $$f $(DESTDIR)/tmp && \
-		chroot $(DESTDIR) /tmp/$$(basename $$f) && \
+		if ! chroot $(DESTDIR) /tmp/$$(basename $$f); then \
+                    exit 1; \
+                fi && \
 		rm -f $(DESTDIR)/tmp/$$(basename $$f); \
 	done;
 	# only generate manifest file for lp build

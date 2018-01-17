@@ -1,0 +1,6 @@
+#!/bin/sh
+
+set -e
+
+echo "Remove uneeded packages"
+dpkg -r debconf dh-python e2fsprogs fdisk gpgv  libdebconfclient0
