@@ -1,6 +1,15 @@
 #!/bin/sh
+
 set -eux
 
+# ensure we have /proc or systemd will fail
+mount -t proc proc /proc
+trap 'umount /proc' EXIT
+
+# systemd postinst needs this
+mkdir -p /var/log/journal
+
+# install some packages we need
 apt update
 apt dist-upgrade -y
-apt install -y systemd libnss-extrausers
+apt install --no-install-recommends -y systemd libnss-extrausers
