@@ -3,4 +3,4 @@
 set -e
 
 echo "Remove uneeded packages"
-dpkg -r dh-python
+dpkg -r --force-depends dh-python
