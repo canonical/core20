@@ -15,6 +15,27 @@ rm -rvf /etc/kernel
 rm -rvf /etc/opt
 rm -rvf /etc/selinux
 rm -rvf /etc/binfmt.d
+rm /etc/gai.conf
+rm /etc/hosts.allow /etc/hosts.deny
+rm /etc/magic /etc/magic.mime
+rm /etc/mailcap /etc/mailcap.order
+rm -rf /etc/modules-load.d
+rm /etc/debian_version
+rm /etc/pam.conf
+rmdir /etc/profile.d
+rm /etc/rmt
+rm /etc/sysctl.conf
+rm -rf /etc/terminfo
+rm -rf /etc/tmpfiles.d
+rm /etc/wgetrc
+
+# python3 sets byte-compile default for debian
+rm -rf /etc/python3
+# python3.6 imports apport
+rm -rf /etc/python3.6
+
+# only provides a symbolic name for "link-local"
+rm /etc/networks
 
 # no need for old style init
 rm -rf /etc/rc[0-6S].d
@@ -29,6 +50,12 @@ rm -f /etc/mke2fs.conf
 # python deb install leftovers
 rm -rf /usr/local/lib/python*
 
+# we have no cron daily jobs
+rmdir /etc/cron.daily
+
+# no need for emtpy dirs
+rmdir /etc/dbus-1/session.d /etc/dbus-1/system.d
+
 # FIXME: undo all symlinks to /etc/alternatives and replace with their real
 # counterparts.
 #
@@ -36,3 +63,4 @@ rm -rf /usr/local/lib/python*
 # "unwinding" them
 rm -rf /etc/alternatives
 
+# FIXME: make /etc/lsb-release point to ../usr/lib/lsb-release
