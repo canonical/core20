@@ -56,11 +56,17 @@ rmdir /etc/cron.daily
 # no need for emtpy dirs
 rmdir /etc/dbus-1/session.d /etc/dbus-1/system.d
 
-# FIXME: undo all symlinks to /etc/alternatives and replace with their real
-# counterparts.
+# undo all symlinks to /etc/alternatives and replace with their real
+# counterparts. The alternatives system looks like this:
 #
-# remove all alternatives for now to unbreak this snap, but replace this with
-# "unwinding" them
-rm -rf /etc/alternatives
+# /usr/bin/pager -> /etc/alternatives/pager -> /bin/more
+#
+find /etc/alternatives -type l | while read -r f; do
+    real=$(readlink -f "$f")
+    alias=$(dirname "$real")/$(basename "$f")
+    rm -f "$alias"
+    ln -s "$real" "$alias"
+done
+
 
 # FIXME: make /etc/lsb-release point to ../usr/lib/lsb-release
