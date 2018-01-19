@@ -13,4 +13,4 @@ parts:
     source: .
     build-packages:
       - shellcheck
-      - debootstrap
+      - wget
