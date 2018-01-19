@@ -67,6 +67,7 @@ find /etc/alternatives -type l | while read -r f; do
     rm -f "$alias"
     ln -s "$real" "$alias"
 done
+rm -rf /etc/alternatives
 
 
 # FIXME: make /etc/lsb-release point to ../usr/lib/lsb-release
