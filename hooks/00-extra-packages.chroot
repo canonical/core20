@@ -2,6 +2,9 @@
 
 set -eux
 
+# echo setup nameserver
+echo "nameserver 8.8.8.8" > /etc/resolv.conf
+
 # ensure we have /proc or systemd will fail
 mount -t proc proc /proc
 trap 'umount /proc' EXIT
