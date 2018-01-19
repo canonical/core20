@@ -1,4 +1,5 @@
 DPKG_ARCH := $(shell dpkg --print-architecture)
+BASE := bionic-base-$(DPKG_ARCH).tar.gz
 
 .PHONY: all
 all: check
@@ -7,7 +8,14 @@ all: check
 .PHONY: install
 install: DESTDIR?=$(error you must set DESTDIR)
 install:
-	debootstrap --variant=minbase bionic $(DESTDIR)
+	# install base
+	if [ ! -f ../$(BASE) ]; then \
+		wget -P ../ http://cdimage.ubuntu.com/ubuntu-base/daily/current/$(BASE); \
+	fi
+	rm -rf $(DESTDIR)
+	mkdir -p $(DESTDIR)
+	tar -x -f ../$(BASE) -C $(DESTDIR)
+	# customize
 	set -ex; for f in ./hooks/[0-9]*.chroot; do \
 		cp -a $$f $(DESTDIR)/tmp && \
 		if ! chroot $(DESTDIR) /tmp/$$(basename $$f); then \
