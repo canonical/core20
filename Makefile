@@ -6,9 +6,12 @@ all: check
 	# nothing
 
 .PHONY: install
-install: DESTDIR?=$(error you must set DESTDIR)
 install:
 	# install base
+	if [ -z "$(DESTDIR)" ]; then \
+		echo "no DESTDIR set"; \
+		exit 1; \
+	fi
 	if [ ! -f ../$(BASE) ]; then \
 		wget -P ../ http://cdimage.ubuntu.com/ubuntu-base/daily/current/$(BASE); \
 	fi
