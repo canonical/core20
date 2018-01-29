@@ -13,11 +13,13 @@ install:
 		exit 1; \
 	fi
 	if [ ! -f ../$(BASE) ]; then \
-		wget -P ../ http://cdimage.ubuntu.com/ubuntu-base/daily/current/$(BASE); \
+		wget -P ../ http://cdimage.ubuntu.com/ubuntu-base/daily/curren/t$(BASE); \
 	fi
 	rm -rf $(DESTDIR)
 	mkdir -p $(DESTDIR)
 	tar -x -f ../$(BASE) -C $(DESTDIR)
+	# ensure resolving works inside the chroot
+	cat /etc/resolv.conf > $(DESTDIR)/etc/resolv.conf
 	# customize
 	set -ex; for f in ./hooks/[0-9]*.chroot; do \
 		cp -a $$f $(DESTDIR)/tmp && \
