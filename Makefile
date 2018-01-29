@@ -18,6 +18,8 @@ install:
 	rm -rf $(DESTDIR)
 	mkdir -p $(DESTDIR)
 	tar -x -f ../$(BASE) -C $(DESTDIR)
+	# ensure resolving works inside the chroot
+	cat /etc/resolv.conf > $(DESTDIR)/etc/resolv.conf
 	# customize
 	set -ex; for f in ./hooks/[0-9]*.chroot; do \
 		cp -a $$f $(DESTDIR)/tmp && \
