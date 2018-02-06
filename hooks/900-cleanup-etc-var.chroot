@@ -69,5 +69,8 @@ find /etc/alternatives -type l | while read -r f; do
 done
 rm -rf /etc/alternatives
 
+# no permanet journal
+rm -rf /var/log/journal
+
 
 # FIXME: make /etc/lsb-release point to ../usr/lib/lsb-release
