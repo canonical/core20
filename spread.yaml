@@ -1,6 +1,6 @@
-project: base-18
+project: core18
 environment:
-    PROJECT_PATH: /tmp/base-18
+    PROJECT_PATH: /tmp/core18
     LANG: "$(echo ${LANG:-C.UTF-8})"
     LANGUAGE: "$(echo ${LANGUAGE:-en})"
 backends:
@@ -14,10 +14,10 @@ backends:
             echo "Discard called"
             make -C tests/lib background-stop
         systems:
-            - base-18-amd64:
+            - core18-amd64:
                 username: ubuntu
                 password: ubuntu
-path: /tmp/base-18
+path: /tmp/core18
 exclude:
     - "*.raw"
     - "*.snap"
@@ -36,5 +36,5 @@ restore: |
     true
 suites:
     tests/main/:
-        summary: Tests for base-18 snap.
+        summary: Tests for core18 snap.
 # vim:ts=4:sw=4:et

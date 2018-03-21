@@ -5,12 +5,12 @@ QEMU_CMD = qemu-system-x86_64 \
 	-m 1500 \
 	-netdev user,id=mynet0,hostfwd=tcp::8022-:22,hostfwd=tcp::8090-:80 \
 	-device virtio-net-pci,netdev=mynet0 \
-	-drive file=base-18/image.raw,format=raw \
+	-drive file=core18/image.raw,format=raw \
 	-vga qxl \
 	-snapshot \
 	-kernel kernel \
 	-initrd initrd \
-	-append "root=LABEL=writable snap_core=base-18_very-unstable_amd64.snap snap_kernel=pc-kernel.snap ro net.ifnames=0 init=/lib/systemd/systemd console=tty1 systemd.debug-shell=1"
+	-append "root=LABEL=writable snap_core=core18_very-unstable_amd64.snap snap_kernel=pc-kernel.snap ro net.ifnames=0 init=/lib/systemd/systemd console=tty1 systemd.debug-shell=1"
 
 # Update (or build if missing) and boot the image
 .PHONY: update-and-boot
@@ -22,26 +22,26 @@ update-and-boot:
 # Update (or build if missing) the image.
 .PHONY: just-update
 .ONESHELL: just-update
-just-update: kernel initrd ../../base-18_very-unstable_amd64.snap
-	if [ ! -e base-18/image.raw ]; then
+just-update: kernel initrd ../../core18_very-unstable_amd64.snap
+	if [ ! -e core18/image.raw ]; then
 		# Create some files and directories so that they are all owned by us.
-		mkdir -p base-18/p1
-		mkdir -p base-18/p2
-		mkdir -p base-18/p3
-		touch base-18/image.raw
-		touch base-18/image.script
-		sudo ./create-image base-18
+		mkdir -p core18/p1
+		mkdir -p core18/p2
+		mkdir -p core18/p3
+		touch core18/image.raw
+		touch core18/image.script
+		sudo ./create-image core18
 	fi
-	# Update (this puts the kernel and new base-18 snap inside)
-	sudo ./mount-image base-18
-	sudo cp ../../base-18_very-unstable_amd64.snap base-18/p3/system-data/var/lib/snapd/snaps/
-	sudo cp --dereference pc-kernel.snap base-18/p3/system-data/var/lib/snapd/snaps/
-	sudo ./umount-image base-18
+	# Update (this puts the kernel and new core18 snap inside)
+	sudo ./mount-image core18
+	sudo cp ../../core18_very-unstable_amd64.snap core18/p3/system-data/var/lib/snapd/snaps/
+	sudo cp --dereference pc-kernel.snap core18/p3/system-data/var/lib/snapd/snaps/
+	sudo ./umount-image core18
 
 # Just boot the image
 .PHONY: just-boot
 .ONESHELL: just-boot
-just-boot: kernel initrd base-18/image.raw
+just-boot: kernel initrd core18/image.raw
 	$(QEMU_CMD)
 
 # Start the image in the background. This is relevant for spread.
@@ -69,7 +69,7 @@ clean:
 	rm -f kernel
 	rm -f pc-kernel_*.assert
 	rm -f pc-kernel_*.snap
-	rm -rf base-18
+	rm -rf core18
 	rm -rf kernel-snap
 	rm -rf core-snap
 	rm -f core.snap

@@ -1,4 +1,4 @@
-name: base-18
+name: core18
 version: very-unstable
 summary: Runtime environment based on Ubuntu 18.04
 description: |

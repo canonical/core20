@@ -1,4 +1,4 @@
-This directory contains support scripts boot-testing the base-18 snap.
+This directory contains support scripts boot-testing the core18 snap.
 The test is very crude as you have to do it interactively.
 
 After booting move to VT7 by clicking on the qemu window and pressing alt+right

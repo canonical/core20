@@ -29,9 +29,9 @@ install:
 		rm -f $(DESTDIR)/tmp/$$(basename $$f); \
 	done;
 	# only generate manifest file for lp build
-	if [ -e /build/base-18 ]; then \
+	if [ -e /build/core18 ]; then \
 		echo $$f; \
-		cp $(DESTDIR)/usr/share/snappy/dpkg.list /build/base-18/base-18-$$(date +%Y%m%d%H%M)_$(DPKG_ARCH).manifest; \
+		cp $(DESTDIR)/usr/share/snappy/dpkg.list /build/core18/core18-$$(date +%Y%m%d%H%M)_$(DPKG_ARCH).manifest; \
 	fi;
 
 .PHONY: check

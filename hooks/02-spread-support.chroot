@@ -1,7 +1,7 @@
 #!/bin/sh -x
 set -e
 
-# XXX: This is just for testing. This MUST NOT be a part of released base-18
+# XXX: This is just for testing. This MUST NOT be a part of released core18
 # snap. Before we have a way to inject the test support user into the image
 # this hack will do.
 
