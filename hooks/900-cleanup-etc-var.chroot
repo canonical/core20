@@ -65,5 +65,13 @@ rm -rf /etc/alternatives
 # no permanet journal
 rm -rf /var/log/journal
 
+# clean leftovers from the build
+rm /var/log/*
+
+# no "local" on core18
+rm -rf -- /var/local /usr/local
+
+# no debconf
+rm -rf /var/cache/debconf
 
 # FIXME: make /etc/lsb-release point to ../usr/lib/lsb-release

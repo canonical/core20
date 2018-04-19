@@ -11,7 +11,8 @@ install -m755 -d usr/share/snappy
 dpkg -l > usr/share/snappy/dpkg.list
 
 # dpkg-deb and dpkg purposefully left behind
-chroot . dpkg --purge --force-depends apt libapt-pkg5.0
+dpkg --purge --force-depends apt libapt-pkg5.0 debconf
+
 rm -r \
         var/lib/dpkg \
         var/log/apt
