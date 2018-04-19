@@ -22,7 +22,7 @@ install:
 	cat /etc/resolv.conf > $(DESTDIR)/etc/resolv.conf
 	# customize
 	set -ex; for f in ./hooks/[0-9]*.chroot; do \
-		cp -a $$f $(DESTDIR)/tmp && \
+		/bin/cp -a $$f $(DESTDIR)/tmp && \
 		if ! chroot $(DESTDIR) /tmp/$$(basename $$f); then \
                     exit 1; \
                 fi && \
@@ -31,7 +31,7 @@ install:
 	# only generate manifest file for lp build
 	if [ -e /build/core18 ]; then \
 		echo $$f; \
-		cp $(DESTDIR)/usr/share/snappy/dpkg.list /build/core18/core18-$$(date +%Y%m%d%H%M)_$(DPKG_ARCH).manifest; \
+		/bin/cp $(DESTDIR)/usr/share/snappy/dpkg.list /build/core18/core18-$$(date +%Y%m%d%H%M)_$(DPKG_ARCH).manifest; \
 	fi;
 
 .PHONY: check
