@@ -40,6 +40,12 @@ check:
 	# some things more readable
 	shellcheck -e SC2002 hooks/*
 
+.PHONY: test
+test:
+	# run crude abi checks
+	set -ex; for f in ./tests/abi/*.sh; do \
+		$$f; \
+	done;
 
 # Display a report of files that are (still) present in /etc
 .PHONY: etc-report
