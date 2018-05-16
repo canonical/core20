@@ -18,4 +18,5 @@ apt install --no-install-recommends -y \
     distro-info-data \
     tzdata \
     openssh-server \
-    iproute2
+    iproute2 \
+    kmod
