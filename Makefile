@@ -13,7 +13,7 @@ install:
 		exit 1; \
 	fi
 	if [ ! -f ../$(BASE) ]; then \
-		wget -P ../ http://cdimage.ubuntu.com/ubuntu-base/daily/current/$(BASE); \
+		wget -P ../ http://cdimage.ubuntu.com/ubuntu-base/bionic/daily/current/$(BASE); \
 	fi
 	rm -rf $(DESTDIR)
 	mkdir -p $(DESTDIR)
