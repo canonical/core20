@@ -13,6 +13,14 @@ cat > /etc/system-image/writable-paths << __WRITABLE__
 #
 # See writable-paths(5) for full details.
 # --------------------------------------------------------------------
+/home                                   user-data               persistent  transition  none
+/snap                                   auto                    persistent  none  none
+# snappy security policy, etc
+/var/lib/snapd                         auto                     synced      none        none
+# https://github.com/snapcore/snapd/pull/3866
+/var/cache/snapd                         auto                   synced      none        none
+# snap data
+/var/snap                              auto                    persistent  transition  none
 /etc/apparmor.d/cache                   auto                    persistent  none        none
 /etc/dbus-1/system.d                    auto                    persistent  transition  none
 /etc/default/swapfile                   auto                    persistent  transition  none
