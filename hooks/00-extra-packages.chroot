@@ -12,4 +12,9 @@ mkdir -p /var/log/journal
 # install some packages we need
 apt update
 apt dist-upgrade -y
-apt install --no-install-recommends -y systemd libnss-extrausers distro-info-data tzdata
+apt install --no-install-recommends -y \
+    systemd \
+    libnss-extrausers \
+    distro-info-data \
+    tzdata \
+    openssh-server
