@@ -21,8 +21,13 @@ apt install --no-install-recommends -y \
     iproute2 \
     kmod \
     udev \
-    sudo
+    sudo \
+    dbus \
+    apparmor
 
 # netplan pulls in 10MB of extra deps :/
 apt install --no-install-recommends -y netplan.io
+
+# XXX: add console-conf
+#apt install --no-install-recommends -y console-conf
 
