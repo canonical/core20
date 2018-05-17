@@ -56,6 +56,7 @@ cat > /etc/system-image/writable-paths << __WRITABLE__
 /var/lib/system-image                   auto                    persistent  none        none
 /var/lib/systemd/random-seed            auto                    persistent  transition  none
 /var/lib/systemd/rfkill                 auto                    persistent  transition  none
+/var/lib/systemd/timesync               auto                    persistent  transition  none
 /var/lib/upower                         auto                    persistent  none        none
 /var/lib/ureadahead                     auto                    persistent  transition  none
 /var/lib/waagent                        auto                    persistent  transition  none
