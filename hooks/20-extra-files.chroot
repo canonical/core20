@@ -5,6 +5,7 @@ set -e
 echo "creating mtab and modules dir" >&2
 ln -sf ../proc/self/mounts /etc/mtab
 mkdir -p /lib/modules
+mkdir -p /etc/modules-load.d
 mkdir -p /lib/firmware
 mkdir -p /writable
 mkdir -p /var/lib/systemd/rfkill
