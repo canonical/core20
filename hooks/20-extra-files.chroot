@@ -21,3 +21,4 @@ mkdir -p /usr/lib/snapd
 
 echo "creating extra systemd dirs"
 mkdir -p /var/lib/systemd/timesync
+mkdir -p /var/lib/systemd/coredump
