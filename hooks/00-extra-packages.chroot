@@ -20,7 +20,8 @@ apt install --no-install-recommends -y \
     openssh-server \
     iproute2 \
     kmod \
-    udev
+    udev \
+    sudo
 
 # netplan pulls in 10MB of extra deps :/
 apt install --no-install-recommends -y netplan.io
