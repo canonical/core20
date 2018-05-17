@@ -33,9 +33,8 @@ rm -rf /etc/python3.6
 # only provides a symbolic name for "link-local"
 rm /etc/networks
 
-# no need for old style init
+# no need for old style init, we cannot delete /etc/init.d: apparmor needs it
 rm -rf /etc/rc[0-6S].d
-rm -rf /etc/init.d
 
 # remove alternatives for manual pages (easier)
 rm -f /etc/alternatives/*.gz

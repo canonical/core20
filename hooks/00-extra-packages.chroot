@@ -30,4 +30,3 @@ apt install --no-install-recommends -y netplan.io
 
 # XXX: add console-conf
 #apt install --no-install-recommends -y console-conf
-
