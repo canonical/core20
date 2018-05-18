@@ -21,5 +21,6 @@ mkdir -p /snap /var/snap
 mkdir -p /usr/lib/snapd
 
 echo "creating extra systemd dirs"
-mkdir -p /var/lib/systemd/timesync
 mkdir -p /var/lib/systemd/coredump
+mkdir -p /var/lib/private/systemd
+chmod 700 /var/lib/private
