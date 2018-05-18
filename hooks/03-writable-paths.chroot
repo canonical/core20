@@ -43,10 +43,8 @@ cat > /etc/system-image/writable-paths << __WRITABLE__
 /etc/sudoers.d                          auto                    persistent  transition  none
 # systemd
 /etc/systemd                            auto                    persistent  transition  none
-/var/lib/systemd/random-seed            auto                    persistent  transition  none
-/var/lib/systemd/rfkill                 auto                    persistent  transition  none
-/var/lib/systemd/timesync               auto                    persistent  transition  none
-/var/lib/systemd/coredump               auto                    persistent  transition  none
+/var/lib/systemd                        auto                    persistent  transition  none
+/var/lib/private/systemd                auto                    persistent  transition  none
 # udev
 /etc/udev/rules.d                       auto                    persistent  transition  none
 /var/lib/extrausers                     auto                    persistent  transition  none
