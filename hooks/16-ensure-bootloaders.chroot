@@ -20,4 +20,7 @@ case "$(dpkg --print-architecture)" in
 /boot/uboot/uboot.env 0x0000 0x20000
 EOF
         ;;
+    amd64|i386)
+        mkdir /boot/efi
+        ;;
 esac
