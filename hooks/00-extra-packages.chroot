@@ -24,7 +24,8 @@ apt install --no-install-recommends -y \
     sudo \
     dbus \
     apparmor \
-    netplan.io
+    netplan.io \
+    ca-certificates
 
 
 # XXX: add console-conf (add 2Mb, can we get is as a snap?)
