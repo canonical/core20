@@ -12,6 +12,6 @@ echo "Clean up systemd-timesyncd leftover directory"
 mkdir -p /lib/systemd/system/systemd-tmpfiles-setup.service.d
 cat >/lib/systemd/system/systemd-tmpfiles-setup.service.d/fixup-timesyncd.conf<<EOF
 [Service]
-ExecStartPost=/bin/sh -c "[ ! -L /var/lib/systemd/timesync ] && rm -rf /var/lib/systemd/timesync | true"
+ExecStartPost=/bin/sh -c "[ ! -L /var/lib/systemd/timesync ] && rm -rf /var/lib/systemd/timesync || true"
 EOF
 
