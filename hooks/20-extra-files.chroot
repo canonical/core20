@@ -19,6 +19,7 @@ mkdir -p /var/cache/fontconfig
 echo "creating snap dirs/files"
 mkdir -p /snap /var/snap
 mkdir -p /usr/lib/snapd
+mkdir -p /var/lib/snapd
 
 echo "creating extra systemd dirs"
 mkdir -p /var/lib/systemd/coredump
