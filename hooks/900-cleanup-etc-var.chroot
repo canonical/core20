@@ -16,7 +16,6 @@ rm -rvf /etc/opt
 rm -rvf /etc/selinux
 rm -rvf /etc/binfmt.d
 rm /etc/gai.conf
-rm -rf /etc/modules-load.d/
 rm /etc/debian_version
 rm /etc/pam.conf
 rmdir /etc/profile.d
