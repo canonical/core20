@@ -20,6 +20,7 @@ echo "creating snap dirs/files"
 mkdir -p /snap /var/snap
 mkdir -p /usr/lib/snapd
 mkdir -p /var/lib/snapd
+mkdir -p /var/cache/snapd
 
 echo "creating extra systemd dirs"
 mkdir -p /var/lib/systemd/coredump
