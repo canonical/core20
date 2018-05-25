@@ -1,0 +1,55 @@
+#!/bin/sh
+#
+# This script will try to find a suiteable snapd snap and start
+# snapd and its associated services from it.
+
+set -eux
+
+# try_start_snapd will try to start snapd from the given prefix
+# location
+try_start_snapd() {
+    PREFIX="$1"
+
+    if ! "$PREFIX"/usr/lib/snapd/snapd.manage start; then
+        echo "cannot start snapd from $PREFIX"
+        exit 1
+    fi
+    echo "$PREFIX" > /var/lib/snapd/last-good-snapd
+}
+
+# run_on_unseeded will mount/run snapd on an unseeded system
+run_on_unseeded() {
+    SEED_SNAPD="/var/lib/snapd/seed/snaps/snapd_*.snap"
+    if [ ! -e "$SEED_SNAPD" ]; then
+        echo "Cannot find a seeded snapd"
+        ls /var/lib/snapd/seed/snaps
+        exit 1
+    fi
+
+    # mount snapd snap and run snapd directly, it will do
+    # the seeding and as part of this will restart snapd
+    # which will give it the right systemd unit.
+    TMPD=$(mktemp -d)
+    trap "umount $TMPD; rmdir $TMPD" EXIT
+    mount "$SEED_SNAPD" "$TMPD"
+    "$TMPD"/lib/snapd/snapd
+}
+
+# Unseeded systems need to be seeded first, this will start snapd
+# and snapd will restart itself after the seeding.
+if [ ! -e /var/lib/snapd/state.json ]; then
+    if ! run_on_unseeded; then
+        echo "cannot run snapd from the seed"
+        exit 1
+    fi
+    exit 0
+fi
+
+# Try to run from the current and mounted snapd.
+if ! try_start_snapd "$(readlink -f /snap/snapd/current)"; then
+    if ! try_start_snapd "$(cat /var/lib/snapd/last-good-snapd)"; then
+        # FIXME: try harder here, eventually fallback to the seed
+        exit 1
+    fi
+fi
+
