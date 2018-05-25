@@ -1,7 +1,5 @@
 #!/bin/sh
 
-set -xe
-
 # We *must* ensure that uid/gid never changes in the core image because
 # the UIDs will (potentially) leak out into the filesystem and /etc/passwd
 # and friends are part of the readonly part of the core snap so they can
@@ -38,6 +36,7 @@ systemd-resolve:x:102:104:systemd Resolver,,,:/run/systemd/resolve:/usr/sbin/nol
 messagebus:x:103:105::/nonexistent:/usr/sbin/nologin
 sshd:x:104:65534::/run/sshd:/usr/sbin/nologin
 EOF
+rc=$?; [ "$rc" != "0" ] && MISMATCH=1
 
 echo "Ensure group files does not change"
 diff -u /etc/group - <<EOF
@@ -87,6 +86,13 @@ systemd-resolve:x:104:
 messagebus:x:105:
 ssh:x:106:
 EOF
+rc=$?; [ "$rc" != "0" ] && MISMATCH=1
+
+if [ -n "$MISMATCH" ]; then
+    echo "There were changes to the password database."
+    echo "Please check the differences printed above and adjust the values."
+    exit 1
+fi
 
 # We're now providing our own version of /etc/passwd and others since we want
 # to remain compatible with UIDs and GIDs from core 16.
