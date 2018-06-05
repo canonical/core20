@@ -13,3 +13,16 @@ parts:
     build-packages:
       - shellcheck
       - wget
+    # XXX: Dirty hacks to enable building core18 on non-bionic systems.
+    # Without these overrides both the PATH and LD_LIBRARY_PATH contain paths
+    # in the part's install directory which binaries can be incompatible with
+    # the ones running on our system.  We don't need those while running stage
+    # and prime anyway.
+    override-stage: |
+      unset LD_LIBRARY_PATH;
+      export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin";
+      snapcraftctl stage
+    override-prime: |
+      unset LD_LIBRARY_PATH;
+      export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin";
+      snapcraftctl prime
