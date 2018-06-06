@@ -67,6 +67,7 @@ rm -rf /var/log/journal
 rm /var/log/*
 
 # no "local" on core18
+# shellcheck disable=SC2114
 rm -rf -- /var/local /usr/local
 
 # no debconf

@@ -26,7 +26,8 @@ apt install --no-install-recommends -y \
     apparmor \
     netplan.io \
     ca-certificates \
-    squashfs-tools
+    squashfs-tools \
+    console-conf
 
 
 # XXX: add console-conf (add 2Mb, can we get is as a snap?)
