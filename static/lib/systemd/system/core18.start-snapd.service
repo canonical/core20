@@ -3,7 +3,7 @@ Description=Manage the snapd services from the snapd snap
 
 [Service]
 ExecStart=/usr/lib/core18/run-snapd-from-snap start
-Type=oneshoot
+Type=oneshot
 RemainAfterExit=true
 
 [Install]
