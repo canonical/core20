@@ -1,0 +1,10 @@
+[Unit]
+Description=Manage the snapd services from the snapd snap
+
+[Service]
+ExecStart=/usr/lib/core18/run-snapd-from-snap start
+Type=oneshot
+RemainAfterExit=true
+
+[Install]
+WantedBy=multi-user.target

@@ -28,6 +28,9 @@ install:
                 fi && \
 		rm -f $(DESTDIR)/tmp/$$(basename $$f); \
 	done;
+	# copy static files verbatim
+	/bin/cp -a static/* $(DESTDIR)
+
 	# only generate manifest file for lp build
 	if [ -e /build/core18 ]; then \
 		echo $$f; \
