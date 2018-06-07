@@ -10,7 +10,7 @@ set -eux
 try_start_snapd() {
     PREFIX="$1"
 
-    if ! "$PREFIX"/usr/lib/snapd/snapd.manage start; then
+    if ! "$PREFIX"/usr/lib/snapd/snapd.run-from-snap start "$PREFIX"; then
         echo "cannot start snapd from $PREFIX"
         exit 1
     fi
