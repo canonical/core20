@@ -31,8 +31,8 @@ irc:x:39:39:ircd:/var/run/ircd:/usr/sbin/nologin
 gnats:x:41:41:Gnats Bug-Reporting System (admin):/var/lib/gnats:/usr/sbin/nologin
 nobody:x:65534:65534:nobody:/nonexistent:/usr/sbin/nologin
 _apt:x:100:65534::/nonexistent:/usr/sbin/nologin
-systemd-network:x:101:103:systemd Network Management,,,:/run/systemd/netif:/usr/sbin/nologin
-systemd-resolve:x:102:104:systemd Resolver,,,:/run/systemd/resolve:/usr/sbin/nologin
+systemd-network:x:101:102:systemd Network Management,,,:/run/systemd/netif:/usr/sbin/nologin
+systemd-resolve:x:102:103:systemd Resolver,,,:/run/systemd/resolve:/usr/sbin/nologin
 messagebus:x:103:105::/nonexistent:/usr/sbin/nologin
 sshd:x:104:65534::/run/sshd:/usr/sbin/nologin
 EOF
@@ -79,10 +79,10 @@ staff:x:50:
 games:x:60:
 users:x:100:
 nogroup:x:65534:
-input:x:101:
-systemd-journal:x:102:
-systemd-network:x:103:
-systemd-resolve:x:104:
+systemd-journal:x:101:
+systemd-network:x:102:
+systemd-resolve:x:103:
+input:x:104:
 messagebus:x:105:
 ssh:x:106:
 EOF
