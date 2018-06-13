@@ -32,7 +32,7 @@ run_on_unseeded() {
     TMPD=$(mktemp -d)
     trap "umount $TMPD; rmdir $TMPD" EXIT
     mount "$SEED_SNAPD" "$TMPD"
-    "$TMPD"/lib/snapd/snapd
+    "$TMPD"/usr/lib/snapd/snapd
 }
 
 # Unseeded systems need to be seeded first, this will start snapd
