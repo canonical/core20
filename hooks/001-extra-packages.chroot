@@ -29,6 +29,3 @@ apt install --no-install-recommends -y \
     squashfs-tools \
     console-conf
 
-
-# XXX: add console-conf (add 2Mb, can we get is as a snap?)
-#apt install --no-install-recommends -y console-conf

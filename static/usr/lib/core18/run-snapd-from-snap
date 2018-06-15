@@ -19,7 +19,7 @@ try_start_snapd() {
 
 # run_on_unseeded will mount/run snapd on an unseeded system
 run_on_unseeded() {
-    SEED_SNAPD="/var/lib/snapd/seed/snaps/snapd_*.snap"
+    SEED_SNAPD="$(find /var/lib/snapd/seed/snaps/ -name "snapd_*.snap")"
     if [ ! -e "$SEED_SNAPD" ]; then
         echo "Cannot find a seeded snapd"
         ls /var/lib/snapd/seed/snaps
@@ -32,7 +32,7 @@ run_on_unseeded() {
     TMPD=$(mktemp -d)
     trap "umount $TMPD; rmdir $TMPD" EXIT
     mount "$SEED_SNAPD" "$TMPD"
-    "$TMPD"/lib/snapd/snapd
+    "$TMPD"/usr/lib/snapd/snapd
 }
 
 # Unseeded systems need to be seeded first, this will start snapd
