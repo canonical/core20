@@ -27,5 +27,6 @@ apt install --no-install-recommends -y \
     netplan.io \
     ca-certificates \
     squashfs-tools \
-    console-conf
+    console-conf \
+    cloud-init
 
