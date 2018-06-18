@@ -14,7 +14,7 @@ try_start_snapd() {
         echo "cannot start snapd from $PREFIX"
         exit 1
     fi
-    echo "$PREFIX" > /var/lib/snapd/last-good-snapd
+    echo "$(readlink -f $PREFIX)" > /var/lib/snapd/last-good-snapd
 }
 
 # run_on_unseeded will mount/run snapd on an unseeded system
@@ -32,7 +32,13 @@ run_on_unseeded() {
     TMPD=$(mktemp -d)
     trap "umount $TMPD; rmdir $TMPD" EXIT
     mount "$SEED_SNAPD" "$TMPD"
+    # snapd will restart once it seeded the snapd snap
     "$TMPD"/usr/lib/snapd/snapd
+    umount "TMPD" || true
+
+    # now start snapd normally, there is just a single snapd installed
+    # at this point
+    try_start_snapd "/snap/snapd/current"
 }
 
 # Unseeded systems need to be seeded first, this will start snapd
@@ -46,7 +52,11 @@ if [ ! -e /var/lib/snapd/state.json ]; then
 fi
 
 # Try to run from the current and mounted snapd.
-if ! try_start_snapd "$(readlink -f /snap/snapd/current)"; then
+if ! try_start_snapd "/snap/snapd/current"; then
+
+    # FIXME: at this point all our system units will be set to
+    #        /snap/snapd/$rev/ - which means when snapd restarts
+    #        it will not restart into the new version :/
     if ! try_start_snapd "$(cat /var/lib/snapd/last-good-snapd)"; then
         # FIXME: try harder here, eventually fallback to the seed
         exit 1
