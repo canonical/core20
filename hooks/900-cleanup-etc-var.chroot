@@ -18,7 +18,10 @@ rm -rvf /etc/binfmt.d
 rm /etc/gai.conf
 rm /etc/debian_version
 rm /etc/pam.conf
-rmdir /etc/profile.d
+
+# cloud-init adds stuff here
+rm -rf /etc/profile.d
+
 rm /etc/rmt
 rm /etc/sysctl.conf
 rm -rf /etc/terminfo
