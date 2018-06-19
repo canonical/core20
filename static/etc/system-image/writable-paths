@@ -1,9 +1,3 @@
-#!/bin/sh
-set -e
-# XXX: we want to migrate away from writable paths but having _some_ support of
-# this for now lets us walk before we run.
-mkdir -p /etc/system-image
-cat > /etc/system-image/writable-paths << __WRITABLE__
 # --------------------------------------------------------------------
 # 1st column: Mount point
 # 2nd column: Path relative to root of persistent storage (or auto)
@@ -57,4 +51,3 @@ cat > /etc/system-image/writable-paths << __WRITABLE__
 /var/lib/apparmor                       auto                    persistent  transition  none
 /var/lib/dbus                           auto                    persistent  none        none
 /var/lib/dhcp                           auto                    persistent  none        none
-__WRITABLE__
