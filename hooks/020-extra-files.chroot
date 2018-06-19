@@ -26,3 +26,7 @@ echo "creating extra systemd dirs"
 mkdir -p /var/lib/systemd/coredump
 mkdir -p /var/lib/private/systemd
 chmod 700 /var/lib/private
+
+echo "extra cloud init files"
+mkdir -p /etc/cloud
+mkdir -p /var/lib/cloud
