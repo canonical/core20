@@ -28,4 +28,7 @@ if [ -n "$MISMATCH" ]; then
 fi
 
 echo "Cleanup"
-rm /etc/{passwd,shadow,group,gshadow}.orig
+rm /etc/passwd.orig
+rm /etc/shadow.orig
+rm /etc/group.orig
+rm /etc/gshadow.orig
