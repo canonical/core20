@@ -26,3 +26,9 @@ if [ -n "$MISMATCH" ]; then
     echo "Please make sure no hooks modify the password database during their run."
     exit 1
 fi
+
+echo "Cleanup"
+rm /etc/passwd.orig
+rm /etc/shadow.orig
+rm /etc/group.orig
+rm /etc/gshadow.orig
