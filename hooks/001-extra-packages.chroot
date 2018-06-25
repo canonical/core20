@@ -25,6 +25,7 @@ apt install --no-install-recommends -y \
     udev \
     sudo \
     dbus \
+    netcat-openbsd \
     apparmor \
     netplan.io \
     ca-certificates \
