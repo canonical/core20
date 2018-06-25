@@ -6,3 +6,7 @@
 echo "putting a PATH in place that contains /snap/bin"
 echo 'PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin"' >/etc/environment
 
+
+echo "Ensure /etc/login.defs contains /snap/bin"
+sed -i 's#\(.*\)PATH=\(.*\)#\1 PATH=\2:/snap/bin#' /etc/login.defs
+grep 'PATH=.*:/snap/bin' /etc/login.defs
