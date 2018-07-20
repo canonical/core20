@@ -1,4 +1,4 @@
 summary: Ensure that there is no hostname set
 execute: |
-    test ! -e /etc/hostname
+    test -e /etc/hostname
     test "$(hostname)" = localhost
