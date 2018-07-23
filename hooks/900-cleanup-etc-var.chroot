@@ -72,6 +72,9 @@ rm /var/log/*
 # no "local" on core18
 # shellcheck disable=SC2114
 rm -rf -- /var/local /usr/local
+# we need this for the core18 base snap when using with classic snaps
+# for the "interfaces-desktop-host-fonts"
+mkdir -p /usr/local/share/fonts
 
 # no debconf
 rm -rf /var/cache/debconf
