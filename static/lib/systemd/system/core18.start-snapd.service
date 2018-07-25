@@ -1,5 +1,6 @@
 [Unit]
 Description=Manage the snapd services from the snapd snap
+RequiresMountFor=/run
 
 [Service]
 ExecStart=/usr/lib/core18/run-snapd-from-snap start
