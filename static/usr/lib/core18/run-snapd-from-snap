@@ -39,6 +39,11 @@ run_on_unseeded() {
     # now start snapd normally, there is just a single snapd installed
     # at this point
     try_start_snapd "/snap/snapd/current"
+
+    # ensure the snapd.socket gets restarted after seeding, the
+    # snapd binary in seeding runs without systemd sockets and
+    # will delete its the socket files it created on exit.
+    systemctl restart snapd.socket || true
 }
 
 # Unseeded systems need to be seeded first, this will start snapd
