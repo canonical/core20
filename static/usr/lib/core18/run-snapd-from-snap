@@ -34,7 +34,6 @@ run_on_unseeded() {
     mount "$SEED_SNAPD" "$TMPD"
     # snapd will restart once it seeded the snapd snap
     "$TMPD"/usr/lib/snapd/snapd
-    umount "$TMPD" || true
 
     # now start snapd normally, there is just a single snapd installed
     # at this point
