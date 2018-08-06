@@ -20,6 +20,8 @@ install:
 	tar -x -f ../$(BASE) -C $(DESTDIR)
 	# ensure resolving works inside the chroot
 	cat /etc/resolv.conf > $(DESTDIR)/etc/resolv.conf
+	# copy static files verbatim
+	/bin/cp -a static/* $(DESTDIR)
 	# customize
 	set -ex; for f in ./hooks/[0-9]*.chroot; do \
 		/bin/cp -a $$f $(DESTDIR)/tmp && \
@@ -28,8 +30,6 @@ install:
                 fi && \
 		rm -f $(DESTDIR)/tmp/$$(basename $$f); \
 	done;
-	# copy static files verbatim
-	/bin/cp -a static/* $(DESTDIR)
 
 	# only generate manifest file for lp build
 	if [ -e /build/core18 ]; then \
