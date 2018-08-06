@@ -40,8 +40,7 @@ apt install --no-install-recommends -y \
     netplan.io \
     ca-certificates \
     squashfs-tools \
-    console-conf \
-    cloud-init
+    console-conf
 
 # since we installed what we wanted, let's get rid of the extra gnupg and all
 # its dependencies
