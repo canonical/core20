@@ -24,6 +24,7 @@ apt install --no-install-recommends -y \
     kmod \
     udev \
     sudo \
+    less \
     dbus \
     netcat-openbsd \
     apparmor \
