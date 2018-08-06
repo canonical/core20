@@ -9,6 +9,16 @@ trap 'umount /proc' EXIT
 # systemd postinst needs this
 mkdir -p /var/log/journal
 
+# to enable a custom PPA we need to pull in the key for which we need gnupg
+# installed first, although we probably don't need it on the end system
+apt update
+apt install --no-install-recommends -y gnupg
+
+# enable the snappy-dev/image PPA
+# XXX: currently it's my own PPA with the new subiquity, for testing
+echo "deb http://ppa.launchpad.net/sil2100/testing/ubuntu bionic main" > /etc/apt/sources.list.d/snappy-dev-image.list
+apt-key adv --keyserver keyserver.ubuntu.com --recv-keys B624A14D8696842014EB4942803A8EB5078B4FF5
+
 # install some packages we need
 apt update
 apt dist-upgrade -y
@@ -33,3 +43,7 @@ apt install --no-install-recommends -y \
     console-conf \
     cloud-init
 
+# since we installed what we wanted, let's get rid of the extra gnupg and all
+# its dependencies
+apt remove --purge -y gnupg
+apt autoremove -y
