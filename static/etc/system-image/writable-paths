@@ -8,11 +8,11 @@
 # See writable-paths(5) for full details.
 # --------------------------------------------------------------------
 /home                                   user-data               persistent  transition  none
-/snap                                   auto                    persistent  none  none
+/snap                                   auto                    persistent  none        none
 # snappy security policy, etc
-/var/lib/snapd                         auto                     synced      none        none
+/var/lib/snapd                         auto                     persistent  transition  none
 # snap catalogue (sections, pkgnames)
-/var/cache/snapd                        auto                   synced      none        none
+/var/cache/snapd                        auto                    persistent  transition  none
 # snap data
 /var/snap                               auto                    persistent  transition  none
 # generic
@@ -22,14 +22,14 @@
 /tmp                                    none                    temporary   none        defaults
 /var/tmp                                auto                    persistent  transition  none
 # etc related
-/etc/writable                           auto                    synced      none        none
+/etc/writable                           auto                    persistent  none        none
 # apparmor
 /etc/apparmor.d/cache                   auto                    persistent  none        none
 # dbus system bus
 /etc/dbus-1/system.d                    auto                    persistent  transition  none
 /etc/hosts                              auto                    persistent  transition  none
 /etc/iproute2                           auto                    persistent  transition  none
-/etc/modprobe.d                         auto                    synced      none        none
+/etc/modprobe.d                         auto                    persistent  transition  none
 /etc/modules-load.d                     auto                    persistent  transition  none
 /etc/netplan                            auto                    persistent  transition  none
 /etc/network/if-up.d                    auto                    persistent  transition  none
@@ -52,7 +52,7 @@
 /var/lib/dbus                           auto                    persistent  none        none
 /var/lib/dhcp                           auto                    persistent  none        none
 # cloud-init
-/etc/cloud                              auto                    synced  none        none
+/etc/cloud                              auto                    persistent  transition  none
 /var/lib/cloud                          auto                    persistent  none        none
 # for various clouds like GCE
 /etc/sysctl.d                           auto                    persistent  transition  none
