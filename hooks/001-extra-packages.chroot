@@ -14,10 +14,9 @@ mkdir -p /var/log/journal
 apt update
 apt install --no-install-recommends -y gnupg
 
-# enable the snappy-dev/image PPA
-# XXX: currently it's my own PPA with the new subiquity, for testing
-echo "deb http://ppa.launchpad.net/sil2100/testing/ubuntu bionic main" > /etc/apt/sources.list.d/snappy-dev-image.list
-apt-key adv --keyserver keyserver.ubuntu.com --recv-keys B624A14D8696842014EB4942803A8EB5078B4FF5
+# enable the foundations ubuntu-image PPA
+echo "deb http://ppa.launchpad.net/canonical-foundations/ubuntu-image/ubuntu bionic main" > /etc/apt/sources.list.d/ubuntu-image.list
+apt-key adv --keyserver keyserver.ubuntu.com --recv-keys CDE5112BD4104F975FC8A53FD4C0B668FD4C9139
 
 # install some packages we need
 apt update
