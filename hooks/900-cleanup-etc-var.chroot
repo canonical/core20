@@ -50,19 +50,6 @@ rm -rf /usr/local/lib/python*
 # we have no cron daily jobs
 rmdir /etc/cron.daily
 
-# undo all symlinks to /etc/alternatives and replace with their real
-# counterparts. The alternatives system looks like this:
-#
-# /usr/bin/pager -> /etc/alternatives/pager -> /bin/more
-#
-find /etc/alternatives -type l | while read -r f; do
-    real=$(readlink -f "$f")
-    alias=$(dirname "$real")/$(basename "$f")
-    rm -f "$alias"
-    ln -s "$real" "$alias"
-done
-rm -rf /etc/alternatives
-
 # no permanet journal
 rm -rf /var/log/journal
 
