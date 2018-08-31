@@ -9,6 +9,15 @@ trap 'umount /proc' EXIT
 # systemd postinst needs this
 mkdir -p /var/log/journal
 
+# to enable a custom PPA we need to pull in the key for which we need gnupg
+# installed first, although we probably don't need it on the end system
+apt update
+apt install --no-install-recommends -y gnupg
+
+# enable the foundations ubuntu-image PPA
+echo "deb http://ppa.launchpad.net/canonical-foundations/ubuntu-image/ubuntu bionic main" > /etc/apt/sources.list.d/ubuntu-image.list
+apt-key adv --keyserver keyserver.ubuntu.com --recv-keys CDE5112BD4104F975FC8A53FD4C0B668FD4C9139
+
 # install some packages we need
 apt update
 apt dist-upgrade -y
@@ -33,3 +42,8 @@ apt install --no-install-recommends -y \
     ca-certificates \
     squashfs-tools \
     console-conf
+
+# since we installed what we wanted, let's get rid of the extra gnupg and all
+# its dependencies
+apt remove --purge -y gnupg
+apt autoremove -y
