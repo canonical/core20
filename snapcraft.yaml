@@ -1,5 +1,5 @@
 name: core18
-version: 0.1
+version: 18
 summary: Runtime environment based on Ubuntu 18.04
 description: |
   The base snap based on the Ubuntu 18.04 release.
