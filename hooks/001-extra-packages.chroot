@@ -39,6 +39,7 @@ apt install --no-install-recommends -y \
     dbus \
     vim-tiny \
     netcat-openbsd \
+    iputils-ping \
     apparmor \
     netplan.io \
     ca-certificates \
