@@ -28,6 +28,7 @@ apt install --no-install-recommends -y \
     systemd-sysv \
     libnss-extrausers \
     libpam-systemd \
+    libpam-modules \
     distro-info-data \
     tzdata \
     openssh-server \
