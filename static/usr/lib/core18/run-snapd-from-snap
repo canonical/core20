@@ -20,6 +20,7 @@ run_on_unseeded() {
     TMPD=$(mktemp -d)
     trap "umount $TMPD; rmdir $TMPD" EXIT
     mount "$SEED_SNAPD" "$TMPD"
+
     # snapd will write all the needed snapd.{service,socket}
     # units and restart once it seeded the snapd snap
     "$TMPD"/usr/lib/snapd/snapd
@@ -28,6 +29,16 @@ run_on_unseeded() {
     # snapd binary in seeding runs without systemd sockets and
     # will delete its the socket files it created on exit.
     systemctl restart snapd.socket || true
+
+    # FIXME: Add code to snap so that it prints progress even if
+    #        stdin is not a pty.
+    #
+    # At this point snap is available and seeding is at the point where
+    # were snapd to installed and restarted successfully. Show progress
+    # now. Even without showing progress we *must* wait here until
+    # seeding is done to ensure that console-conf is only started
+    # after this script has finished.
+    script -a -f -q -c "/usr/bin/snap watch --last=seed" /dev/console
 }
 
 # Unseeded systems need to be seeded first, this will start snapd
