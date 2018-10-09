@@ -33,6 +33,13 @@ run_on_unseeded() {
     # wait here until seeding is done. This will ensure that
     # console-conf works correctly.
     snap watch --last=seed | tee -a /dev/console
+
+    # debug
+    for _ in $(seq 5); do
+        snap changes | tee -a /dev/console
+        snap watch --last=seed | tee -a /dev/console
+        sleep 1
+    done
 }
 
 # Unseeded systems need to be seeded first, this will start snapd
