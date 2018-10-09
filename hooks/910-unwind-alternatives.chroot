@@ -13,14 +13,14 @@ set -e
 # 2. get the symlink "target" of the links
 #    e.g. /etc/alternatives/pager -> /bin/less
 # 3. link original symlink "f" directly to target of alternatives,
-#    e.g. /usr/bin/pager -> /bin/less
+#    and use a relative link, e.g. /usr/bin/pager -> ../bin/less
 find / -xdev -type l | while read -r f; do
     target=$(readlink "$f")
     if [[ "$target" == /etc/alternatives/* ]]; then
         real=$(readlink "$target")
         echo "unwinding alternatives $real -> $f"
         rm -f "$f"
-        ln -s "$real" "$f"
+        ln -s "$(realpath --relative-to="$(dirname "$f")" "$real")" "$f"
     fi
 done
 # and do the final cleanup

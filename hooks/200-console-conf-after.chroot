@@ -1,0 +1,8 @@
+#!/bin/sh
+
+set -e
+
+# Ensure that firstboot is complete so that the "snap" command is available
+# and useful.
+echo "Fix console-conf systemd unit to run after core18 firstboot"
+sed -i 's/After=rc-local.service/After=rc-local.service core18.start-snapd.service/' /lib/systemd/system/console-conf@.service
