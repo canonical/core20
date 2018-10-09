@@ -30,15 +30,13 @@ run_on_unseeded() {
     # will delete its the socket files it created on exit.
     systemctl restart snapd.socket || true
 
-    # FIXME: Add code to snap so that it prints progress even if
-    #        stdin is not a pty.
-    #
     # At this point snap is available and seeding is at the point where
     # were snapd to installed and restarted successfully. Show progress
     # now. Even without showing progress we *must* wait here until
     # seeding is done to ensure that console-conf is only started
     # after this script has finished.
-    script -a -f -q -c "/usr/bin/snap watch --last=seed" /dev/console
+    # (redirect stdin because that is what snap checks for pty)
+    /usr/bin/snap watch --last=seed < /dev/console | tee -a /dev/console
 }
 
 # Unseeded systems need to be seeded first, this will start snapd
