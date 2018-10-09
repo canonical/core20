@@ -22,7 +22,7 @@ run_on_unseeded() {
     mount "$SEED_SNAPD" "$TMPD"
     # snapd will write all the needed snapd.{service,socket}
     # units and restart once it seeded the snapd snap
-    "$TMPD"/usr/lib/snapd/snapd
+    "$TMPD"/usr/lib/snapd/snapd 2>&1 | tee -a /dev/console
 
     # ensure the snapd.socket gets restarted after seeding, the
     # snapd binary in seeding runs without systemd sockets and
