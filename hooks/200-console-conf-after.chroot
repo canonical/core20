@@ -2,7 +2,7 @@
 
 set -e
 
-# Ensure that snapd.seeded is complete so that the "snap" command is available
+# Ensure that firstboot is complete so that the "snap" command is available
 # and useful.
-echo "Fix console-conf systemd unit to run after snapd.seeded.service"
-sed -i 's/After=rc-local.service/After=rc-local.service snapd.seeded.service/' /lib/systemd/system/console-conf@.service
+echo "Fix console-conf systemd unit to run after core18 firstboot"
+sed -i 's/After=rc-local.service/After=rc-local.service core18.start-snapd.service/' /lib/systemd/system/console-conf@.service
