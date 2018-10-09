@@ -28,6 +28,11 @@ run_on_unseeded() {
     # snapd binary in seeding runs without systemd sockets and
     # will delete its the socket files it created on exit.
     systemctl restart snapd.socket || true
+
+    # At this point the snap command is available. We need to
+    # wait here until seeding is done. This will ensure that
+    # console-conf works correctly.
+    snap watch --last=seed | tee -a /dev/console
 }
 
 # Unseeded systems need to be seeded first, this will start snapd
