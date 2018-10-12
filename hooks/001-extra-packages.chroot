@@ -18,7 +18,7 @@ apt install --no-install-recommends -y gnupg
 
 # enable the foundations ubuntu-image PPA
 echo "deb http://ppa.launchpad.net/canonical-foundations/ubuntu-image/ubuntu bionic main" > /etc/apt/sources.list.d/ubuntu-image.list
-apt-key adv --keyserver keyserver.ubuntu.com --recv-keys CDE5112BD4104F975FC8A53FD4C0B668FD4C9139
+apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys CDE5112BD4104F975FC8A53FD4C0B668FD4C9139
 
 # install some packages we need
 apt update
