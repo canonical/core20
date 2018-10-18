@@ -46,7 +46,8 @@ apt install --no-install-recommends -y \
     ca-certificates \
     squashfs-tools \
     console-conf \
-    rfkill
+    rfkill \
+    wpa-supplicant
 
 # since we installed what we wanted, let's get rid of the extra gnupg and all
 # its dependencies
