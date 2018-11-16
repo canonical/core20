@@ -56,3 +56,5 @@
 /var/lib/cloud                          auto                    persistent  none        none
 # for various clouds like GCE
 /etc/sysctl.d                           auto                    persistent  transition  none
+# swapfile
+/etc/default/swapfile                   auto                    persistent  transition  none
