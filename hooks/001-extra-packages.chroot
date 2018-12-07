@@ -47,7 +47,8 @@ apt install --no-install-recommends -y \
     squashfs-tools \
     console-conf \
     rfkill \
-    wpasupplicant
+    wpasupplicant \
+    cloud-init
 
 # since we installed what we wanted, let's get rid of the extra gnupg and all
 # its dependencies
