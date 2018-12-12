@@ -30,11 +30,6 @@ run_on_unseeded() {
     # will delete its the socket files it created on exit.
     systemctl restart snapd.socket || true
 
-    # also ensure snapd.seeded.service is restarted and does not
-    # look at the no-longer-available socket file that snapd that ran
-    # without systemd created and that is no longer usable
-    systemctl restart snapd.seeded.service || true
-
     # At this point snap is available and seeding is at the point where
     # were snapd to installed and restarted successfully. Show progress
     # now. Even without showing progress we *must* wait here until
