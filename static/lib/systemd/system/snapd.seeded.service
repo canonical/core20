@@ -1,6 +1,6 @@
 [Unit]
 Description=Wait until snapd is fully seeded (core18)
-After=core18.start-snapd snapd.service snapd.socket
+After=core18.start-snapd.service
 
 [Service]
 Type=oneshot
