@@ -5,4 +5,4 @@ Before=sshd.service
 [Service]
 Type=oneshot
 RemainAfterExit=yes
-ExecStart=/usr/lib/snapd/sshd-host-keygen
+ExecStart=/usr/bin/core-sshd-host-keygen
