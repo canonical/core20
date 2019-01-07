@@ -20,9 +20,15 @@ parts:
     # and prime anyway.
     override-stage: |
       unset LD_LIBRARY_PATH;
-      export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin";
+      export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin"
+      # ensure snapcraftctl is found, see
+      # https://github.com/snapcore/snapcraft/pull/2251
+      export PATH="$PATH:/snap/snapcraft/current/bin/scriptlet-bin"
       snapcraftctl stage
     override-prime: |
       unset LD_LIBRARY_PATH;
-      export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin";
+      export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin"
+      # ensure snapcraftctl is found, see
+      # https://github.com/snapcore/snapcraft/pull/2251
+      export PATH="$PATH:/snap/snapcraft/current/bin/scriptlet-bin"
       snapcraftctl prime
