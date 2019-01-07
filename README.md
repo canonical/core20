@@ -10,6 +10,17 @@ To build this snap locally you need snapcraft. The project must be built as real
 $ sudo snapcraft
 ```
 
+# Writing code
+
+The usual way to add functionality is to write a shell script hook
+with the `.chroot` extenstion under the `hooks/` directory. These hooks
+are run inside the base image filesystem.
+
+Each hook should have a matching `.test` file that validates that the
+`.chroot` file works as expected. Those `.test` scripts will be run
+when doing "make test".
+
+
 # Testing locally
 
 Once built you can boot it for testing inside qemu and spread. You will need

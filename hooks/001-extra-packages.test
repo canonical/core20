@@ -14,7 +14,7 @@ if [ "$(dpkg --print-architecture)" != "amd64" ]; then
 fi
 
 DIFF=$(comm -1 -3 \
-         <(tail -n +6 prime/usr/share/snappy/dpkg.list|awk '{print $2}'|sort) \
+         <(tail -n +6 usr/share/snappy/dpkg.list|awk '{print $2}'|sort) \
          <(cat <<EOF
 adduser
 apt
