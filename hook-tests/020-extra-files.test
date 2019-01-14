@@ -1,0 +1,4 @@
+#!/bin/sh -e
+
+test -d /snap
+test -d /var/snap
