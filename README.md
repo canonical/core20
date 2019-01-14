@@ -17,9 +17,9 @@ with the `.chroot` extenstion under the `hooks/` directory. These hooks
 are run inside the base image filesystem.
 
 Each hook should have a matching `.test` file in the `hook-tests`
-directory. Those tests files are run inside the base image filesystem
-and should validates that the coresponding `.chroot` file worked as
-expected.
+directory. Those tests files are run relative to the base image
+filesystem and should validates that the coresponding `.chroot` file
+worked as expected.
 
 The `.test` scripts will be run after building with snapcraft or when
 doing a manual "make test" in the source tree.

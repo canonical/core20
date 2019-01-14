@@ -8,8 +8,7 @@
 
 set -e
 
-# no dpkg in the image so we can't use `dpkg --print-architecture` here
-if [ ! -d "lib/x86_64-linux-gnu" ]; then
+if [ "$(dpkg --print-architecture)" != "amd64" ]; then
     echo "only testing on amd64 for now"
     exit 0
 fi

@@ -1,5 +1,6 @@
 DPKG_ARCH := $(shell dpkg --print-architecture)
 BASE := bionic-base-$(DPKG_ARCH).tar.gz
+# dir that contans the filesystem that must be checked
 TESTDIR ?= "prime/"
 
 .PHONY: all
@@ -51,17 +52,11 @@ test:
 		echo "no $(TESTDIR) found, please build the tree first "; \
 		exit 1; \
 	fi
-	if [ $$(id -u) -eq 0 ]; then \
-		set -ex; for f in ./hook-tests/[0-9]*.test; do \
-			/bin/cp -a $$f $(TESTDIR)/tmp && \
-			if ! chroot $(TESTDIR) /tmp/$$(basename $$f); then \
+	set -ex; for f in $$(pwd)/hook-tests/[0-9]*.test; do \
+			if !(cd $(TESTDIR) && $$f); then \
 				exit 1; \
-			fi && \
-			rm -f $(TESTDIR)/tmp/$$(basename $$f); \
+			fi; \
 	    	done; \
-	else \
-		echo "Must be root to run the tests"; \
-	fi
 
 # Display a report of files that are (still) present in /etc
 .PHONY: etc-report
