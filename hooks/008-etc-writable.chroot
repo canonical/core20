@@ -10,7 +10,7 @@ for f in timezone localtime hostname; do
         mv /etc/$f /etc/writable/$f
     fi
     echo "I: Linking /etc/$f to /etc/writable/"
-    ln -s /etc/writable/$f /etc/$f
+    ln -s writable/$f /etc/$f
 done
 
 # create systemd override dirs

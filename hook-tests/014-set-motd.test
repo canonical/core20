@@ -1,0 +1,9 @@
+#!/bin/sh
+
+set -e
+
+grep -q "This Ubuntu Core 18 machine is a tiny" etc/motd
+
+test ! -e etc/update-motd.d/10-help-text
+test ! -e lib/systemd/system/motd-news.service
+test ! -e lib/systemd/system/motd-news.timer
