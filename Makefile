@@ -51,7 +51,7 @@ test:
 		echo "no $(TESTDIR) found, please build the tree first "; \
 		exit 1; \
 	fi
-	set -ex; for f in ./hooks/[0-9]*.test; do \
+	set -ex; for f in ./hook-tests/[0-9]*.test; do \
 		/bin/cp -a $$f $(TESTDIR)/tmp && \
 		if ! chroot $(TESTDIR) /tmp/$$(basename $$f); then \
                     exit 1; \
