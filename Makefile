@@ -1,5 +1,7 @@
 DPKG_ARCH := $(shell dpkg --print-architecture)
 BASE := bionic-base-$(DPKG_ARCH).tar.gz
+# dir that contans the filesystem that must be checked
+TESTDIR ?= "prime/"
 
 .PHONY: all
 all: check
@@ -8,7 +10,7 @@ all: check
 .PHONY: install
 install:
 	# install base
-	if [ -z "$(DESTDIR)" ]; then \
+	set -ex; if [ -z "$(DESTDIR)" ]; then \
 		echo "no DESTDIR set"; \
 		exit 1; \
 	fi
@@ -39,16 +41,22 @@ install:
 
 .PHONY: check
 check:
-	# exclude "useless cat" from checks, while useless also
-	# some things more readable
+	# exclude "useless cat" from checks, while useless they also make
+	# some code more readable
 	shellcheck -e SC2002 hooks/*
 
 .PHONY: test
 test:
-	# run crude abi checks
-	set -ex; for f in ./tests/abi/*.sh; do \
-		$$f; \
-	done;
+	# run tests - each hook should have a matching ".test" file
+	set -ex; if [ ! -d $(TESTDIR) ]; then \
+		echo "no $(TESTDIR) found, please build the tree first "; \
+		exit 1; \
+	fi
+	set -ex; for f in $$(pwd)/hook-tests/[0-9]*.test; do \
+			if !(cd $(TESTDIR) && $$f); then \
+				exit 1; \
+			fi; \
+	    	done; \
 
 # Display a report of files that are (still) present in /etc
 .PHONY: etc-report
