@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -x
 #
 # Ideally we would test here against an ABI database and ensure nothing
 # is removed/changed in a way to break the core. As a simpler approximation
@@ -15,6 +15,9 @@ fi
 
 # We need to set a common locale as this affects sorting.
 export LANG=C.UTF-8
+
+SORTED=$(tail -n +6 usr/share/snappy/dpkg.list|awk '{print $2}'|sort)
+echo $SORTED
 
 DIFF=$(comm -1 -3 \
          <(tail -n +6 usr/share/snappy/dpkg.list|awk '{print $2}'|sort) \
