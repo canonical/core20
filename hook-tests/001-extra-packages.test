@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -x
 #
 # Ideally we would test here against an ABI database and ensure nothing
 # is removed/changed in a way to break the core. As a simpler approximation
@@ -13,9 +13,12 @@ if [ "$(dpkg --print-architecture)" != "amd64" ]; then
     exit 0
 fi
 
+# We need to set a common locale as this affects sorting.
+export LANG=C.UTF-8
+
 DIFF=$(comm -1 -3 \
          <(tail -n +6 usr/share/snappy/dpkg.list|awk '{print $2}'|sort) \
-         <(cat <<EOF
+         <(sort <<EOF
 adduser
 apt
 base-files
@@ -44,14 +47,14 @@ libapparmor1:amd64
 libapt-pkg5.0:amd64
 libargon2-0:amd64
 libattr1:amd64
-libaudit1:amd64
 libaudit-common
+libaudit1:amd64
 libblkid1:amd64
 libbz2-1.0:amd64
-libc6:amd64
-libcap2:amd64
-libcap-ng0:amd64
 libc-bin
+libc6:amd64
+libcap-ng0:amd64
+libcap2:amd64
 libcom-err2:amd64
 libcryptsetup12:amd64
 libdb5.3:amd64
@@ -79,16 +82,16 @@ libncursesw5:amd64
 libnettle6:amd64
 libnss-extrausers
 libp11-kit0:amd64
-libpam0g:amd64
-libpam-modules:amd64
 libpam-modules-bin
+libpam-modules:amd64
 libpam-runtime
+libpam0g:amd64
 libpcre3:amd64
 libprocps6:amd64
 libseccomp2:amd64
 libselinux1:amd64
-libsemanage1:amd64
 libsemanage-common
+libsemanage1:amd64
 libsepol1:amd64
 libsmartcols1:amd64
 libss2:amd64
