@@ -35,3 +35,8 @@ mkdir -p /var/lib/cloud
 
 echo "ensure snapctl is available"
 ln -s ../lib/snapd/snapctl /usr/bin/snapctl
+
+# FIXME: this can go once we support non /home dirs directly
+echo "creating jenkins compat home"
+mkdir -p /var/lib/jenkins
+
