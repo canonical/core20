@@ -4,6 +4,14 @@ set -eux
 
 export DEBIAN_FRONTEND=noninteractive
 
+# TODO: work with foundation to not have PROPOSED=1 when building the
+#       bionic-base tarfiles. Right now we still get some packages from
+#       proposed presumably if they are part of the initial debootstrap.
+#
+# ensure we don't use proposed for new installs
+rm -f /etc/apt/sources.list.d/proposed.list
+
+
 # ensure we have /proc or systemd will fail
 mount -t proc proc /proc
 trap 'umount /proc' EXIT
