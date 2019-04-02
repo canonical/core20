@@ -3,7 +3,6 @@
 # the important "void" directory, along with the special permissions it
 # carries.
 echo "I: Creating snapd skeleton directory structure"
-install -m 755 -d var/lib/snapd/apparmor
 install -m 755 -d var/cache/snapd
 install -m 755 -d var/lib/snapd/apparmor/profiles
 install -m 755 -d var/lib/snapd/apparmor/snap-confine
