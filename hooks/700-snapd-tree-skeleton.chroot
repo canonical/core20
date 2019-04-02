@@ -5,6 +5,7 @@
 echo "I: Creating snapd skeleton directory structure"
 install -m 111 -d var/lib/snapd/void
 install -m 755 -d var/lib/snapd/apparmor
+install -m 755 -d var/cache/snapd
 install -m 755 -d var/lib/snapd/apparmor/profiles
 install -m 755 -d var/lib/snapd/apparmor/snap-confine
 install -m 755 -d var/lib/snapd/assertions
