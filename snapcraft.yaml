@@ -1,7 +1,7 @@
 name: core18
 version: 18
 version-script: |
-  echo "$(date +%Y%M%d)"
+  echo "$(/bin/date +%Y%M%d)"
 summary: Runtime environment based on Ubuntu 18.04
 description: |
   The base snap based on the Ubuntu 18.04 release.
