@@ -8,13 +8,6 @@
 
 set -e
 
-output="$(find /etc/apt/sources.list.d/ -type f -printf "%f\n")"
-if [ "$output" != "ubuntu-image.list" ];then
-    echo "Extra sources.list.d components found: "
-    echo "$output"
-    exit 1
-fi
-
 if [ "$(dpkg --print-architecture)" != "amd64" ]; then
     echo "only testing on amd64 for now"
     exit 0
