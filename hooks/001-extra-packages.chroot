@@ -13,11 +13,8 @@ rm -f /etc/apt/sources.list.d/proposed.list
 
 
 # ensure we have /proc or systemd will fail
-# we also need /dev/random and /dev/urandom for gpg not to bail
-trap 'umount /proc; rm -f /dev/random; rm -f /dev/urandom' EXIT
 mount -t proc proc /proc
-mknod /dev/random c 1 8
-mknod /dev/urandom c 1 9
+trap 'umount /proc' EXIT
 
 # systemd postinst needs this
 mkdir -p /var/log/journal

@@ -22,6 +22,13 @@ install:
 	tar -x -f ../$(BASE) -C $(DESTDIR)
 	# ensure resolving works inside the chroot
 	cat /etc/resolv.conf > $(DESTDIR)/etc/resolv.conf
+	# since recently we're also missing some /dev files that might be
+	# useful during build - make sure they're there
+	[ -e $(DESTDIR)/dev/null ] || mknod -m 666 $(DESTDIR)/dev/null c 1 3
+	[ -e $(DESTDIR)/dev/zero ] || mknod -m 666 $(DESTDIR)/dev/zero c 1 5
+	[ -e $(DESTDIR)/dev/random ] || mknod -m 666 $(DESTDIR)/dev/random c 1 8
+	[ -e $(DESTDIR)/dev/urandom ] || \
+		mknod -m 666 $(DESTDIR)/dev/urandom c 1 9
 	# copy static files verbatim
 	/bin/cp -a static/* $(DESTDIR)
 	# customize
