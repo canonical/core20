@@ -24,17 +24,3 @@ worked as expected.
 The `.test` scripts will be run after building with snapcraft or when
 doing a manual "make test" in the source tree.
 
-
-# Testing locally
-
-Once built you can boot it for testing inside qemu and spread. You will need
-additional tool (see tests/lib/README.md for details). In order to prepare an
-image for either exploratory manual tests or for spread tests run this command:
-
-```
-$ make update-image
-```
-
-With this available you can either run: `spread -debug -v` or `make -C
-tests/lib just-boot`, depending on what you want to do. The interactive (just
-boot) test should allow you to move to VT7 where a root shell awaits.

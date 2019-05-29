@@ -5,6 +5,6 @@
 exit 0
 
 if grep -v '^#' </etc/system-image/writable-paths | grep synced; then
-    echo "Using 'synced' in /etc/system-image/writable-paths is not allowed in core18"
+    echo "Using 'synced' in /etc/system-image/writable-paths is not allowed in core20"
     exit 1
 fi

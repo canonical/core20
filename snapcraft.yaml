@@ -1,10 +1,12 @@
-name: core18
-version: 18
-summary: Runtime environment based on Ubuntu 18.04
+name: core20
+version: 20
+summary: Runtime environment based on Ubuntu 20.04
 description: |
-  The base snap based on the Ubuntu 18.04 release.
+  The base snap based on the Ubuntu 20.04 release.
 confinement: strict
 type: base
+# TODO: remove this once we approach 20.04
+grade: devel
 
 parts:
   boostrap:
@@ -13,7 +15,7 @@ parts:
     build-packages:
       - shellcheck
       - wget
-    # XXX: Dirty hacks to enable building core18 on non-bionic systems.
+    # XXX: Dirty hacks to enable building core20 on non-bionic systems.
     # Without these overrides both the PATH and LD_LIBRARY_PATH contain paths
     # in the part's install directory which binaries can be incompatible with
     # the ones running on our system.  We don't need those while running stage

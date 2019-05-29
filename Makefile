@@ -1,4 +1,5 @@
 DPKG_ARCH := $(shell dpkg --print-architecture)
+# FIXME: bionic -> "funny" (once we have a name for 20.04)
 BASE := bionic-base-$(DPKG_ARCH).tar.gz
 # dir that contans the filesystem that must be checked
 TESTDIR ?= "prime/"
@@ -41,9 +42,9 @@ install:
 	done;
 
 	# only generate manifest file for lp build
-	if [ -e /build/core18 ]; then \
+	if [ -e /build/core20 ]; then \
 		echo $$f; \
-		/bin/cp $(DESTDIR)/usr/share/snappy/dpkg.list /build/core18/core18-$$(date +%Y%m%d%H%M)_$(DPKG_ARCH).manifest; \
+		/bin/cp $(DESTDIR)/usr/share/snappy/dpkg.list /build/core20/core20-$$(date +%Y%m%d%H%M)_$(DPKG_ARCH).manifest; \
 	fi;
 
 .PHONY: check
@@ -71,8 +72,3 @@ etc-report:
 	cd stage && find etc/
 	echo "Amount of cruft in /etc left: `find stage/etc/ | wc -l`"
 
-.PHONY: update-image
-update-image:
-	sudo snapcraft clean
-	sudo snapcraft
-	sudo $(MAKE) -C tests/lib just-update

@@ -1,7 +1,0 @@
-core18/
-core-snap/
-core_*.assert
-initrd
-kernel
-kernel-snap/
-pc-kernel_*.assert
