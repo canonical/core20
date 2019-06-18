@@ -1,6 +1,15 @@
 DPKG_ARCH := $(shell dpkg --print-architecture)
-# FIXME: bionic -> "funny" (once we have a name for 20.04)
-BASE := bionic-base-$(DPKG_ARCH).tar.gz
+LTS=$(shell ubuntu-distro-info --lts)
+DEVEL=$(shell ubuntu-distro-info --devel)
+
+ifeq ($(LTS),bionic)
+BASE := $(DEVEL)-base-$(DPKG_ARCH).tar.gz
+URL := http://cdimage.ubuntu.com/ubuntu-base/daily/current/$(BASE)
+else
+BASE := $(LTS)-base-$(DPKG_ARCH).tar.gz
+URL := http://cdimage.ubuntu.com/ubuntu-base/$(LTS)/daily/current/$(BASE)
+endif
+
 # dir that contans the filesystem that must be checked
 TESTDIR ?= "prime/"
 
@@ -16,7 +25,7 @@ install:
 		exit 1; \
 	fi
 	if [ ! -f ../$(BASE) ]; then \
-		wget -P ../ http://cdimage.ubuntu.com/ubuntu-base/bionic/daily/current/$(BASE); \
+		wget -P ../ $(URL); \
 	fi
 	rm -rf $(DESTDIR)
 	mkdir -p $(DESTDIR)

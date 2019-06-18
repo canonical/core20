@@ -15,6 +15,7 @@ parts:
     build-packages:
       - shellcheck
       - wget
+      - distro-info
     # XXX: Dirty hacks to enable building core20 on non-bionic systems.
     # Without these overrides both the PATH and LD_LIBRARY_PATH contain paths
     # in the part's install directory which binaries can be incompatible with
