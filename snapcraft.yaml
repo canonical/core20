@@ -10,7 +10,7 @@ build-base: core18
 grade: devel
 
 parts:
-  boostrap:
+  bootstrap:
     plugin: make
     source: .
     build-packages:
