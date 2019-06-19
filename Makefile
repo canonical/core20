@@ -29,7 +29,7 @@ install:
 	fi
 	rm -rf $(DESTDIR)
 	mkdir -p $(DESTDIR)
-	tar -x -f ../$(BASE) -C $(DESTDIR)
+	tar -x --xattrs-include=* -f ../$(BASE) -C $(DESTDIR)
 	# ensure resolving works inside the chroot
 	cat /etc/resolv.conf > $(DESTDIR)/etc/resolv.conf
 	# since recently we're also missing some /dev files that might be
