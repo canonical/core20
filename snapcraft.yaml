@@ -1,10 +1,11 @@
 name: core20
-version: 20
+version: "20"
 summary: Runtime environment based on Ubuntu 20.04
 description: |
   The base snap based on the Ubuntu 20.04 release.
 confinement: strict
 type: base
+build-base: core18
 # TODO: remove this once we approach 20.04
 grade: devel
 
