@@ -1,6 +1,6 @@
-# Core18 snap for snapd
+# Core20 snap for snapd
 
-This is a base snap for snapd that is based on Ubuntu 18.04
+This is a base snap for snapd that is based on Ubuntu 20.04
 
 # Building locally
 
