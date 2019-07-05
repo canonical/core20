@@ -56,7 +56,9 @@ apt install --no-install-recommends -y \
     console-conf \
     rfkill \
     wpasupplicant \
-    cloud-init
+    cloud-init \
+    dmsetup \
+    cryptsetup
 
 # since we installed what we wanted, let's get rid of the extra gnupg and all
 # its dependencies
