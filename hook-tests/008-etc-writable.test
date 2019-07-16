@@ -4,7 +4,7 @@ set -e
 
 echo "Ensure links worked"
 test -e etc/timezone
-test -e etc/localtime
+chroot . test -e etc/localtime
 test -e etc/hostname
 
 echo "Ensure writable dirs are available"
