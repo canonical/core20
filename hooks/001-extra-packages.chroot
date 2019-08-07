@@ -19,6 +19,12 @@ trap 'umount /proc' EXIT
 # systemd postinst needs this
 mkdir -p /var/log/journal
 
+# enable ftpmaster.internal for faster builds
+cat >/etc/apt/sources.list.d/ftmpaster.list <<EOF
+deb http://ftpmaster.internal/ubuntu/ eoan main restricted universe
+deb http://ftpmaster.internal/ubuntu/ eoan-updates main restricted universe
+EOF
+
 # enable the foundations ubuntu-image PPA
 echo "deb http://ppa.launchpad.net/canonical-foundations/ubuntu-image/ubuntu eoan main" > /etc/apt/sources.list.d/ubuntu-image.list
 
