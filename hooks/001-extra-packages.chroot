@@ -19,14 +19,24 @@ trap 'umount /proc' EXIT
 # systemd postinst needs this
 mkdir -p /var/log/journal
 
-# to enable a custom PPA we need to pull in the key for which we need gnupg
-# installed first, although we probably don't need it on the end system
-apt update
-apt install --no-install-recommends -y gnupg
-
 # enable the foundations ubuntu-image PPA
-echo "deb http://ppa.launchpad.net/canonical-foundations/ubuntu-image/ubuntu bionic main" > /etc/apt/sources.list.d/ubuntu-image.list
-apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys CDE5112BD4104F975FC8A53FD4C0B668FD4C9139
+echo "deb http://ppa.launchpad.net/canonical-foundations/ubuntu-image/ubuntu eoan main" > /etc/apt/sources.list.d/ubuntu-image.list
+
+cat >/etc/apt/trusted.gpg.d/canonical-foundations-ubuntu-image.asc <<EOF
+-----BEGIN PGP PUBLIC KEY BLOCK-----
+
+xo0EUL4ncAEEAOZssKpJDMZKbmsf9lHwlKA0vN6yQ0sOIPc500waH3xTC0sVlqQc
+3pUxCIdhU+qK1mH2D51FGHDb504k0Lpb+LE56TWa/X3xrZqUQX0UD1fykEruR4W2
+CdkXXZvmNBNatE9GurR6p407X5TED+dlUK/hIKNCb5unTEilBb4WwArxABEBAAHN
+LExhdW5jaHBhZCBQUEEgZm9yIENhbm9uaWNhbCBGb3VuZGF0aW9ucyBUZWFtwrgE
+EwECACIFAlC+J3ACGwMGCwkIBwMCBhUIAgkKCwQWAgMBAh4BAheAAAoJENTAtmj9
+TJE5u/MD/2j2auOv62YUFwT7POylj7ihhZOarOSCEiQGita8II77j5AoK5O75uD+
+oQc5pdxVN2NGYD5R0PmDCPFN1Rb869YjtsPgLefEB+6Tc1GOR9hgnwuSU5lrwqdQ
+Ht/skh2wZSHtJgejt9kqIKMho1wtYz7ZTqMtN9GJK0VONbHP0Xu6
+=lWSn
+-----END PGP PUBLIC KEY BLOCK-----
+
+EOF
 
 # install some packages we need
 apt update
@@ -60,7 +70,4 @@ apt install --no-install-recommends -y \
     dmsetup \
     cryptsetup
 
-# since we installed what we wanted, let's get rid of the extra gnupg and all
-# its dependencies
-apt remove --purge -y gnupg
 apt autoremove -y
