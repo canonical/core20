@@ -1,20 +1,22 @@
 name: core20
-version: 20
+version: "20"
 summary: Runtime environment based on Ubuntu 20.04
 description: |
   The base snap based on the Ubuntu 20.04 release.
 confinement: strict
 type: base
+build-base: core18
 # TODO: remove this once we approach 20.04
 grade: devel
 
 parts:
-  boostrap:
+  bootstrap:
     plugin: make
     source: .
     build-packages:
       - shellcheck
       - wget
+      - distro-info
     # XXX: Dirty hacks to enable building core20 on non-bionic systems.
     # Without these overrides both the PATH and LD_LIBRARY_PATH contain paths
     # in the part's install directory which binaries can be incompatible with
