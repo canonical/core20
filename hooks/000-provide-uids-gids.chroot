@@ -214,6 +214,7 @@ syslog:x:114:
 pkcs11:x:115:
 tss:x:116:
 input:x:107:
+render:x:117:
 EOF
 cp /etc/group /etc/group.orig # We make a copy for a later sanity-compare
 
@@ -274,5 +275,6 @@ syslog:!::
 pkcs11:!::
 tss:!::
 input:!::
+render:!::
 EOF
 cp /etc/gshadow /etc/gshadow.orig # We make a copy for a later sanity-compare
