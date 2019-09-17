@@ -1,7 +1,7 @@
 #!/bin/sh -e
 
 if [ -e lib64/ld-linux-x86-64.so.2 ]; then
-    if [ "$(readlink lib64/ld-linux-x86-64.so.2)" != "../lib/x86_64-linux-gnu/ld-2.27.so" ]; then
+    if [ "$(readlink lib64/ld-linux-x86-64.so.2)" != "../lib/x86_64-linux-gnu/ld-2.30.so" ]; then
         echo "ld-linux symlink for amd64 points to the wrong place:"
         readlink lib64/ld-linux-x86-64.so.2
         exit 1
