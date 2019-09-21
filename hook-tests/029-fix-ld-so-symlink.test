@@ -1,9 +1,39 @@
-#!/bin/sh -e
+#!/bin/sh
 
-if [ -e lib64/ld-linux-x86-64.so.2 ]; then
-    if [ "$(readlink lib64/ld-linux-x86-64.so.2)" != "../lib/x86_64-linux-gnu/ld-2.27.so" ]; then
-        echo "ld-linux symlink for amd64 points to the wrong place:"
-        readlink lib64/ld-linux-x86-64.so.2
-        exit 1
-    fi
+set -e
+
+debarch=$(dpkg --print-architecture)
+
+case $debarch in
+	amd64)
+		abi=/lib64/ld-linux-x86-64.so.2
+		;;
+	i386)
+		abi=/lib/ld-linux.so.2
+		;;
+	ppc64el)
+		abi=/lib64/ld64.so.2
+		;;
+	s390x)
+		abi=/lib/ld64.so.1
+		;;
+	armhf)
+		abi=/lib/ld-linux-armhf.so.3
+		;;
+	arm64)
+		abi=/lib/ld-linux-aarch64.so.1
+		;;
+	riscv64)
+		abi=/lib/ld-linux-riscv64-ld64d.so.1
+		;;
+	*)
+		echo unknown architecture
+		exit 1
+		;;
+esac
+
+if [ "$(readlink -e $abi)" != "$(readlink $abi)" ]; then
+	echo "ld linker $abi is not relative"
+	readlink $abi
+	exit 1
 fi

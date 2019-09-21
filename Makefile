@@ -44,7 +44,7 @@ install:
 	# customize
 	set -ex; for f in ./hooks/[0-9]*.chroot; do \
 		/bin/cp -a $$f $(DESTDIR)/tmp && \
-		if ! chroot $(DESTDIR) /tmp/$$(basename $$f); then \
+		if ! dpkg-architecture -c chroot $(DESTDIR) /tmp/$$(basename $$f); then \
                     exit 1; \
                 fi && \
 		rm -f $(DESTDIR)/tmp/$$(basename $$f); \
