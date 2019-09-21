@@ -3,14 +3,14 @@
 set -e
 
 echo "Making the /lib64/ld-linux-x86-64.so.2 symlink relative"
-if [ "$(readlink -f /lib64/ld-linux-x86-64.so.2)" = "/lib/x86_64-linux-gnu/ld-2.30.so" ]; then
+if [ "$(readlink -f /lib64/ld-linux-x86-64.so.2)" = "/lib/x86_64-linux-gnu/ld-2.27.so" ]; then
     # we must do it in one go (-f) because everything dynamically linked
-    # on the system is  broken when /lib/x86_64-linux-gnu/ld-2.30.so is
+    # on the system is  broken when /lib/x86_64-linux-gnu/ld-2.27.so is
     # missing
-    ln -f -s ../lib/x86_64-linux-gnu/ld-2.30.so /lib64/ld-linux-x86-64.so.2
+    ln -f -s ../lib/x86_64-linux-gnu/ld-2.27.so /lib64/ld-linux-x86-64.so.2
 fi
 
 echo "Making the /lib64/ld64.so.2 symlink relative"
-if [ "$(readlink -f /lib64/ld64.so.2)" = "/lib/powerpc64le-linux-gnu/ld-2.30.so" ]; then
-    ln -f -s ../lib/powerpc64le-linux-gnu/ld-2.30.so /lib64/ld64.so.2
+if [ "$(readlink -f /lib64/ld64.so.2)" = "/lib/powerpc64le-linux-gnu/ld-2.27.so" ]; then
+    ln -f -s ../lib/powerpc64le-linux-gnu/ld-2.27.so /lib64/ld64.so.2
 fi
