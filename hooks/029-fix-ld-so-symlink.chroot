@@ -2,15 +2,39 @@
 
 set -e
 
-echo "Making the /lib64/ld-linux-x86-64.so.2 symlink relative"
-if [ "$(readlink -f /lib64/ld-linux-x86-64.so.2)" = "/lib/x86_64-linux-gnu/ld-2.30.so" ]; then
-    # we must do it in one go (-f) because everything dynamically linked
-    # on the system is  broken when /lib/x86_64-linux-gnu/ld-2.30.so is
-    # missing
-    ln -f -s ../lib/x86_64-linux-gnu/ld-2.30.so /lib64/ld-linux-x86-64.so.2
-fi
+echo "Making the /lib64/ld-linux-x86-64.so.2 and similar symlinks relative"
 
-echo "Making the /lib64/ld64.so.2 symlink relative"
-if [ "$(readlink -f /lib64/ld64.so.2)" = "/lib/powerpc64le-linux-gnu/ld-2.30.so" ]; then
-    ln -f -s ../lib/powerpc64le-linux-gnu/ld-2.30.so /lib64/ld64.so.2
-fi
+# This way core mounted at /snap/core*/current/... refers to the ld
+# inside the core snap, rather tha the system one.
+
+debarch=$(dpkg --print-architecture)
+
+case $debarch in
+	amd64)
+		abi=/lib64/ld-linux-x86-64.so.2
+		;;
+	i386)
+		abi=/lib/ld-linux.so.2
+		;;
+	ppc64el)
+		abi=/lib64/ld64.so.2
+		;;
+	s390x)
+		abi=/lib/ld64.so.1
+		;;
+	armhf)
+		abi=/lib/ld-linux-armhf.so.3
+		;;
+	arm64)
+		abi=/lib/ld-linux-aarch64.so.1
+		;;
+	riscv64)
+		abi=/lib/ld-linux-riscv64-ld64d.so.1
+		;;
+	*)
+		echo unknown architecture
+		exit 1
+		;;
+esac
+
+ln -f -s ../lib/"$DEB_HOST_MULTIARCH"/ld-2.*.so $abi
