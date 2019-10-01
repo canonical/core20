@@ -68,7 +68,6 @@ libgmp10:amd64
 libgnutls30:amd64
 libgpg-error0:amd64
 libhogweed4:amd64
-libidn11:amd64
 libidn2-0:amd64
 libip4tc2:amd64
 libjson-c4:amd64
