@@ -75,6 +75,7 @@ staff:x:50:
 games:x:60:
 users:x:100:
 nogroup:x:65534:
+lxd:x:101:
 EOF
 rc=$?; [ "$rc" != "0" ] && MISMATCH=1
 
@@ -215,6 +216,7 @@ pkcs11:x:115:
 tss:x:116:
 input:x:107:
 render:x:117:
+lxd:x:118:
 EOF
 cp /etc/group /etc/group.orig # We make a copy for a later sanity-compare
 
@@ -276,5 +278,6 @@ pkcs11:!::
 tss:!::
 input:!::
 render:!::
+lxd:!::
 EOF
 cp /etc/gshadow /etc/gshadow.orig # We make a copy for a later sanity-compare
