@@ -18,11 +18,11 @@ abis="$abis /lib/ld-linux-aarch64.so.1"
 abis="$abis /lib/ld-linux-riscv64-ld64d.so.1"
 
 for abi in $abis; do
-	if [ -e "$abi" ]; then
-		target=$(readlink "$abi")
+	if [ -e ".$abi" ]; then
+		target=$(readlink ".$abi")
 		case $target in
 			/*)
-				echo "ld linker $abi is absolute"
+				echo "ld linker .$abi is absolute"
 				echo "$target"
 				exit 1
 				;;
