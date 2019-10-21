@@ -19,10 +19,13 @@ abis="$abis /lib/ld-linux-riscv64-ld64d.so.1"
 
 for abi in $abis; do
 	if [ -e "$abi" ]; then
-		if [ "$(readlink -e "$abi")" != "$(readlink "$abi")" ]; then
-			echo "ld linker $abi is not relative"
-			readlink "$abi"
-			exit 1
-		fi
+		target=$(readlink "$abi")
+		case $target in
+			/*)
+				echo "ld linker $abi is absolute"
+				echo "$target"
+				exit 1
+				;;
+		esac
 	fi
 done
