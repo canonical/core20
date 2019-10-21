@@ -2,10 +2,12 @@
 
 set -e
 
-echo "Making the /lib64/ld-linux-x86-64.so.2 and similar symlinks relative"
+echo "Making the abosolute /lib64/ld-linux-x86-64.so.2 symlinks relative"
 
 # This way core mounted at /snap/core*/current/... refers to the ld
-# inside the core snap, rather tha the system one.
+# inside the core snap, rather than the system one.
+
+# Most architectures have their abi links relative, expect for some (amd64 & ppc64el)
 
 # amd64
 abis="/lib64/ld-linux-x86-64.so.2"
@@ -24,7 +26,9 @@ abis="$abis /lib/ld-linux-riscv64-ld64d.so.1"
 
 for abi in $abis; do
 	if [ -e "$abi" ]; then
-		ln -f -s .."$(readlink "$abi")" "$abi"
+		if [ "$(readlink -f "$abi")" =  "$(readlink "$abi")" ]; then
+			ln -f -s .."$(readlink "$abi")" "$abi"
+		fi
 	fi
 done
 
