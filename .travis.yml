@@ -1,11 +1,18 @@
-language: python
 os: linux
+dist: bionic
+language: minimal
+arch:
+  - amd64
+  - arm64
+  - s390x
+  - ppc64le
 dist: xenial
 sudo: enabled
 script:
   - sudo apt-get update
-  - sudo apt-get install --yes --no-install-recommends snapd
+  - sudo apt-get install --yes --no-install-recommends snapd distro-info
   - sudo snap wait system seed.loaded
-  - sudo snap install --classic snapcraft
-  - sudo snapcraft --destructive-mode
+  - sudo snap install --classic --channel edge snapcraft
+  - sudo snap install --classic --channel edge snapcraft
+  - sudo snapcraft --debug --destructive-mode
   - make test
