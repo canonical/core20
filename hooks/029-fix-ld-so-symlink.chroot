@@ -26,9 +26,12 @@ abis="$abis /lib/ld-linux-riscv64-ld64d.so.1"
 
 for abi in $abis; do
 	if [ -e "$abi" ]; then
-		if [ "$(readlink -f "$abi")" =  "$(readlink "$abi")" ]; then
-			ln -f -s .."$(readlink "$abi")" "$abi"
-		fi
+		target=$(readlink "$abi")
+		case $target in
+			/*)
+				ln -f -s .."$(readlink "$abi")" "$abi"
+				;;
+		esac
 	fi
 done
 
