@@ -67,7 +67,7 @@ libgcrypt20:amd64
 libgmp10:amd64
 libgnutls30:amd64
 libgpg-error0:amd64
-libhogweed4:amd64
+libhogweed5:amd64
 libidn2-0:amd64
 libip4tc2:amd64
 libjson-c4:amd64
@@ -77,7 +77,7 @@ liblzma5:amd64
 libmount1:amd64
 libncurses6:amd64
 libncursesw6:amd64
-libnettle6:amd64
+libnettle7:amd64
 libnss-extrausers
 libp11-kit0:amd64
 libpam-modules-bin
