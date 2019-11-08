@@ -6,8 +6,6 @@ description: |
 confinement: strict
 type: base
 build-base: core18
-# TODO: remove this once we approach 20.04
-grade: devel
 
 parts:
   bootstrap:
