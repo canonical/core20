@@ -5,7 +5,6 @@ description: |
   The base snap based on the Ubuntu 20.04 release.
 confinement: strict
 type: base
-build-base: core18
 
 parts:
   bootstrap:
