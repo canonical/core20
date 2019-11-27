@@ -166,6 +166,9 @@ main()
 
 	# IMPORTANT: ensure we synced everything back to disk
 	sync
+
+    # Provide seed
+    mount -o bind /run/mnt/ubuntu-seed /var/lib/snapd/seed
 }
 
 rootmnt="$1"
