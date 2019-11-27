@@ -18,6 +18,7 @@ install -m 755 -d var/lib/snapd/lib/glvnd
 install -m 755 -d var/lib/snapd/lib/vulkan
 install -m 755 -d var/lib/snapd/mount
 install -m 755 -d var/lib/snapd/seccomp/bpf
+install -m 755 -d var/lib/snapd/seed
 install -m 755 -d var/lib/snapd/sequence
 install -m 755 -d var/lib/snapd/snaps
 install -m 111 -d var/lib/snapd/void
