@@ -7,7 +7,8 @@ set -eux
 
 # run_on_unseeded will mount/run snapd on an unseeded system
 run_on_unseeded() {
-    SEED_SNAPD="$(find /var/lib/snapd/seed/snaps/ -name "snapd_*.snap")"
+    # XXX: read the snapd snap to bootstrap from via /var/lib/snapd/modeenv
+    SEED_SNAPD="$(find /var/lib/snapd/seed/ -name "snapd_*.snap")"
     if [ ! -e "$SEED_SNAPD" ]; then
         echo "Cannot find a seeded snapd"
         ls /var/lib/snapd/seed/snaps
