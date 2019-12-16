@@ -45,11 +45,18 @@ run_on_unseeded() {
 
 # Unseeded systems need to be seeded first, this will start snapd
 # and snapd will restart itself after the seeding.
-if [ ! -e /var/lib/snapd/state.json ]; then
+set +e
+# systemctl status returns exit code 4 for missing services, and 3 for disabled
+# services
+systemctl status snapd.service
+snapdExists=$?
+if [ ! -e /var/lib/snapd/state.json ] || [ $snapdExists = 4 ] ; then
+    set -e
     if ! run_on_unseeded; then
         echo "cannot run snapd from the seed"
         exit 1
     fi
     exit 0
 fi
+set -e
 
