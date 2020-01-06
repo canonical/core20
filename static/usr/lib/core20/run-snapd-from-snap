@@ -7,27 +7,32 @@ set -eux
 
 # run_on_unseeded will mount/run snapd on an unseeded system
 run_on_unseeded() {
-    # XXX: read the snapd snap to bootstrap from via /var/lib/snapd/modeenv
-    SEED_SNAPD="$(find /var/lib/snapd/seed/ -name "snapd_*.snap")"
-    if [ ! -e "$SEED_SNAPD" ]; then
-        echo "Cannot find a seeded snapd"
-        ls /var/lib/snapd/seed/snaps
-        exit 1
+    SNAPD_BASE_DIR="/run/mnt/snapd"
+    # XXX: remove "if/fi" block once
+    #      https://github.com/snapcore/snapd/pull/7957 is merged
+    if [ ! -x "$SNAPD_BASE_DIR"/usr/lib/snapd/snapd ]; then
+        SEED_SNAPD="$(find /var/lib/snapd/seed/ -name "snapd_*.snap")"
+        if [ ! -e "$SEED_SNAPD" ]; then
+            echo "Cannot find a seeded snapd"
+            ls /var/lib/snapd/seed/snaps
+            exit 1
+        fi
+        # mount snapd snap and run snapd directly, it will do
+        # the seeding and as part of this will restart snapd
+        # which will give it the right systemd unit.
+        TMPD=$(mktemp -d)
+        trap "umount $TMPD; rmdir $TMPD" EXIT
+        mount "$SEED_SNAPD" "$TMPD"
+        # set base dir
+        SNAPD_BASE_DIR="$TMPD"
     fi
-
-    # mount snapd snap and run snapd directly, it will do
-    # the seeding and as part of this will restart snapd
-    # which will give it the right systemd unit.
-    TMPD=$(mktemp -d)
-    trap "umount $TMPD; rmdir $TMPD" EXIT
-    mount "$SEED_SNAPD" "$TMPD"
 
     # snapd will write all its needed snapd.{service,socket}
     # units and restart once it seeded the snapd snap. We create
     # a systemd socket unit so that systemd own the socket, otherwise
     # the socket file would be removed by snapd on exit and the snapd.seeded
     # service will fail because it has nothing to talk to anymore.
-    systemd-run --unit=snapd-seeding --service-type=notify --socket-property ListenStream=/run/snapd.socket --socket-property ListenStream=/run/snapd-snap.socket "$TMPD"/usr/lib/snapd/snapd
+    systemd-run --unit=snapd-seeding --service-type=notify --socket-property ListenStream=/run/snapd.socket --socket-property ListenStream=/run/snapd-snap.socket "$SNAPD_BASE_DIR"/usr/lib/snapd/snapd
     # we need to start the snapd service from above explicitly, systemd-run
     # only enables the socket but does not start the service.
     systemctl start --wait snapd-seeding.service
