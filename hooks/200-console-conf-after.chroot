@@ -4,10 +4,10 @@ set -e
 
 # Ensure that firstboot is complete so that the "snap" command is available
 # and useful.
-echo "Fix console-conf systemd unit to run after core20 firstboot"
+echo "Fix console-conf systemd unit to run after core firstboot"
 for f in console-conf@.service serial-console-conf@.service; do
     p="/lib/systemd/system/$f"
-    sed -i 's/After=rc-local.service/After=rc-local.service core20.start-snapd.service/' "$p"
+    sed -i 's/After=rc-local.service/After=rc-local.service core.start-snapd.service/' "$p"
     # ensure sed worked
-    grep "^After=rc-local.service core20.start-snapd.service" "$p"
+    grep "^After=rc-local.service core.start-snapd.service" "$p"
 done

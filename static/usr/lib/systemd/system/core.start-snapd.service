@@ -3,7 +3,7 @@ Description=Start the snapd services from the snapd snap
 RequiresMountsFor=/run
 
 [Service]
-ExecStart=/usr/lib/core20/run-snapd-from-snap start
+ExecStart=/usr/lib/core/run-snapd-from-snap start
 Type=oneshot
 RemainAfterExit=true
 
