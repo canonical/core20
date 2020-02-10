@@ -64,6 +64,7 @@ apt install --no-install-recommends -y \
     less \
     dbus \
     vim-tiny \
+    bash-completion \
     netcat-openbsd \
     iputils-ping \
     apparmor \
