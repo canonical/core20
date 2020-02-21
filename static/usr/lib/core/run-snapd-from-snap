@@ -8,24 +8,6 @@ set -eux
 # run_on_unseeded will mount/run snapd on an unseeded system
 run_on_unseeded() {
     SNAPD_BASE_DIR="/run/mnt/snapd"
-    # XXX: remove "if/fi" block once
-    #      https://github.com/snapcore/snapd/pull/7957 is merged
-    if [ ! -x "$SNAPD_BASE_DIR"/usr/lib/snapd/snapd ]; then
-        SEED_SNAPD="$(find /var/lib/snapd/seed/ -name "snapd_*.snap")"
-        if [ ! -e "$SEED_SNAPD" ]; then
-            echo "Cannot find a seeded snapd"
-            ls /var/lib/snapd/seed/snaps
-            exit 1
-        fi
-        # mount snapd snap and run snapd directly, it will do
-        # the seeding and as part of this will restart snapd
-        # which will give it the right systemd unit.
-        TMPD=$(mktemp -d)
-        trap "umount $TMPD; rmdir $TMPD" EXIT
-        mount "$SEED_SNAPD" "$TMPD"
-        # set base dir
-        SNAPD_BASE_DIR="$TMPD"
-    fi
 
     # snapd will write all its needed snapd.{service,socket}
     # units and restart once it seeded the snapd snap. We create
