@@ -86,7 +86,7 @@ libpam-modules:amd64
 libpam-runtime
 libpam0g:amd64
 libpcre3:amd64
-libprocps7:amd64
+libprocps8:amd64
 libseccomp2:amd64
 libselinux1:amd64
 libsemanage-common
