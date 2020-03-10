@@ -37,7 +37,7 @@ dpkg
 e2fsprogs
 fdisk
 findutils
-gcc-9-base:amd64
+gcc-10-base:amd64
 gpgv
 grep
 gzip
