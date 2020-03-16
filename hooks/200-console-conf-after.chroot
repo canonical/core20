@@ -2,12 +2,12 @@
 
 set -e
 
-# Ensure that firstboot is complete so that the "snap" command is available
-# and useful.
-echo "Fix console-conf systemd unit to run after core firstboot"
+# Ensure that console-conf is started after firstboot is complete so that the
+# "snap" command is available and useful, and after recovery chooser trigger
+# runs.
+echo "Ensure that console-conf ordering during startup is correct"
 for f in console-conf@.service serial-console-conf@.service; do
     p="/lib/systemd/system/$f"
-    sed -i 's/After=rc-local.service/After=rc-local.service core.start-snapd.service/' "$p"
-    # ensure sed worked
-    grep "^After=rc-local.service core.start-snapd.service" "$p"
+    grep -E "^After=.*\s?core.start-snapd.service\s?.*" "$p"
+    grep -E "^After=.*\s?snapd.recovery-chooser-trigger.service\s?.*" "$p"
 done
