@@ -157,7 +157,7 @@ main()
 		echo "# (See writable-paths(5) for details)" >> "$fstab"
 		echo "/dev/root / rootfs defaults,ro 0 0" >> "$fstab"
 		handle_writable_paths "$writable_paths" "$fstab"
-		echo "/run/mnt/ubuntu-seed /var/lib/snapd/seed none bind 0 0" >> "$fstab"
+		echo "/run/mnt/ubuntu-seed /var/lib/snapd/seed none bind,ro 0 0" >> "$fstab"
 	fi
 
 	# IMPORTANT: ensure we synced everything back to disk
