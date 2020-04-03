@@ -65,3 +65,4 @@
 /etc/default/swapfile                   auto                    persistent  transition  none
 # allow system wide proxy setting
 /etc/environment                        auto                    persistent  transition  none
+/etc/machine-id                         auto                    persistent  transition  none
