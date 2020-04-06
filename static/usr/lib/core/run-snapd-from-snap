@@ -27,7 +27,7 @@ run_on_unseeded() {
     # seeding is done to ensure that console-conf is only started
     # after this script has finished.
     # (redirect stdin because that is what snap checks for pty)
-    /usr/bin/snap watch --last=seed < /dev/console | tee -a /dev/console
+    systemd-run --wait -p StandardOutput=journal+console -p StandardError=journal+console /usr/bin/snap watch --last=seed
 }
 
 # Unseeded systems need to be seeded first, this will start snapd
