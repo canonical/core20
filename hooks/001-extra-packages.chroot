@@ -71,6 +71,7 @@ apt install --no-install-recommends -y \
     apparmor \
     netplan.io \
     ca-certificates \
+    dosfstools \
     squashfs-tools \
     console-conf \
     rfkill \
