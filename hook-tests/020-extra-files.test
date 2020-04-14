@@ -2,3 +2,5 @@
 
 test -d /snap
 test -d /var/snap
+
+test -d /host
