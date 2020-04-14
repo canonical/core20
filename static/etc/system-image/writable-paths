@@ -25,8 +25,8 @@
 /etc/writable                           auto                    persistent  none        none
 # apparmor
 /etc/apparmor.d/cache                   auto                    persistent  none        none
-# dbus system bus
-/etc/dbus-1/system.d                    auto                    persistent  transition  none
+# dbus
+/etc/dbus-1                             auto                    persistent  transition  none
 /etc/hosts                              auto                    persistent  transition  none
 /etc/iproute2                           auto                    persistent  transition  none
 /etc/modprobe.d                         auto                    persistent  transition  none
