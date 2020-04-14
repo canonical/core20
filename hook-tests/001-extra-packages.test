@@ -33,6 +33,7 @@ debconf
 debianutils
 diffutils
 distro-info-data
+dosfstools
 dpkg
 e2fsprogs
 fdisk
