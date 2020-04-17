@@ -1,6 +1,11 @@
 language: minimal
 os: linux
 dist: bionic
+arch:
+  - amd64
+  - arm64
+  - s390x
+  - ppc64le
 sudo: enabled
 script:
   - sudo apt-get update
