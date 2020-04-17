@@ -1,6 +1,6 @@
-language: python
+language: minimal
 os: linux
-dist: xenial
+dist: bionic
 sudo: enabled
 script:
   - sudo apt-get update
