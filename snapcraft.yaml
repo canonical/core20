@@ -15,25 +15,13 @@ parts:
       - shellcheck
       - wget
       - distro-info
-    # XXX: Dirty hacks to enable building core20 on non-focal systems.
-    # Without these overrides both the PATH and LD_LIBRARY_PATH contain paths
-    # in the part's install directory which binaries can be incompatible with
-    # the ones running on our system.  We don't need those while running stage
-    # and prime anyway.
-    override-stage: |
-      unset LD_LIBRARY_PATH;
-      export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin"
-      # ensure snapcraftctl is found, see
-      # https://github.com/snapcore/snapcraft/pull/2251
-      export PATH="$PATH:/snap/snapcraft/current/bin/scriptlet-bin"
-      snapcraftctl stage
+    build-envrionment:
+      - PATH: "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin:/snap/snapcraft/current/bin/scriptlet-bin"
+      - LD_LIBRARY_PATH: ""
+    override-build: |
+      env
+      snapcraftctl build
+      make test
     override-prime: |
-      unset LD_LIBRARY_PATH;
-      export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin"
-      # ensure snapcraftctl is found, see
-      # https://github.com/snapcore/snapcraft/pull/2251
-      export PATH="$PATH:/snap/snapcraft/current/bin/scriptlet-bin"
-      snapcraftctl prime
-      # ensure build-in tests are run
-      echo cd ${SNAPCRAFT_PART_SRC} AND make test TESTDIR=${SNAPCRAFT_PRIME}
-      cd ${SNAPCRAFT_PART_SRC} && make test TESTDIR=${SNAPCRAFT_PRIME}
+      env
+
