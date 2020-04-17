@@ -12,7 +12,7 @@ script:
   - sudo apt-get update
   - sudo apt-get install --yes --no-install-recommends snapd distro-info
   - sudo snap wait system seed.loaded
-  - sudo snap install --classic --channel edge snapcraft
-  - sudo snap install --classic --channel edge snapcraft
+  - sudo snap install --classic --channel stable snapcraft || true
+  - sudo snap install --classic --channel stable snapcraft
   - sudo snapcraft --debug --destructive-mode
   - make test
