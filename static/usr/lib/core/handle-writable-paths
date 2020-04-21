@@ -161,7 +161,7 @@ handle_writable_defaults()
             [ ! -e "$fileordir" ] && continue
 
             # copy
-            cp -a $fileordir "$dstpath"
+            cp -a "$fileordir" "$dstpath"
         done
         touch "$srcpath/.done"
 }
