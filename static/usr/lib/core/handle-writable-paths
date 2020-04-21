@@ -156,7 +156,13 @@ handle_writable_defaults()
         fi
 
         dstpath="${rootmnt}/writable/system-data"
-        cp -a "$srcpath/*" "$dstpath"
+        for fileordir in "$srcpath"/* ; do
+            # skip empty $srcpath/
+            [ ! -e "$fileordir" ] && continue
+
+            # copy
+            cp -a $fileordir "$dstpath"
+        done
         touch "$srcpath/.done"
 }
 
@@ -180,6 +186,11 @@ main()
 	# IMPORTANT: ensure we synced everything back to disk
 	sync
 }
+
+# for unit test
+if [ "$TEST_IMPORT" = "1" ]; then
+    return
+fi
 
 rootmnt="$1"
 if [ -z "$rootmnt" ]; then
