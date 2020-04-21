@@ -1,0 +1,12 @@
+#!/bin/sh
+
+set -eux
+
+echo "use an explicit init script executing systemd with multi-user.target"
+rm sbin/init # is normally a symlink to systemd
+cat << EOF >> sbin/init
+#!/bin/sh
+#shellcheck disable=2093
+exec /lib/systemd/systemd --unit=multi-user.target
+EOF
+
