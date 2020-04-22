@@ -74,6 +74,9 @@ test:
 				exit 1; \
 			fi; \
 	    	done; \
+	set -ex; for f in ./tests/final/*.sh; do \
+		sh -e $$f; \
+	done;
 
 # Display a report of files that are (still) present in /etc
 .PHONY: etc-report

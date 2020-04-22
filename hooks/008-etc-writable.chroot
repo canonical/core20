@@ -8,6 +8,8 @@ for f in timezone localtime hostname; do
     if [ -e /etc/$f ]; then
         echo "I: Moving /etc/$f to /etc/writable/"
         mv /etc/$f /etc/writable/$f
+   else
+        touch /etc/writable/$f
     fi
     echo "I: Linking /etc/$f to /etc/writable/"
     ln -s writable/$f /etc/$f
