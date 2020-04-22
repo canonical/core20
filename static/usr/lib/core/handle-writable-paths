@@ -158,7 +158,7 @@ handle_writable_defaults()
         dstpath="${rootmnt}/writable/system-data"
         for fileordir in "$srcpath"/* ; do
             # skip empty $srcpath/
-            [ ! -e "$fileordir" ] && continue
+            [ ! -e "$fileordir" ] && [ ! -L "$fileordir" ] &&  continue
 
             # copy
             cp -a "$fileordir" "$dstpath"
