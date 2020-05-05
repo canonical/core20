@@ -141,6 +141,29 @@ handle_writable_paths()
 			continue
 		fi
 	done
+
+	# now apply the defaults on top
+	handle_writable_defaults
+}
+
+# handle_writable_default will apply system defaults *once* after
+# the handle_writable_path got populated
+handle_writable_defaults()
+{
+        srcpath="${rootmnt}/writable/system-data/_writable_defaults"
+        if [ ! -d "$srcpath" ] || [ -e "${srcpath}/.done" ]; then
+                return
+        fi
+
+        dstpath="${rootmnt}/writable/system-data"
+        for fileordir in "$srcpath"/* ; do
+            # skip empty $srcpath/
+            [ ! -e "$fileordir" ] && [ ! -L "$fileordir" ] &&  continue
+
+            # copy
+            cp -a "$fileordir" "$dstpath"
+        done
+        touch "$srcpath/.done"
 }
 
 main()
@@ -163,6 +186,11 @@ main()
 	# IMPORTANT: ensure we synced everything back to disk
 	sync
 }
+
+# for unit test
+if [ "$TEST_IMPORT" = "1" ]; then
+    return
+fi
 
 rootmnt="$1"
 if [ -z "$rootmnt" ]; then
