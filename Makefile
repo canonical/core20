@@ -1,18 +1,7 @@
 DPKG_ARCH := $(shell dpkg --print-architecture)
-LTS=$(shell ubuntu-distro-info --lts)
-DEVEL=$(shell ubuntu-distro-info --devel 2>/dev/null)
-ifeq (,$(DEVEL))
-LTS=bionic
-DEVEL=focal
-endif
-
-ifeq ($(LTS),bionic)
-BASE := $(DEVEL)-base-$(DPKG_ARCH).tar.gz
-URL := http://cdimage.ubuntu.com/ubuntu-base/daily/current/$(BASE)
-else
+LTS=focal
 BASE := $(LTS)-base-$(DPKG_ARCH).tar.gz
 URL := http://cdimage.ubuntu.com/ubuntu-base/$(LTS)/daily/current/$(BASE)
-endif
 
 # dir that contans the filesystem that must be checked
 TESTDIR ?= "prime/"
