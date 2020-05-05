@@ -142,8 +142,8 @@ handle_writable_paths()
 		fi
 	done
 
-        # now apply the defaults on top
-        handle_writable_defaults
+	# now apply the defaults on top
+	handle_writable_defaults
 }
 
 # handle_writable_default will apply system defaults *once* after
