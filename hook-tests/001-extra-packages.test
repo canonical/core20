@@ -114,6 +114,7 @@ ncurses-bin
 passwd
 perl-base
 procps
+secureboot-db
 sed
 sensible-utils
 systemd
