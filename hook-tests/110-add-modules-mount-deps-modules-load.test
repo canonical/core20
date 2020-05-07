@@ -1,0 +1,4 @@
+#!/bin/sh -e
+
+grep "After=usr-lib-modules.mount" lib/systemd/system/systemd-modules-load.service.d/ubuntu-core-initramfs-mounts.conf
+grep "After=usr-lib-firmware.mount" lib/systemd/system/systemd-modules-load.service.d/ubuntu-core-initramfs-mounts.conf

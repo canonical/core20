@@ -1,0 +1,18 @@
+#!/bin/sh
+#
+# make systemd-modules-load depend on usr-lib-modules.mount and 
+# usr-lib-firmware.mount, which will be declared in the fstab from the initramfs
+
+set -ex
+
+echo "I: Making systemd-modules-load depend on usr-lib-{firmware,modules}.mount"
+
+mkdir -p /lib/systemd/system/systemd-modules-load.service.d
+
+cat > /lib/systemd/system/systemd-modules-load.service.d/ubuntu-core-initramfs-mounts.conf << EOF
+[Unit]
+After=usr-lib-modules.mount
+Requires=usr-lib-modules.mount
+After=usr-lib-firmware.mount
+Requires=usr-lib-firmware.mount
+EOF
