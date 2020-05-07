@@ -81,4 +81,9 @@ apt install --no-install-recommends -y \
     dmsetup \
     cryptsetup
 
+if [ "$(dpkg --print-architecture)" = "amd64" ]; then
+    apt install --no-install-recommends -y \
+        secureboot-db
+fi
+
 apt autoremove -y
