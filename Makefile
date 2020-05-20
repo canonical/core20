@@ -25,6 +25,12 @@ install:
 	tar -x --xattrs-include=* -f ../$(BASE) -C $(DESTDIR)
 	# ensure resolving works inside the chroot
 	cat /etc/resolv.conf > $(DESTDIR)/etc/resolv.conf
+	# copy-in launchpad's build archive
+	if grep -q ftpmaster.internal /etc/apt/sources.list; then \
+		cp /etc/apt/sources.list $(DESTDIR)/etc/apt/sources.list; \
+		cp /etc/apt/trusted.gpg $(DESTDIR)/etc/apt/ || true; \
+		cp -r /etc/apt/trusted.gpg.d $(DESTDIR)/etc/apt/ || true; \
+	fi
 	# since recently we're also missing some /dev files that might be
 	# useful during build - make sure they're there
 	[ -e $(DESTDIR)/dev/null ] || mknod -m 666 $(DESTDIR)/dev/null c 1 3
