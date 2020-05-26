@@ -22,7 +22,7 @@
 /tmp                                    none                    temporary   none        defaults
 /var/tmp                                auto                    persistent  transition  none
 # etc related
-/etc/writable                           auto                    persistent  none        none
+/etc/writable                           auto                    persistent  transition  none
 # apparmor
 /etc/apparmor.d/cache                   auto                    persistent  none        none
 # dbus
