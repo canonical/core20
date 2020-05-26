@@ -35,6 +35,8 @@ diffutils
 distro-info-data
 dosfstools
 dpkg
+dbus
+dbus-user-session
 e2fsprogs
 fdisk
 findutils

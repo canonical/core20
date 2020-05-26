@@ -1,14 +1,7 @@
 DPKG_ARCH := $(shell dpkg --print-architecture)
-LTS=$(shell ubuntu-distro-info --lts)
-DEVEL=$(shell ubuntu-distro-info --devel)
-
-ifeq ($(LTS),bionic)
-BASE := $(DEVEL)-base-$(DPKG_ARCH).tar.gz
-URL := http://cdimage.ubuntu.com/ubuntu-base/daily/current/$(BASE)
-else
+LTS=focal
 BASE := $(LTS)-base-$(DPKG_ARCH).tar.gz
 URL := http://cdimage.ubuntu.com/ubuntu-base/$(LTS)/daily/current/$(BASE)
-endif
 
 # dir that contans the filesystem that must be checked
 TESTDIR ?= "prime/"
@@ -32,6 +25,12 @@ install:
 	tar -x --xattrs-include=* -f ../$(BASE) -C $(DESTDIR)
 	# ensure resolving works inside the chroot
 	cat /etc/resolv.conf > $(DESTDIR)/etc/resolv.conf
+	# copy-in launchpad's build archive
+	if grep -q ftpmaster.internal /etc/apt/sources.list; then \
+		cp /etc/apt/sources.list $(DESTDIR)/etc/apt/sources.list; \
+		cp /etc/apt/trusted.gpg $(DESTDIR)/etc/apt/ || true; \
+		cp -r /etc/apt/trusted.gpg.d $(DESTDIR)/etc/apt/ || true; \
+	fi
 	# since recently we're also missing some /dev files that might be
 	# useful during build - make sure they're there
 	[ -e $(DESTDIR)/dev/null ] || mknod -m 666 $(DESTDIR)/dev/null c 1 3
@@ -41,6 +40,7 @@ install:
 		mknod -m 666 $(DESTDIR)/dev/urandom c 1 9
 	# copy static files verbatim
 	/bin/cp -a static/* $(DESTDIR)
+	cp $(SNAPCRAFT_PART_INSTALL)/../../consoleconf-deb/install/*.deb $(DESTDIR)/tmp
 	# customize
 	set -ex; for f in ./hooks/[0-9]*.chroot; do \
 		/bin/cp -a $$f $(DESTDIR)/tmp && \
@@ -74,9 +74,9 @@ test:
 				exit 1; \
 			fi; \
 	    	done; \
-	set -ex; for f in ./tests/final/*.sh; do \
+	set -ex; for f in $$(pwd)/tests/test_*.sh; do \
 		sh -e $$f; \
-	done;
+	done
 
 # Display a report of files that are (still) present in /etc
 .PHONY: etc-report
