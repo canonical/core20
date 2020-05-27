@@ -36,3 +36,5 @@ EOF
 
 chmod 755 /usr/bin/timedatectl
 
+echo "Ensure /etc/timezone is valid"
+echo "Etc/UTC" > /etc/timezone
