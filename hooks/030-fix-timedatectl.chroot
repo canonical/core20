@@ -36,9 +36,3 @@ EOF
 
 chmod 755 /usr/bin/timedatectl
 
-echo "Ensure /etc/timezone is valid"
-echo "Etc/UTC" > /etc/timezone
-
-echo "Ensure /etc/localtime is valid"
-rm -f /etc/writable/localtime
-ln -s /usr/share/zoneinfo/UTC /etc/writable/localtime
