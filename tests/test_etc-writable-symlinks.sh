@@ -9,6 +9,7 @@ for f in timezone localtime hostname; do
 done
 
 grep "Etc/UTC" etc/timezone || (cat etc/timezone ; exit 1)
-[ $(readlink -f etc/localtime) = "/usr/share/zoneinfo/Etc/UTC" ] || (ls -al etc/localtime ; exit 1)
+[ $(readlink -f etc/localtime) = "writable/localtime" ] || (ls -al etc/localtime ; exit 1)
+[ $(readlink -f etc/writable/localtime) = "/usr/share/zoneinfo/Etc/UTC" ] || (ls -al etc/writable/localtime ; exit 1)
 
 set +x
