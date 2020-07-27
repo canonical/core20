@@ -80,3 +80,9 @@ find /tmp -name '*.deb' -print0 | xargs -0 apt install -y
 rm /tmp/*.deb
 
 apt autoremove -y
+
+case "$(dpkg --print-architecture)" in
+    amd64|i386)
+        apt install --no-install-recommends -y secureboot-db
+        ;;
+esac
