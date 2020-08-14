@@ -8,7 +8,44 @@ type: base
 build-base: core20
 
 parts:
+  consoleconf-deb:
+    plugin: nil
+    source: https://github.com/CanonicalLtd/subiquity.git
+    source-type: git
+    source-branch: core/focal
+    override-pull: |
+      snapcraftctl pull
+      # install build dependencies
+      export DEBIAN_FRONTEND=noninteractive
+      export DEBCONF_NONINTERACTIVE_SEEN=true
+      sudo -E apt-get build-dep -y ./
+    override-build: |
+      # unset the LD_FLAGS and LD_LIBRARY_PATH vars that snapcraft sets for us
+      # as those will point to the $SNAPCRAFT_STAGE which on re-builds will
+      # contain things like libc and friends that confuse the debian package
+      # build system
+      # TODO: should we unset $PATH to not include $SNAPCRAFT_STAGE too?
+      unset LD_FLAGS
+      unset LD_LIBRARY_PATH
+      # run the real build (but just build the binary package, and don't
+      # bother compressing it too much)
+      dpkg-buildpackage -b -uc -us -Zgzip -zfast
+      cp ../console-conf_*.deb ../subiquitycore_*.deb $SNAPCRAFT_PART_INSTALL
+    stage:
+      - -console-conf_*.deb
+      - -subiquitycore_*.deb
+    # XXX: Dirty hacks to enable building core20 on non-focal systems.
+    # See below for details.
+    override-prime: |
+      unset LD_LIBRARY_PATH;
+      export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin"
+      # ensure snapcraftctl is found, see
+      # https://github.com/snapcore/snapcraft/pull/2251
+      export PATH="$PATH:/snap/snapcraft/current/bin/scriptlet-bin"
+      snapcraftctl prime
   bootstrap:
+    after:
+      - consoleconf-deb
     plugin: make
     source: .
     build-packages:

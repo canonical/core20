@@ -25,6 +25,12 @@ install:
 	tar -x --xattrs-include=* -f ../$(BASE) -C $(DESTDIR)
 	# ensure resolving works inside the chroot
 	cat /etc/resolv.conf > $(DESTDIR)/etc/resolv.conf
+	# copy-in launchpad's build archive
+	if grep -q ftpmaster.internal /etc/apt/sources.list; then \
+		cp /etc/apt/sources.list $(DESTDIR)/etc/apt/sources.list; \
+		cp /etc/apt/trusted.gpg $(DESTDIR)/etc/apt/ || true; \
+		cp -r /etc/apt/trusted.gpg.d $(DESTDIR)/etc/apt/ || true; \
+	fi
 	# since recently we're also missing some /dev files that might be
 	# useful during build - make sure they're there
 	[ -e $(DESTDIR)/dev/null ] || mknod -m 666 $(DESTDIR)/dev/null c 1 3
@@ -34,6 +40,7 @@ install:
 		mknod -m 666 $(DESTDIR)/dev/urandom c 1 9
 	# copy static files verbatim
 	/bin/cp -a static/* $(DESTDIR)
+	/bin/cp $(SNAPCRAFT_PART_INSTALL)/../../consoleconf-deb/install/*.deb $(DESTDIR)/tmp
 	# customize
 	set -ex; for f in ./hooks/[0-9]*.chroot; do \
 		/bin/cp -a $$f $(DESTDIR)/tmp && \
