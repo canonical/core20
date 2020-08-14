@@ -22,6 +22,12 @@ rm /etc/pam.conf
 # cloud-init adds stuff here
 rm -rf /etc/profile.d
 
+# remove cloud-init file which allows all datasources, eventually we should add
+# a cloud-init configuration which specifies all allowed/known to work/good 
+# datasources, but since snapd will do this automatically after seeding, it's 
+# not critical
+rm /etc/cloud/cloud.cfg.d/90_dpkg.cfg
+
 rm /etc/rmt
 
 # sysctl.conf is not writable and everything in there is commented out
