@@ -52,12 +52,7 @@
 /var/lib/dbus                           auto                    persistent  none        none
 /var/lib/dhcp                           auto                    persistent  none        none
 # cloud-init
-# FIXME: we currently write an empty /writable/system-data/etc/cloud directory
-#        when creating the image.  So setting /etc/cloud to  "persistent"
-#        instead of "synced" will result all writes getting skipped. Once
-#        the image does no longer contains this empty dir this patch can be
-#        reverted.
-/etc/cloud                              auto                    synced      none        none
+/etc/cloud                              auto                    persistent  none        none
 /var/lib/cloud                          auto                    persistent  none        none
 # for various clouds like GCE
 /etc/sysctl.d                           auto                    persistent  transition  none
