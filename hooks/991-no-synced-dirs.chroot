@@ -1,9 +1,5 @@
 #!/bin/sh -ex
 
-#FIXME: once the we no longer write an empty /writable/system-data/etc/cloud 
-#       we can re-enable this test
-exit 0
-
 if grep -v '^#' </etc/system-image/writable-paths | grep synced; then
     echo "Using 'synced' in /etc/system-image/writable-paths is not allowed in core20"
     exit 1
