@@ -28,6 +28,3 @@ rm /etc/update-motd.d/60-unminimize
 # remove the motd-news service files
 rm /lib/systemd/system/motd-news.{service,timer}
 rm /etc/systemd/system/timers.target.wants/motd-news.timer
-
-# disable dynamic motd
-sed -i 's/ENABLED=1/ENABLED=0/g' /etc/default/motd-news
