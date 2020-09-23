@@ -6,9 +6,6 @@ addons:
   snaps:
     - name: snapcraft
       confinement: classic
-      # candidate is needed for https://github.com/snapcore/snapcraft/pull/3218,
-      # which will go into 4.1.2, remove when 4.1.2 hits stable
-      channel: candidate
     - name: lxd
 env:
   global:
