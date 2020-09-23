@@ -20,22 +20,6 @@ echo "Ensure gshadow file does not change"
 diff -u /etc/gshadow /etc/gshadow.orig
 rc=$?; [ "$rc" != "0" ] && MISMATCH=1
 
-echo "Ensure extrausers passwd file does not change"
-diff -u /var/lib/extrausers/passwd /var/lib/extrausers/passwd.orig
-rc=$?; [ "$rc" != "0" ] && MISMATCH=1
-
-echo "Ensure extrausers shadow file does not change"
-diff -u /var/lib/extrausers/shadow /var/lib/extrausers/shadow.orig
-rc=$?; [ "$rc" != "0" ] && MISMATCH=1
-
-echo "Ensure extrausers group file does not change"
-diff -u /var/lib/extrausers/group /var/lib/extrausers/group.orig
-rc=$?; [ "$rc" != "0" ] && MISMATCH=1
-
-echo "Ensure extrausers gshadow file does not change"
-diff -u /var/lib/extrausers/gshadow /var/lib/extrausers/gshadow.orig
-rc=$?; [ "$rc" != "0" ] && MISMATCH=1
-
 if [ -n "$MISMATCH" ]; then
     echo "There were changes to the password database."
     echo "This usually means something wrong happened during the execution of hooks."
@@ -48,7 +32,3 @@ rm /etc/passwd.orig
 rm /etc/shadow.orig
 rm /etc/group.orig
 rm /etc/gshadow.orig
-rm /var/lib/extrausers/passwd.orig
-rm /var/lib/extrausers/shadow.orig
-rm /var/lib/extrausers/group.orig
-rm /var/lib/extrausers/gshadow.orig
