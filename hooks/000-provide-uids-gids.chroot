@@ -274,33 +274,3 @@ input:!::
 render:!::
 EOF
 cp /etc/gshadow /etc/gshadow.orig # We make a copy for a later sanity-compare
-
-mkdir -p /var/lib/extrausers
-
-echo "Providing the final extrausers/passwd file"
-cat > /var/lib/extrausers/passwd <<EOF
-docker:x:107:113:Reserved:/nonexistent:/bin/false
-EOF
-cp /var/lib/extrausers/passwd /var/lib/extrausers/passwd.orig # We make a copy for a later sanity-compare
-
-
-echo "Providing the final extrausers/group file"
-cat > /var/lib/extrausers/group <<EOF
-docker:x:113:
-EOF
-cp /var/lib/extrausers/group /var/lib/extrausers/group.orig # We make a copy for a later sanity-compare
-
-
-echo "Providing the final extrausers/shadow file"
-cat > /var/lib/extrausers/shadow <<EOF
-docker:*:16413:0:99999:7:::
-EOF
-cp /var/lib/extrausers/shadow /var/lib/extrausers/shadow.orig # We make a copy for a later sanity-compare
-
-
-echo "Providing the final extrausers/gshadow file"
-cat > /var/lib/extrausers/gshadow <<EOF
-docker:!::
-EOF
-cp /var/lib/extrausers/gshadow /var/lib/extrausers/gshadow.orig # We make a copy for a later sanity-compare
-
