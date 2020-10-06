@@ -1,8 +1,8 @@
-name: core20
-version: "20"
-summary: Runtime environment based on Ubuntu 20.04
+name: core22
+version: "22"
+summary: Runtime environment based on Ubuntu 2X.YY
 description: |
-  The base snap based on the Ubuntu 20.04 release.
+  The base snap based on the Ubuntu 2X.YY release.
 confinement: strict
 type: base
 build-base: core20
@@ -12,7 +12,7 @@ parts:
     plugin: nil
     source: https://github.com/CanonicalLtd/subiquity.git
     source-type: git
-    source-branch: core/focal
+    source-branch: main
     override-pull: |
       snapcraftctl pull
       # install build dependencies

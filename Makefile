@@ -1,7 +1,10 @@
 DPKG_ARCH := $(shell dpkg --print-architecture)
-LTS=focal
-BASE := $(LTS)-base-$(DPKG_ARCH).tar.gz
-URL := http://cdimage.ubuntu.com/ubuntu-base/$(LTS)/daily/current/$(BASE)
+#LTS=focal
+#BASE := $(LTS)-base-$(DPKG_ARCH).tar.gz
+#URL := http://cdimage.ubuntu.com/ubuntu-base/$(LTS)/daily/current/$(BASE)
+DEVEL=groovy
+BASE := $(DEVEL)-base-$(DPKG_ARCH).tar.gz
+URL := http://cdimage.ubuntu.com/ubuntu-base/daily/current/$(BASE)
 
 # dir that contans the filesystem that must be checked
 TESTDIR ?= "prime/"
@@ -51,9 +54,9 @@ install:
 	done;
 
 	# only generate manifest file for lp build
-	if [ -e /build/core20 ]; then \
+	if [ -e /build/core22 ]; then \
 		echo $$f; \
-		/bin/cp $(DESTDIR)/usr/share/snappy/dpkg.list /build/core20/core20-$$(date +%Y%m%d%H%M)_$(DPKG_ARCH).manifest; \
+		/bin/cp $(DESTDIR)/usr/share/snappy/dpkg.list /build/core22/core22-$$(date +%Y%m%d%H%M)_$(DPKG_ARCH).manifest; \
 	fi;
 
 .PHONY: check
