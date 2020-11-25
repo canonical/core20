@@ -20,7 +20,7 @@ rm /etc/debian_version
 rm /etc/pam.conf
 
 # cloud-init adds stuff here
-rm -rf /etc/profile.d
+rm -rvf /etc/profile.d/Z99-cloud*
 
 # remove cloud-init file which allows all datasources, eventually we should add
 # a cloud-init configuration which specifies all allowed/known to work/good 
