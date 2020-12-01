@@ -6,6 +6,18 @@ set -ex
 
 echo "I: Removing the debian legacy"
 
+dpkg --purge --force-depends \
+     apt \
+     libapt-pkg6.0 \
+     adduser \
+     debconf \
+     debconf-utils \
+     po-debconf
+
+dpkg --purge --force-depends --force-remove-essential \
+     init-system-helpers \
+     perl-base
+
 # store manifest of all installed packages
 install -m755 -d usr/share/snappy
 dpkg -l > usr/share/snappy/dpkg.list
@@ -24,6 +36,12 @@ rm \
         usr/bin/dpkg-trigger \
         usr/bin/dpkg-statoverride \
         usr/bin/dpkg-maintscript-helper
+
+rm \
+    /usr/sbin/pam-auth-update \
+    /usr/sbin/pam_getenv \
+    /usr/bin/run-mailcap \
+    /usr/sbin/update-mime
 
 # remove generated locales for packages we do not use
 rm -f usr/share/locale/*/LC_MESSAGES/dpkg*
