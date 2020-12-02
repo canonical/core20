@@ -9,14 +9,12 @@ echo "I: Removing the debian legacy"
 dpkg --purge --force-depends \
      apt \
      libapt-pkg6.0 \
-     adduser \
      debconf \
      debconf-utils \
      po-debconf
 
 dpkg --purge --force-depends --force-remove-essential \
-     init-system-helpers \
-     perl-base
+     init-system-helpers
 
 # store manifest of all installed packages
 install -m755 -d usr/share/snappy
