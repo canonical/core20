@@ -1,0 +1,16 @@
+#!/bin/bash
+
+# prefer running snap from the 'current' snapd snap, however during snapd
+# refresh the current symlink can go away for a brief moment, if we reboot at
+# that time, starting snaps during boot would be impossible, thus as a fallback
+# we try to use the snapd tooling mount under /usr/lib/snapd
+snap_bin=/snap/snapd/current/usr/bin/snap
+if ! test -e "$snap_bin" 2>/dev/null; then
+    snap_bin=/usr/lib/snapd/snap
+fi
+
+if [[ "${0##/snap/bin}" != "$0" ]]; then
+    # running via /snap/bin symlink we need to preserve $0
+    exec -a "$0" $snap_bin "$@"
+fi
+exec $snap_bin "$@"
