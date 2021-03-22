@@ -4,13 +4,35 @@
 # refresh the current symlink can go away for a brief moment, if we reboot at
 # that time, starting snaps during boot would be impossible, thus as a fallback
 # we try to use the snapd tooling mount under /usr/lib/snapd
-snap_bin=/snap/snapd/current/usr/bin/snap
+snap_bin_rel=usr/bin/snap
+snap_bin="/snap/snapd/current/$snap_bin_rel"
 if ! test -e "$snap_bin" 2>/dev/null; then
+    # the preferred snap binary is inaccessible, fall back to
+    # /usr/lib/snapd/snap, but check whether the content or /usr/lib/snapd comes
+    # from a snap
     snap_bin=/usr/lib/snapd/snap
+
+    # /usr/lib/snapd is expected to be a bind mount usr/lib/snapd from the snapd
+    # snap, find out which device it is and where the snap is mounted
+
+    # we are expecting a non empty string of format `7:<minor-number>'`
+    dev="$(findmnt --noheadings --output MAJ:MIN /usr/lib/snapd 2>/dev/null)"
+    if [[ -n "$dev" && "$dev" != "${dev##7:}" ]]; then
+        # we have the device with the right major number, find out where the
+        # snapd snap from that device is mounted at
+
+        # the output is target per line
+        for mp in $(findmnt --noheadings --output TARGET --source "$dev" 2>/dev/null) ; do
+            if [[ "$mp" != "${mp##/snap/snapd/}" ]]; then
+               snap_bin="$mp/$snap_bin_rel"
+               break
+            fi
+        done
+    fi
 fi
 
 if [[ "${0##/snap/bin}" != "$0" ]]; then
     # running via /snap/bin symlink we need to preserve $0
-    exec -a "$0" $snap_bin "$@"
+    exec -a "$0" "$snap_bin" "$@"
 fi
-exec $snap_bin "$@"
+exec "$snap_bin" "$@"
