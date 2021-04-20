@@ -1,0 +1,22 @@
+name: Test
+on:
+  pull_request:
+  push:
+    branches: [ 'master*' ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install testing deps
+        run: |
+          export DEBIAN_FRONTEND=noninteractive
+          sudo apt-get update -q
+          sudo apt-get install -qy make squashfs-tools
+      - uses: snapcore/action-build@v1
+        id: snapcraft
+      - name: Test
+        run: |
+          sudo unsquashfs -d prime ${{ steps.snapcraft.outputs.snap }}
+          make test
