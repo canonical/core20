@@ -77,7 +77,7 @@ apt install --no-install-recommends -y \
     cryptsetup \
     gdbserver
 
-# Install self-built console-conf
+# Install self-built console-conf and fake avahi-daemon
 find /tmp -name '*.deb' -print0 | xargs -0 apt install -y
 rm /tmp/*.deb
 
