@@ -1,0 +1,26 @@
+#!/bin/sh -e
+
+# mdns support is enabled in nsswitch.conf
+grep -q "^hosts:.*mdns4_minimal" etc/nsswitch.conf
+
+# Avahi is not present in the base
+if [ -e usr/sbin/avahi-daemon ]; then
+    echo "The real avahi-daemon ended up in the image"
+    exit 1
+fi
+
+expected_plugins="$(find lib/ -name libnss_mdns4_minimal.so.2)"
+unexpected_plugins="$(find lib/ -name libnss_mdns.so.2 -o -name libnss_mdns_minimal.so.2 -o -name libnss_mdns4.so.2 -o -name libnss_mdns6.so.2 -o -name libnss_mdns6_minimal.so.2)"
+
+# There must be at least one copy of libnss_mdns4_minimal.so.2
+if [ -z "$expected_plugins" ]; then
+    echo "There must be a copy of libnss_mdns4_minimal.so.2 on the image"
+    exit 1
+fi
+
+# None of the other libnss-mdns plugins should be installed
+if [ -n "$unexpected_plugins" ]; then
+    echo "Found unexpected NSS plugins in image:"
+    echo "$unexpected_plugins"
+    exit 1
+fi
