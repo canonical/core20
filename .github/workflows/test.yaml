@@ -20,3 +20,7 @@ jobs:
         run: |
           sudo unsquashfs -d prime ${{ steps.snapcraft.outputs.snap }}
           make test
+      - uses: actions/upload-artifact@v2
+        with:
+          name: snaps
+          path: ${{ steps.snapcraft.outputs.snap }}
