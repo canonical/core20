@@ -61,6 +61,7 @@ apt install --no-install-recommends -y \
     less \
     dbus \
     dbus-user-session \
+    libglib2.0-bin \
     vim-tiny \
     bash-completion \
     netcat-openbsd \

@@ -68,6 +68,7 @@ libfdisk1:amd64
 libffi7:amd64
 libgcc-s1:amd64
 libgcrypt20:amd64
+libglib2.0-bin
 libgmp10:amd64
 libgnutls30:amd64
 libgpg-error0:amd64
