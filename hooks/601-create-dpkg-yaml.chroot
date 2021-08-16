@@ -1,0 +1,26 @@
+#!/bin/sh
+#
+# create dpkg.yaml used for OSS compliance
+
+set -ex
+
+echo "I: Creating dpkg.yaml needed for OSS compliance"
+
+{
+# fill in ppa information in yaml file
+  printf 'package-repositories:\n'
+  find /etc/apt/ -name \*.list | while IFS= read -r APT; do
+    grep -o "^deb http://ppa.launchpad.net/[a-z0-9\.\+\-]\+/[a-z0-9\.\+\-]\+/[a-z0-9\.\+\-]\+" "$APT" | while read -r ENTRY ; do
+      USER=$(echo "$ENTRY" | cut -d/ -f4)
+      PPA=$(echo "$ENTRY" | cut -d/ -f5)
+      DISTRO=$(echo "$ENTRY" | cut -d/ -f6)
+      printf -- '- type: apt\n'
+      echo '  ppa: '"$USER/$DISTRO/$PPA"
+    done
+  done
+  
+# fill in yaml section with all installed packages
+  printf 'packages:\n'
+  tail -n +6 /usr/share/snappy/dpkg.list | awk '{printf "- "}{printf $2}{printf "="}{print $3}'
+} > /usr/share/snappy/dpkg.yaml
+
