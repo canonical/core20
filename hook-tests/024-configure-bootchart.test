@@ -5,4 +5,3 @@ test -f lib/systemd/system/systemd-bootchart.service
 test -x lib/systemd/systemd-bootchart-prestart.sh
 test -x lib/systemd/systemd-bootchart-poststop.sh
 test -f lib/systemd/system/stop-systemd-bootchart.service
-test -h lib/systemd/system/multi-user.target.wants/stop-systemd-bootchart.service
