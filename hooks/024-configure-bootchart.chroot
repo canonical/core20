@@ -61,10 +61,11 @@ cat << 'EOF' > /lib/systemd/system/stop-systemd-bootchart.service
 Description=Unit to stop systemd-bootchart
 After=snapd.seeded.service
 Requisite=snapd.seeded.service
+ConditionKernelCommandLine=snapd_recovery_mode=run
 
 [Service]
 Type=oneshot
-ExecStart=sh -c 'if /usr/bin/grep -q snapd_recovery_mode=run /proc/cmdline; then /usr/bin/systemctl stop systemd-bootchart.service; fi'
+ExecStart=/usr/bin/systemctl stop systemd-bootchart.service
 
 [Install]
 WantedBy=multi-user.target
