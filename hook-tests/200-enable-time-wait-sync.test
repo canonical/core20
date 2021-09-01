@@ -1,5 +1,0 @@
-#!/bin/sh
-
-set -e
-
-test "$(readlink -f /etc/systemd/system/sysinit.target.wants/systemd-time-wait-sync.service)" = "/usr/lib/systemd/system/systemd-time-wait-sync.service"
