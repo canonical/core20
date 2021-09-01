@@ -2,8 +2,4 @@
 
 set -e
 
-# ensure we have the systemd-wait-and-sync.service symlink
-s="$(readlink -f etc/systemd/system/sysinit.target.wants/systemd-time-wait-sync.service)"
-echo "$s"
-
-test "$s" = "/lib/systemd/system/systemd-time-wait-sync.service"
+test "$(readlink -f /etc/systemd/system/sysinit.target.wants/systemd-time-wait-sync.service)" = "/usr/lib/systemd/system/systemd-time-wait-sync.service"
