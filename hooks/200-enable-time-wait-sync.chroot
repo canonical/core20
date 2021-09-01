@@ -1,6 +1,0 @@
-#!/bin/sh
-
-set -e
-
-echo "Enabling systemd-time-wait-sync.service"
-systemctl --root=/ enable systemd-time-wait-sync.service
