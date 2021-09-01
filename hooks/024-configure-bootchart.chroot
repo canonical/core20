@@ -1,17 +1,6 @@
 #! /bin/sh -ex
 
-# Rewrite configuration and unit that came with the systemd-bootchart package
-
-cat << 'EOF' > /etc/systemd/bootchart.conf
-[Bootchart]
-Samples=36000
-Frequency=20
-Relative=yes
-Filter=no
-# Memory usage produces a bad overlay in the svg
-#PlotMemoryUsage=yes
-Cmdline=yes
-EOF
+# Rewrite unit that came with the systemd-bootchart package
 
 cat << 'EOF' > /lib/systemd/system/systemd-bootchart.service
 [Unit]
@@ -23,8 +12,7 @@ Before=shutdown.target
 Requires=stop-systemd-bootchart.service
 
 [Service]
-ExecStartPre=/usr/bin/mkdir -p /run/log
-ExecStartPre=/lib/systemd/systemd-bootchart-prestart.sh
+ExecStartPre=/usr/bin/mkdir -p /run/log/base
 ExecStart=/lib/systemd/systemd-bootchart -r
 KillSignal=SIGHUP
 ExecStopPost=/lib/systemd/systemd-bootchart-poststop.sh
@@ -36,13 +24,17 @@ EOF
 # Creating these files could go to static folder, but it seems cleaner to have
 # everything together in one place.
 
-cat << 'EOF' > /lib/systemd/systemd-bootchart-prestart.sh
-#!/bin/sh -ex
-
-chart_f=$(find /run/log -maxdepth 1 -name \*.svg -printf "%f" -quit)
-if [ -n "$chart_f" ]; then
-    mv /run/log/"$chart_f" /run/log/initrd-"$chart_f"
-fi
+mkdir -p /usr/lib/systemd/bootchart.conf.d
+cat << 'EOF' > /usr/lib/systemd/bootchart.conf.d/ubuntu-core.conf
+[Bootchart]
+Samples=36000
+Frequency=20
+Relative=yes
+Filter=no
+# Memory usage produces a bad overlay in the svg
+#PlotMemoryUsage=yes
+Cmdline=yes
+Output=/run/log/base
 EOF
 
 cat << 'EOF' > /lib/systemd/systemd-bootchart-poststop.sh
@@ -53,7 +45,12 @@ last_d=$(find $save_d/ -type d -name boot\* | sort | tail -n1)
 if [ -z "$last_d" ]; then last_d=0; fi
 next_d=$save_d/boot$((${last_d##*boot} + 1))
 mkdir -p $next_d
-mv /run/log/*.svg $next_d
+mv /run/log/base/*.svg $next_d
+
+initrd_f=$(find /run/log -maxdepth 1 -name \*.svg -printf "%f" -quit)
+if [ -n "$initrd_f" ]; then
+    mv /run/log/"$initrd_f" $next_d/initrd-"$initrd_f"
+fi
 EOF
 
 cat << 'EOF' > /lib/systemd/system/stop-systemd-bootchart.service
@@ -71,5 +68,4 @@ ExecStart=/usr/bin/systemctl stop systemd-bootchart.service
 WantedBy=multi-user.target
 EOF
 
-chmod +x /lib/systemd/systemd-bootchart-prestart.sh
 chmod +x /lib/systemd/systemd-bootchart-poststop.sh
