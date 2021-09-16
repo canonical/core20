@@ -51,10 +51,11 @@ install:
 		rm -f $(DESTDIR)/tmp/$$(basename $$f); \
 	done;
 
-	# only generate manifest file for lp build
+	# only generate manifest and dpkg.yaml file for lp build
 	if [ -e /build/core20 ]; then \
 		echo $$f; \
 		/bin/cp $(DESTDIR)/usr/share/snappy/dpkg.list /build/core20/core20-$$(date +%Y%m%d%H%M)_$(DPKG_ARCH).manifest; \
+		/bin/cp $(DESTDIR)/usr/share/snappy/dpkg.yaml /build/core20/core20-$$(date +%Y%m%d%H%M)_$(DPKG_ARCH).spkg.yaml; \
 	fi;
 
 .PHONY: check
