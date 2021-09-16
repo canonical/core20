@@ -55,7 +55,7 @@ install:
 	if [ -e /build/core20 ]; then \
 		echo $$f; \
 		/bin/cp $(DESTDIR)/usr/share/snappy/dpkg.list /build/core20/core20-$$(date +%Y%m%d%H%M)_$(DPKG_ARCH).manifest; \
-		/bin/cp $(DESTDIR)/usr/share/snappy/dpkg.yaml /build/core20/core20-$$(date +%Y%m%d%H%M)_$(DPKG_ARCH).spkg.yaml; \
+		/bin/cp $(DESTDIR)/usr/share/snappy/dpkg.yaml /build/core20/core20-$$(date +%Y%m%d%H%M)_$(DPKG_ARCH).dpkg.yaml; \
 	fi;
 
 .PHONY: check
