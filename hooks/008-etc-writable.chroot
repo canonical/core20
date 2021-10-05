@@ -4,7 +4,11 @@ mkdir -p /etc/writable/default
 
 # cloud-init needs to be able to modify hostname and has the ability to
 # set the other two.
-for f in timezone localtime hostname motd issue; do
+# additionally we need to allow hwclock to write to adjtime
+
+printf "" > /etc/adjtime
+
+for f in timezone localtime hostname motd issue adjtime; do
     if [ -e /etc/$f ]; then
         echo "I: Moving /etc/$f to /etc/writable/"
         mv /etc/$f /etc/writable/$f

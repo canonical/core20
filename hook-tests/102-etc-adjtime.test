@@ -1,0 +1,13 @@
+#!/bin/sh
+
+set -e
+
+if [ ! -e etc/adjtime ]; then
+    echo "/etc/adjtime must exist"
+    exit 1
+fi
+
+if [ -s etc/adjtime ]; then
+    echo "/etc/adjtime exists but must be empty"
+    exit 1
+fi

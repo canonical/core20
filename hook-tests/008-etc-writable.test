@@ -8,6 +8,7 @@ test -e etc/localtime
 test -e etc/hostname
 test -e etc/motd
 test -e etc/issue
+test -e etc/adjtime
 grep -q "Etc/UTC" etc/timezone
 test $(readlink etc/localtime) = "writable/localtime"
 test $(readlink etc/writable/localtime) = "/usr/share/zoneinfo/Etc/UTC"
