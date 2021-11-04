@@ -27,8 +27,9 @@ You need to have the following software installed before you can test with sprea
 
 ## Installing spread
 
-Manually installing spread is the recommended way to get started as
-we need some LXD profile support that has not reached upstream. This document will be updated with the upstream version when this happens.
+You can install spread by simply using ```snap install spread```, however this does not allow for the lxd-backend to be used.
+To use the lxd backend you need to install the snap from source, as the LXD profile support has not been upstreamed yet.
+This document will be updated with the upstream version when this happens. To install spread from source you need to do the following.
 
 ```
 git clone https://github.com/Meulengracht/spread
@@ -45,9 +46,9 @@ go install .
 ```
 sudo apt update && sudo apt install -y qemu-kvm autopkgtest
 ```
-2. Create a suitable ubuntu test image (focal) in the following directory where spread locates images
+2. Create a suitable ubuntu test image (focal) in the following directory where spread locates images. Note that the location is different when using spread installed through snap.
 ```
-mkdir -p ~/.spread/qemu
+mkdir -p ~/.spread/qemu # This location is different if you installed spread from snap
 cd ~/.spread/qemu
 autopkgtest-buildvm-ubuntu-cloud -r focal
 ```

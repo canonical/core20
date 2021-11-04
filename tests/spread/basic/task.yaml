@@ -39,4 +39,5 @@ execute: |
   # Verify system services are running
   execute_remote systemctl -q is-system-running --wait
   execute_remote systemctl -q is-active snapd
+  execute_remote snap change 1
 
