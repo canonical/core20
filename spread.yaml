@@ -35,7 +35,7 @@ backends:
 
   lxd-nested:
     type: lxd
-    profiles: core20
+    container-profiles: core20
     systems:
       - ubuntu-20.04:
           image: ucspread
