@@ -69,37 +69,24 @@ qemu-kvm acceleration in the container for the nested instance.
 
 This backend requires that your host machine supports KVM.
 
-1. Install LXD snap from the stable channel (other channels probably work but are untested)
+1. Setup any prerequisites and build the LXD image needed for testing
 ```
 sudo snap install lxd --channel=latest/stable
+sudo snap install yq --channel=latest/stable
+curl -o build-lxd-image.sh https://raw.githubusercontent.com/Meulengracht/spread-utils/master/build-core-lxd-image.sh
+chmod +x build-lxd-image.sh
+./build-lxd-image.sh
 ```
-2. [Download](https://drive.google.com/drive/folders/1wk3rA-Sw3BB_EIlkc1pPC3MJKxbxba-U?usp=sharing) the latest image and import it into lxd as it is required for testing core repositories if you haven't already got this image.
-```
-lxc image import core-******.tar.xz --alias ucspread
-```
-3. If you imported the core test image, we need to fix up missing properties for the image which are not saved in the image metadata.
-```
-lxc image edit ucspread
-```
-Add the following two lines to the "properties" section
-```
-properties:
-  aliases: ucspread # add this line
-  architecture: amd64
-  ...
-  release: focal
-  remote: images # add this line
-```
-4. Import the LXD core20 test profile. Make sure your working directory is the root of this repository.
+2. Import the LXD core20 test profile. Make sure your working directory is the root of this repository.
 ```
 lxc profile create core20
 cat tests/spread/core20.lxdprofile | lxc profile edit core20
 ```
-5. Set environment variable to enable KVM acceleration for the nested qemu instance
+3. Set environment variable to enable KVM acceleration for the nested qemu instance
 ```
 export SPREAD_ENABLE_KVM=true
 ```
-6. Now you can run the spread tests using the LXD backend
+4. Now you can run the spread tests using the LXD backend
 ```
 spread lxd-nested
 ```
