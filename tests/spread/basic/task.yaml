@@ -10,16 +10,7 @@ execute: |
   # At this point we are able to SSH to the nested VM, so things probably worked
   # but we should wait for snapd to finish seeding anyways, but first we need to
   # wait for the snap command to exist
-  retry=400
-  wait=1
-  while ! execute_remote command -v snap; do
-      retry=$(( retry - 1 ))
-      if [ $retry -le 0 ]; then
-          echo "Timed out waiting for snap command to be available. Aborting!"
-          exit 1
-      fi
-      sleep "$wait"
-  done
+  nested_wait_for_snap_command
 
   # Now formally wait for seeding
   execute_remote sudo snap wait system seed.loaded

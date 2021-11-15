@@ -46,6 +46,19 @@ wait_for_ssh(){
     done
 }
 
+nested_wait_for_snap_command(){
+  retry=400
+  wait=1
+  while ! execute_remote command -v snap; do
+      retry=$(( retry - 1 ))
+      if [ $retry -le 0 ]; then
+          echo "Timed out waiting for snap command to be available. Aborting!"
+          exit 1
+      fi
+      sleep "$wait"
+  done
+}
+
 cleanup_nested_core_vm(){
     # stop the VM if it is running
     systemctl stop nested-vm-*
@@ -74,7 +87,7 @@ start_nested_core_vm_unit(){
         PARAM_MEM="-m 4096"
         PARAM_SMP="-smp 2"
     elif [ "${SPREAD_BACKEND}" = "qemu-nested" ]; then
-        PARAM_MEM="-m 2048"
+        PARAM_MEM="-m 2048"start_nested_core_vm_unit
         PARAM_SMP="-smp 1"
     else
         echo "unknown spread backend ${SPREAD_BACKEND}"
