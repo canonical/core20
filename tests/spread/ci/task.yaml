@@ -31,5 +31,5 @@ execute: |
 
     # make a tarball out of the container image and delete the container
     lxc publish $INSTANCE_NAME --alias ucspread
-    lxc image export ucspread 
+    lxc image export ucspread ./lxd-spread-img
     lxc delete $INSTANCE_NAME
