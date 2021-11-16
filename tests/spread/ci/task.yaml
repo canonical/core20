@@ -3,13 +3,18 @@ summary: Build an LXD spread test image with TPM software
 execute: |
     INSTANCE_NAME=spread-test
 
+    # install prerequisites
+    snap install lxd --channel=latest/stable
+    lxd init --auto
+
     # launch the new lxc instance from an ubuntu 20.04 base
     lxc launch ubuntu:20.04 $INSTANCE_NAME
 
     # wait a few seconds before proceeding, otherwise we are going to have issues
-    # with the container (network manager) not being ready yet, and then the rest of
+    # with the container (systemd) not being ready yet, and then the rest of
     # the commands will fail
     sleep 5s
+    lxc exec $INSTANCE_NAME -- bash -c 'systemctl is-system-running --wait' || true
 
     # we build libtpms and swptm from source and preinstall that in the image for TPM emulation support
     lxc exec $INSTANCE_NAME -- bash -c "apt update -yqq"
