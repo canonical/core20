@@ -5,6 +5,7 @@ environment:
   PROJECT_PATH: $SETUPDIR
   PATH: $PATH:$PROJECT_PATH/tests/bin
   TESTSLIB: $PROJECT_PATH/tests/lib
+  EXTTESTSLIB: $TESTSLIB/external/snapd-testing-tools/lib/core
   SNAP_BRANCH: "edge" # stable/edge/beta
   # TODO: are these vars needed still?
   LANG: "C.UTF-8"
@@ -86,10 +87,10 @@ prepare: |
 restore-each: |
   # delete the nested VM image after each task finishes so we don't use too much
   # disk space
-  . "$TESTSLIB/nested.sh"
+  . "$EXTTESTSLIB/nested.sh"
   cleanup_nested_core_vm
 debug-each: |
-  . "$TESTSLIB/nested.sh"
+  . "$EXTTESTSLIB/nested.sh"
   print_nested_status
 
 warn-timeout: 40m

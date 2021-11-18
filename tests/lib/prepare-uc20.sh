@@ -54,12 +54,10 @@ cat > "$snapddir/lib/systemd/system/snapd.spread-tests-run-mode-tweaks.service" 
 Description=Tweaks to run mode for spread tests
 Before=snapd.service
 Documentation=man:snap(1)
-
 [Service]
 Type=oneshot
 ExecStart=/usr/lib/snapd/snapd.spread-tests-run-mode-tweaks.sh
 RemainAfterExit=true
-
 [Install]
 WantedBy=multi-user.target
 EOF
@@ -74,7 +72,6 @@ print_system()
     printf "%s spread-tests-run-mode-tweaks.sh: %s\n" "$(date -Iseconds --utc)" "$1" |
         tee -a /dev/kmsg /dev/console /run/mnt/ubuntu-seed/spread-tests-run-mode-tweaks-log.txt || true
 }
-
 # ensure we don't enable ssh in install mode or spread will get confused
 if ! grep 'snapd_recovery_mode=run' /proc/cmdline; then
     print_system "not in run mode - script not running"
@@ -84,13 +81,10 @@ if [ -e /root/spread-setup-done ]; then
     print_system "already ran, not running again"
     exit 0
 fi
-
 print_system "in run mode, not run yet, extracting overlay data"
-
 # extract data from previous stage
 (cd / && tar xf /run/mnt/ubuntu-seed/run-mode-overlay-data.tar.gz)
 cp -r /root/test-var/lib/extrausers /var/lib
-
 # user db - it's complicated
 for f in group gshadow passwd shadow; do
     # now bind mount read-only those passwd files on boot
@@ -98,20 +92,17 @@ for f in group gshadow passwd shadow; do
 [Unit]
 Description=Mount root/test-etc/$f over system etc/$f
 Before=ssh.service
-
 [Mount]
 What=/root/test-etc/$f
 Where=/etc/$f
 Type=none
 Options=bind,ro
-
 [Install]
 WantedBy=multi-user.target
 EOF2
     systemctl enable etc-"$f".mount
     systemctl start etc-"$f".mount
 done
-
 mkdir -p /home/test
 chown 12345:12345 /home/test
 mkdir -p /home/ubuntu
@@ -125,9 +116,7 @@ sed -i 's/\#\?\(PermitRootLogin\|PasswordAuthentication\)\>.*/\1 yes/' /etc/ssh/
 echo "MaxAuthTries 120" >> /etc/ssh/sshd_config
 grep '^PermitRootLogin yes' /etc/ssh/sshd_config
 systemctl reload ssh
-
 print_system "done setting up ssh for spread test user"
-
 touch /root/spread-setup-done
 EOF
 chmod 0755 "$snapddir/usr/lib/snapd/snapd.spread-tests-run-mode-tweaks.sh"

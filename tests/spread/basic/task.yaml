@@ -2,7 +2,7 @@ summary: Ensure that things worked
 
 execute: |
   # for various utilities
-  . "$TESTSLIB/nested.sh"
+  . "$EXTTESTSLIB/nested.sh"
 
   # Start the nested UC20 VM
   start_nested_core_vm_unit
@@ -28,7 +28,6 @@ execute: |
   execute_remote lsblk -f -m -l | awk '{ print $3 }' | grep ubuntu-data | xargs test
   
   # Verify system services are running
-  execute_remote systemctl -q is-system-running --wait
   execute_remote systemctl -q is-active snapd
   execute_remote snap change 1
 
