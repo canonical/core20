@@ -1,11 +1,22 @@
 summary: Build an LXD spread test image with TPM software
+manual: true
+artifacts:
+    - lxd-spread-core20-img.tar.gz
 
 execute: |
     INSTANCE_NAME=spread-test
+    IMAGE_NAME=lxd-spread-core20-img
+
+    # be in project folder
+    cd $PROJECT_PATH
 
     # install prerequisites
+    snap install google-cloud-sdk --classic
     snap install lxd --channel=latest/stable
     lxd init --auto
+
+    # authenticate with gcloud
+    gcloud auth activate-service-account --key-file="./sa.json"
 
     # launch the new lxc instance from an ubuntu 20.04 base
     lxc launch ubuntu:20.04 $INSTANCE_NAME
@@ -31,5 +42,8 @@ execute: |
 
     # make a tarball out of the container image and delete the container
     lxc publish $INSTANCE_NAME --alias ucspread
-    lxc image export ucspread ./lxd-spread-img
+    lxc image export ucspread ./$IMAGE_NAME
     lxc delete $INSTANCE_NAME
+
+    # upload the image file as https://storage.googleapis.com/snapd-spread-core/lxd/$IMAGE_NAME.tar.gz
+    gsutil -o GSUtil:parallel_composite_upload_threshold=2000M cp "./$IMAGE_NAME.tar.gz" "gs://snapd-spread-core/lxd/$IMAGE_NAME.tar.gz"
