@@ -107,4 +107,17 @@ suites:
       # hypervisor will restart the VM, there is not currently a known
       # workaround
       ENABLE_KVM: '$(HOST: echo "${SPREAD_ENABLE_KVM:-false}")'
+      
+      # full encryption has TPM and secure boot
+      ENABLE_TPM/fullenc: true
+      ENABLE_SECURE_BOOT/fullenc: true
+      # only secboot does not have a TPM
+      ENABLE_TPM/onlysecboot: false
+      ENABLE_SECURE_BOOT/onlysecboot: true
+      # only tpm does not have secure boot
+      ENABLE_TPM/onlytpm: true
+      ENABLE_SECURE_BOOT/onlytpm: false
+      # no enc does not have secure boot or tpm
+      ENABLE_TPM/noenc: false
+      ENABLE_SECURE_BOOT/noenc: false
 # vim:ts=4:sw=4:et
