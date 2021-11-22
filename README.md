@@ -4,10 +4,12 @@ This is a base snap for snapd that is based on Ubuntu 20.04
 
 ## Prerequisites
 
-- A Linux Computer with various development tools
-  - Latest Ubuntu Desktop is recommended
-  - (For a SBC like RPi) you will need UART TTL serial debug cable (Because you will not have SSH in initrd)
-  - snapcraft
+We recommend an ubuntu installed distribution to develop and test for this repository, with atleast the following
+installed and available
+- Packages: git, snap, qemu-kvm
+- Snaps: snapcraft, ubuntu-image, golang
+
+(For a SBC like RPi) you will need UART TTL serial debug cable (Because you will not have SSH in initrd)
 
 # Building locally
 
