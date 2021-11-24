@@ -185,7 +185,8 @@ sed -r -i -e 's/^systemd-journal:x:([0-9]+):$/systemd-journal:x:\1:test/' /root/
 # partition mount.
 if [ "${SPREAD_BACKEND}" = "lxd-nested" ]; then
     devloop=$(losetup -f)
-    losetup $devloop pc.img -o 2097152
+    partoffset=$(fdisk -lu pc.img | awk '/EFI System$/ {print $2}')
+    losetup $devloop pc.img -o $(($partoffset * 512))
     mkdir /mnt/p2
     mount $devloop /mnt/p2
 

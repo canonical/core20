@@ -36,7 +36,6 @@ This document will be updated with the upstream version when this happens. To in
 ```
 git clone https://github.com/Meulengracht/spread
 cd spread
-go mod init
 cd cmd/spread
 go build .
 go install .
