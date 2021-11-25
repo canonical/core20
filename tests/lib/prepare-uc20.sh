@@ -3,11 +3,10 @@
 set -e
 set -x 
 
-apt update -yqq
-
 # these should already be installed in GCE and LXD images with the google/lxd-nested 
 # backend, but in qemu local images from qemu-nested, we might not have them
 if [ "${SPREAD_BACKEND}" = "qemu-nested" ]; then
+    apt update -yqq
     apt install snapd ovmf qemu-system-x86 sshpass whois -yqq
 fi
 

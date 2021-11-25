@@ -14,8 +14,13 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
+      - name: Cleanup job workspace
+        id: cleanup-job-workspace
+        run: |
+          rm -rf "${{ github.workspace }}"
+          mkdir "${{ github.workspace }}"
       - uses: actions/checkout@v2
-      
+
       - name: Install spread
         run: curl -s https://storage.googleapis.com/snapd-spread-tests/spread/spread-amd64.tar.gz | sudo tar xzv -C /usr/bin
 

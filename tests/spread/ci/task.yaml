@@ -1,7 +1,5 @@
 summary: Build an LXD spread test image with TPM software
 manual: true
-artifacts:
-    - lxd-spread-core20-img.tar.gz
 
 execute: |
     INSTANCE_NAME=spread-test
@@ -43,7 +41,11 @@ execute: |
     # make a tarball out of the container image and delete the container
     lxc publish $INSTANCE_NAME --alias ucspread
     lxc image export ucspread ./$IMAGE_NAME
-    lxc delete $INSTANCE_NAME
 
     # upload the image file as https://storage.googleapis.com/snapd-spread-core/lxd/$IMAGE_NAME.tar.gz
     gsutil -o GSUtil:parallel_composite_upload_threshold=2000M cp "./$IMAGE_NAME.tar.gz" "gs://snapd-spread-core/lxd/$IMAGE_NAME.tar.gz"
+
+restore: |
+    INSTANCE_NAME=spread-test
+    lxc stop $INSTANCE_NAME
+    lxc delete $INSTANCE_NAME

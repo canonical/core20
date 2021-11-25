@@ -1,6 +1,6 @@
 summary: Ensure that things worked
 
-execute: |
+prepare: |
   # for various utilities
   . "$EXTTESTSLIB/nested.sh"
 
@@ -11,6 +11,10 @@ execute: |
   # but we should wait for snapd to finish seeding anyways, but first we need to
   # wait for the snap command to exist
   nested_wait_for_snap_command
+
+execute: |
+  # for various utilities
+  . "$EXTTESTSLIB/nested.sh"
 
   # Now formally wait for seeding
   execute_remote sudo snap wait system seed.loaded
@@ -30,4 +34,3 @@ execute: |
   # Verify system services are running
   execute_remote systemctl -q is-active snapd
   execute_remote snap change 1
-
