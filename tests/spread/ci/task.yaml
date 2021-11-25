@@ -50,5 +50,4 @@ restore: |
 
     # Make sure that we continue even if these commands fail
     # to make sure everything is shutdown
-    lxc stop $INSTANCE_NAME || true
-    lxc delete $INSTANCE_NAME || true
+    lxc delete -f $INSTANCE_NAME || true
