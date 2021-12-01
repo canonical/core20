@@ -1,0 +1,26 @@
+#!/bin/sh
+
+set -eu
+
+setup() {
+  . /usr/share/initramfs-tools/hook-functions
+  copy_exec /bin/mkdir
+  copy_exec /bin/mount
+  copy_exec /bin/mountpoint
+  mv "${DESTDIR}/shutdown" "${DESTDIR}/shutdown.real"
+  cp "/usr/lib/systemd/systemd-shutdown.wrapper" "${DESTDIR}/shutdown"
+}
+
+poweroff() {
+  # Everything should have been done in the wrapper
+  true
+}
+
+case "${1-}" in
+  setup)
+    setup
+  ;;
+  halt|poweroff|reboot|kexec)
+    poweroff
+  ;;
+esac

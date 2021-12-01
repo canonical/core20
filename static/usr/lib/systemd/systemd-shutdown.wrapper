@@ -1,0 +1,18 @@
+#!/bin/sh
+
+# We need to manually move /run/mnt/data after shutdown switch root
+# so that systemd-shutdown can umount /oldroot in the shutdown initramfs.
+# systemd-shutdown has hooks, but they are run either before
+# switch, or after unmounts.
+# It would be better to make systemd-shutdown smarter and move
+# all found mounts before trying to unmount them.
+
+/bin/mount --make-private /oldroot/run
+for name in data ubuntu-seed; do
+  if /bin/mountpoint -q "/oldroot/run/mnt/${name}"; then
+    /bin/mkdir -p "/old-${name}"
+    /bin/mount --move "/oldroot/run/mnt/${name}" "/old-${name}"
+  fi
+done
+
+exec "${0}.real" "$@"
