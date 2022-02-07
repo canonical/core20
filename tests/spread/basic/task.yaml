@@ -34,3 +34,9 @@ execute: |
   # Verify system services are running
   execute_remote systemctl -q is-active snapd
   execute_remote snap change 1
+
+  # Check tmpfs mount options are as expected
+  execute_remote grep -e 'tmpfs /tmp .*nosuid,nodev.*' /proc/mounts
+  execute_remote grep -e 'tmpfs /media .*nosuid,nodev.*' /proc/mounts
+  execute_remote grep -e 'tmpfs /mnt .*nosuid,nodev.*' /proc/mounts
+  execute_remote grep -e 'tmpfs /var/lib/sudo .*nosuid,nodev,mode=700.*' /proc/mounts

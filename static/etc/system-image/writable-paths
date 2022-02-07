@@ -16,10 +16,10 @@
 # snap data
 /var/snap                               auto                    persistent  transition  none
 # generic
-/media                                  none                    temporary   none        defaults
-/mnt                                    none                    temporary   none        defaults
+/media                                  none                    temporary   none        mode=1777,strictatime,nosuid,nodev
+/mnt                                    none                    temporary   none        mode=1777,strictatime,nosuid,nodev
 /root                                   auto                    persistent  transition  none
-/tmp                                    none                    temporary   none        defaults
+/tmp                                    none                    temporary   none        mode=1777,strictatime,nosuid,nodev
 /var/tmp                                auto                    persistent  transition  none
 # etc related
 /etc/writable                           auto                    persistent  transition  none
