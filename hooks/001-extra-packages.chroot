@@ -74,7 +74,14 @@ apt install --no-install-recommends -y \
     wpasupplicant \
     cloud-init \
     dmsetup \
-    cryptsetup
+    cryptsetup \
+    gnutls-bin \
+    libopts25 \
+    libp11-3 \
+    opensc \
+    p11-kit \
+    p11-kit-modules \
+    libengine-pkcs11-openssl
 
 case "$(dpkg --print-architecture)" in
     riscv64)
