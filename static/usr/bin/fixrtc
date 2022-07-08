@@ -1,0 +1,8 @@
+#!/bin/sh
+
+NOW="$(date +'%s')"
+# XXX: also try /var/lib/systemd/timesync/clock ?
+MTIME_SELF="$(stat -L "/proc/self/exe" -c '%Y')"
+if [ "$NOW" -lt "$MTIME_SELF" ]; then
+   date -s @"$MTIME_SELF"
+fi

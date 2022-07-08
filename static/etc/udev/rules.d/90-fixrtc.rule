@@ -1,0 +1,2 @@
+# when rtc0 is added run fixrtc
+SUBSYSTEM=="rtc", KERNEL=="rtc0", RUN+= "/usr/bin/fixrtc"
