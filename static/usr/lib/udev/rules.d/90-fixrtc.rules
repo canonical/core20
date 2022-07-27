@@ -1,2 +1,2 @@
 # when rtc* is added run fixrtc
-SUBSYSTEM=="rtc", KERNEL=="rtc*", RUN+="/usr/bin/fixrtc"
+ACTION=="add", SUBSYSTEM=="rtc", KERNEL=="rtc*", RUN+="/usr/bin/fixrtc"
