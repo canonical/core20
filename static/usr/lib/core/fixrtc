@@ -1,16 +1,17 @@
 #!/bin/sh
 #
-# XXX: remove this, once the debugging is done
-set -x
-if [ -e /run/mnt/ubuntu-seed ]; then
-    LOG=/run/mnt/ubuntu-seed/fixrtc-run.log
-else
-    LOG=/run/fixrtc-run.log
-fi
-exec >> "$LOG"
-exec 2>&1
+# Debugging udev scripts is hard, if debugging is needed uncomment the following
+# lines and rebuild core with that.
+#set -x
+#if [ -e /run/mnt/ubuntu-seed ]; then
+#    LOG=/run/mnt/ubuntu-seed/fixrtc-run.log
+#else
+#    LOG=/run/fixrtc-run.log
+#fi
+#exec >> "$LOG"
+#exec 2>&1
+#printf "%s\n" "Starting $(date)"
 
-printf "%s\n" "Starting $(date)"
 TIMESYNC_CLOCK=/var/lib/systemd/timesync/clock
 CLOCK_EPOCH=/var/lib/clock-epoch
 SELF=$(readlink -f "$0")
