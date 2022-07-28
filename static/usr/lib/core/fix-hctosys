@@ -1,12 +1,17 @@
 #!/bin/sh
 #
+# This script is a workaround for the issue that when an rtc module is inserted
+# the clock gets reset to whatever time the RTC has regardless of system time.
+# See https://github.com/snapcore/core20/pull/136 for more details
+
+
 # Debugging udev scripts is hard, if debugging is needed uncomment the following
 # lines and rebuild core with that.
 #set -x
 #if [ -e /run/mnt/ubuntu-seed ]; then
-#    LOG=/run/mnt/ubuntu-seed/fixrtc-run.log
+#    LOG=/run/mnt/ubuntu-seed/fix-hctosys.log
 #else
-#    LOG=/run/fixrtc-run.log
+#    LOG=/run/fix-hctosys.log
 #fi
 #exec >> "$LOG"
 #exec 2>&1
