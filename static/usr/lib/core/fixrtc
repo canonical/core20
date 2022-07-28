@@ -1,6 +1,7 @@
 #!/bin/sh
 #
 # XXX: remove this, once the debugging is done
+set -x
 if [ -e /run/mnt/ubuntu-seed ]; then
     LOG=/run/mnt/ubuntu-seed/fixrtc-run.log
 else
@@ -11,28 +12,33 @@ exec 2>&1
 
 printf "%s\n" "Starting $(date)"
 TIMESYNC_CLOCK=/var/lib/systemd/timesync/clock
+CLOCK_EPOCH=/var/lib/clock-epoch
 SELF=$(readlink -f "$0")
 
-# get the mtime of this script
 NOW="$(date +'%s')"
+
+# Get the mtime of this script
 # Note that we cannot just "stat /proc/self/exe" here, this resolves to the
 # /usr/bin/stat binary
 MTIME_SELF="$(stat -L "$SELF" -c '%Y')"
 
-# get the mtime from timesyncd that is written every 60s
+# Get the mtime of the /usr/lib/clock-epoch file
+MTIME_CLOCK_EPOCH=0
+if [ -e $CLOCK_EPOCH ]; then
+    MTIME_CLOCK_EPOCH="$(stat -L $CLOCK_EPOCH -c '%Y')"
+fi
+
+# Get the mtime from timesyncd that is written every 60s
 MTIME_TIMESYNC_CLOCK=0
 if [ -e $TIMESYNC_CLOCK ]; then
     MTIME_TIMESYNC_CLOCK="$(stat -L $TIMESYNC_CLOCK -c '%Y')"
 fi
 
 # find the highest MTIME from the two filesystem references
-if [ "$MTIME_TIMESYNC_CLOCK" -gt "$MTIME_SELF" ]; then
-    MTIME="$MTIME_TIMESYNC_CLOCK"
-else
-    MTIME="$MTIME_SELF"
-fi
+MTIME=$(echo "$MTIME_SELF $MTIME_CLOCK_EPOCH $MTIME_TIMESYNC_CLOCK" | tr ' ' '\n' | sort -rn | head -1)
 
 # set to the highest mtime found if the current time is too old
 if [ "$NOW" -lt "$MTIME" ]; then
-   date -s @"$MTIME"
+    echo "Time needs updating because $NOW < $MTIME"
+    date -s @"$MTIME"
 fi
