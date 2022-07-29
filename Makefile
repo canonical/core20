@@ -50,6 +50,8 @@ install:
                 fi && \
 		rm -f $(DESTDIR)/tmp/$$(basename $$f); \
 	done;
+	# see https://github.com/systemd/systemd/blob/v247/src/shared/clock-util.c#L145
+	touch $(DESTDIR)/usr/lib/clock-epoch
 
 	# only generate manifest and dpkg.yaml file for lp build
 	if [ -e /build/core20 ]; then \
