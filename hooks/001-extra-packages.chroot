@@ -19,6 +19,10 @@ trap 'umount /proc' EXIT
 # systemd postinst needs this
 mkdir -p /var/log/journal
 
+# We need to install first the certificates as apt will need them for https to lp
+apt update
+apt install --no-install-recommends -y ca-certificates
+
 # shellcheck disable=SC1091
 CODENAME=$(. /etc/os-release; echo "$UBUNTU_CODENAME")
 # enable the ucdev PPA with additional packages to build bases
