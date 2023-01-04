@@ -50,6 +50,7 @@ apt install --no-install-recommends -y \
     libnss-extrausers \
     libpam-systemd \
     libpam-modules \
+    libpam-pwquality \
     distro-info-data \
     tzdata \
     openssh-server \
