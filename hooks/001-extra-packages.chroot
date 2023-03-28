@@ -42,7 +42,7 @@ EOF
 
 # install some packages we need
 apt update
-apt dist-upgrade -y
+apt dist-upgrade -y -o Dpkg::Options::=--force-confnew
 apt install --no-install-recommends -y \
     systemd \
     systemd-sysv \
