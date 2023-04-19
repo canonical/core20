@@ -82,7 +82,8 @@ apt install --no-install-recommends -y \
     opensc \
     p11-kit \
     p11-kit-modules \
-    libengine-pkcs11-openssl
+    libengine-pkcs11-openssl \
+    cracklib-runtime
 
 case "$(dpkg --print-architecture)" in
     riscv64)
