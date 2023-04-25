@@ -1,7 +1,8 @@
 DPKG_ARCH := $(shell dpkg --print-architecture)
 LTS=focal
-BASE := $(LTS)-base-$(DPKG_ARCH).tar.gz
-URL := http://cdimage.ubuntu.com/ubuntu-base/$(LTS)/daily/current/$(BASE)
+VERSION := 20.04.5
+BASE := ubuntu-base-$(VERSION)-base-$(DPKG_ARCH).tar.gz
+URL := http://cdimage.ubuntu.com/ubuntu-base/releases/$(LTS)/release/$(BASE)
 
 # dir that contans the filesystem that must be checked
 TESTDIR ?= "prime/"
