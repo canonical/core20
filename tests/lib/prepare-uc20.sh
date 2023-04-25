@@ -11,7 +11,7 @@ if [ "${SPREAD_BACKEND}" = "qemu-nested" ]; then
 fi
 
 snap install snapcraft --classic
-snap install ubuntu-image --classic
+snap install ubuntu-image --classic --channel=2/stable
 
 # get the model
 curl -o ubuntu-core-20-amd64-dangerous.model https://raw.githubusercontent.com/snapcore/models/master/ubuntu-core-20-amd64-dangerous.model
