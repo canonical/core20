@@ -1,0 +1,4 @@
+# when rtc* is added run rtc-init script that 
+#  - corrects system time if required (see: https://github.com/snapcore/core20/pull/136)
+#  - syncs system time to RTC time if valid
+ACTION=="add", SUBSYSTEM=="rtc", KERNEL=="rtc*", RUN+="/usr/lib/core/rtc-init $attr{hctosys}"

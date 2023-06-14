@@ -1,0 +1,116 @@
+#!/bin/sh
+
+# Debugging udev scripts is hard, to debug set DEBUG_ENABLE to true and rebuild core
+DEBUG_ENABLE="false"
+if [ "$DEBUG_ENABLE" = "true" ]; then
+    set -x
+
+    if [ -e /run/mnt/ubuntu-seed ]; then
+        LOG=/run/mnt/ubuntu-seed/fix-hctosys.log
+    else
+        LOG=/run/fix-hctosys.log
+    fi
+
+    exec >> "$LOG"
+    exec 2>&1
+fi
+
+echo "Started rtc-init ($(date))"
+
+# Scripts parameters (disabled: 0, enabled: 1)
+CONFIG_RTC_HCTOSYS="$1"
+
+# PART 1: Adjust system time earlier than known timestamps.
+# Reasons why this may happen includes:
+#  - Built-in RTC driver with HCTOSYS enabled may have faulty battery or incorrect time
+#  - Loadable RTC module with HTCOSYS enabled may have faulty battery or incorrect time
+
+# systemd timestamp file created during core build
+CLOCK_EPOCH=/usr/lib/clock-epoch
+
+# systemd-timesyncd timestamp file initialized to systemd build time and updated periodically 
+# (default 60s) and at shutdown
+TIMESYNC_CLOCK=/var/lib/systemd/timesync/clock
+
+# Get system time
+NOW="$(date +'%s')"
+NOW_DATE=$(date -d @"$NOW")
+
+# Get the systemd build time
+MTIME_CLOCK_EPOCH=0
+if [ -e $CLOCK_EPOCH ]; then
+    MTIME_CLOCK_EPOCH="$(stat -L $CLOCK_EPOCH -c '%Y')"
+fi
+MTIME_CLOCK_EPOCH_DATE=$(date -d @"$MTIME_CLOCK_EPOCH")
+
+# Get the systemd-timesyncd clock time
+MTIME_TIMESYNC_CLOCK=0
+if [ -e $TIMESYNC_CLOCK ]; then
+    MTIME_TIMESYNC_CLOCK="$(stat -L $TIMESYNC_CLOCK -c '%Y')"
+fi
+MTIME_TIMESYNC_CLOCK_DATE=$(date -d @"$MTIME_TIMESYNC_CLOCK")
+
+# Find the most recent timestamp of systemd build or timesyncd
+MOST_RECENT=$(echo "$MTIME_CLOCK_EPOCH $MTIME_TIMESYNC_CLOCK" | tr ' ' '\n' | sort -rn | head -1)
+
+# Print time information
+echo "    system time:                 $NOW_DATE"
+echo "    core build timestamp:        $MTIME_CLOCK_EPOCH_DATE"
+echo "    systemd-timesyncd timestamp: $MTIME_TIMESYNC_CLOCK_DATE"
+
+# Update the system time if more recent timestamp is available
+if [ "$NOW" -lt "$MOST_RECENT" ]; then
+    echo "Moving system time forward to most recent timestamp"
+    date -s @"$MOST_RECENT"
+else
+    echo "System time is ahead of most recent timestamp, skipping update"
+fi
+
+# PART 2: Sync system time to RTC time if RTC time is valid
+# - On some kernel versions, modules with HTCOSYS enabled cannot sync system time with RTC (unlike built-in RTC drivers)
+# - If kernel (rtc class) supports HCTOSYS for loadable modules and HCTOSYS is enabled, this might cause harmless re-sync
+# - Relies on 50-udev-default.rules to correctly link configured HCTOSYS RTC to /dev/rtc
+
+# Support sync when HCTOSYS is enabled
+if [ "$CONFIG_RTC_HCTOSYS" -eq 1 ]; then
+    # Get the RTC time
+    RTC_TIME=0
+    RTC_STAMP=$(hwclock -r -u -f /dev/rtc)
+    RTC_READ_RESULT=$?
+
+    if [ $RTC_READ_RESULT -ne 0 ]; then
+        echo "Error: cannot read RTC using hwclock on /dev/rtc"
+        exit 1
+    fi
+
+    RTC_TIME=$(date -d "$RTC_STAMP" +%s)
+    RTC_TIME_DATE=$(date -d @"$RTC_TIME")
+
+    RTC_VALID="false"
+    # Test RTC validity: RTC more recent than available timestamp files is valid
+    if [ "$RTC_TIME" -gt "$MOST_RECENT" ]; then
+        RTC_VALID="true"
+    fi
+
+    echo "    rtc time:  $RTC_TIME_DATE"
+    echo "    rtc valid: $RTC_VALID"
+
+    # Sync the system time to RTC time if RTC is valid
+    if [ "$RTC_VALID" = "true" ]; then
+        echo "Syncing system time to RTC time"
+        hwclock -s --noadjfile -u -f /dev/rtc
+        RTC_SET_RESULT=$?
+
+        if [ $RTC_SET_RESULT -ne 0 ]; then
+            echo "Error: cannot set system time from RTC using hwclock on /dev/rtc"
+            exit 1
+        fi
+    else
+        echo "Invalid RTC time, skipping system time to RTC time sync"
+    fi
+
+else
+    echo "HCTOSYS disabled, skipping system time to RTC time sync"
+fi
+
+echo "Finished rtc init ($(date))"
