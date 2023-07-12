@@ -10,3 +10,8 @@ ACTION=="add", SUBSYSTEM=="rtc", KERNEL=="rtc*", ATTR{hctosys}=="1", ENV{ubuntu_
 # enabled by generator rtc-sys-time-init-generator when kernel command line contains parameter
 # ubuntu_core.rtc_sys_time_init=/dev/rtc*
 ACTION=="add", SUBSYSTEM=="rtc", KERNEL=="rtc*", TAG+="systemd"
+
+# When device rtc* match the device node specified by the kernel command line parameter ubuntu_core.rtc_sys_time_init
+# create symlink to the device node. In older kernels where attribute hctosys is not set for loadable modules this
+# rule overrides the default symlink to /dev/rtc0 created by 50-udev-default.rules.
+ACTION=="add", SUBSYSTEM=="rtc", KERNEL=="rtc*", PROGRAM="/bin/sh -c '[ $env{ubuntu_core.rtc_sys_time_init} !=  $devnode ] && echo link'", RESULT=="link", SYMLINK+="rtc", OPTIONS+="link_priority=100"
