@@ -76,6 +76,15 @@ parts:
       - shellcheck
       - wget
       - distro-info
+      - python3-debian
+      - python3-requests
+      - python3-yaml
+    # to generate changelogs, it's own snap need to be present,
+    # obviously for new core bases this cannot be the case, and
+    # we need to wait until the first release with introducing
+    # changelogs.
+    build-snaps:
+      - core20=latest/beta
     # XXX: Dirty hacks to enable building core20 on non-focal systems.
     # Without these overrides both the PATH and LD_LIBRARY_PATH contain paths
     # in the part's install directory which binaries can be incompatible with
