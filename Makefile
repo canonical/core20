@@ -2,6 +2,7 @@ DPKG_ARCH := $(shell dpkg --print-architecture)
 LTS=focal
 BASE := $(LTS)-base-$(DPKG_ARCH).tar.gz
 URL := http://cdimage.ubuntu.com/ubuntu-base/$(LTS)/daily/current/$(BASE)
+SNAP_NAME=core20
 
 # dir that contans the filesystem that must be checked
 TESTDIR ?= "prime/"
@@ -53,28 +54,33 @@ install:
 	# see https://github.com/systemd/systemd/blob/v247/src/shared/clock-util.c#L145
 	touch $(DESTDIR)/usr/lib/clock-epoch
 
-	# refresh the core20 base snap
-	snap refresh core20 --beta
+	# install the beta of core20 to generate the changelog against,
+	# or if the snap is installed refresh it
+	if snap list | grep "$(SNAP_NAME)"; then \
+		snap refresh "$(SNAP_NAME)" --beta; \
+	else \
+		snap install "$(SNAP_NAME)" --beta; \
+	fi
 
-	# generate the changelog, for this we need the previous core snap
-	# to be installed, this should be handled in snapcraft.yaml
-	if [ -e "/snap/core20/current/usr/share/snappy/dpkg.yaml" ]; then \
+	# When building through spread there is no .git, which means we cannot
+	# generate the changelog in this case, ensure that the current folder is
+	# a git repository
+	if git rev-parse HEAD && [ -e "/snap/$(SNAP_NAME)/current/usr/share/snappy/dpkg.yaml" ]; then \
 		./tools/generate-changelog.py \
-			"/snap/core20/current/usr/share/snappy/dpkg.yaml" \
-			"$(DESTDIR)/usr/share/snappy/dpkg.yaml" \
-			"$(DESTDIR)/usr/share/doc" \
-			$(DESTDIR)/usr/share/doc/ChangeLog; \
+			"/snap/$(SNAP_NAME)/current" \
+			"$(DESTDIR)" \
+			"$(SNAP_NAME)"; \
 	else \
 		echo "WARNING: changelog will not be generated for this build"; \
 	fi
 
 	# only generate manifest and dpkg.yaml file for lp build
-	if [ -e /build/core20 ]; then \
+	if [ -e /build/$(SNAP_NAME) ]; then \
 		echo $$f; \
-		/bin/cp $(DESTDIR)/usr/share/snappy/dpkg.list /build/core20/core20-$$(date +%Y%m%d%H%M)_$(DPKG_ARCH).manifest; \
-		/bin/cp $(DESTDIR)/usr/share/snappy/dpkg.yaml /build/core20/core20-$$(date +%Y%m%d%H%M)_$(DPKG_ARCH).dpkg.yaml; \
+		/bin/cp $(DESTDIR)/usr/share/snappy/dpkg.list /build/$(SNAP_NAME)/$(SNAP_NAME)-$$(date +%Y%m%d%H%M)_$(DPKG_ARCH).manifest; \
+		/bin/cp $(DESTDIR)/usr/share/snappy/dpkg.yaml /build/$(SNAP_NAME)/$(SNAP_NAME)-$$(date +%Y%m%d%H%M)_$(DPKG_ARCH).dpkg.yaml; \
 		if [ -e $(DESTDIR)/usr/share/doc/ChangeLog ]; then \
-			/bin/cp $(DESTDIR)/usr/share/doc/ChangeLog /build/core20/core20-$$(date +%Y%m%d%H%M)_$(DPKG_ARCH).ChangeLog; \
+			/bin/cp $(DESTDIR)/usr/share/doc/ChangeLog /build/$(SNAP_NAME)/$(SNAP_NAME)-$$(date +%Y%m%d%H%M)_$(DPKG_ARCH).ChangeLog; \
 		fi \
 	fi;
 
