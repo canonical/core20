@@ -61,4 +61,7 @@ create_keys() {
 		"$hostkeys" /etc/ssh/ssh_host_ed25519_key -t ed25519
 }
 
-create_keys
+# create keys only if we are in run mode, there is no use to create keys in install mode
+if ! grep -q "snapd_recovery_mode=install" /proc/cmdline; then
+	create_keys
+fi
