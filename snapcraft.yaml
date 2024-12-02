@@ -7,6 +7,7 @@ description: |
 confinement: strict
 type: base
 build-base: core20
+assumes: [snapd2.61]
 
 parts:
   consoleconf-deb:
