@@ -33,7 +33,7 @@ denial of service etc due to the use of the contents of the core20 snap on the s
 ## Reporting a vulnerability
 
 The easiest way to report a security issue is through
-[GitHub](https://github.com/canonical/core-base/security/advisories/new). See
+[GitHub](https://github.com/canonical/core20/security/advisories/new). See
 [Privately reporting a security
 vulnerability](https://docs.github.com/en/code-security/security-advisories/guidance-on-reporting-and-writing/privately-reporting-a-security-vulnerability)
 for instructions.
