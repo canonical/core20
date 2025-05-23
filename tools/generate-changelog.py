@@ -27,8 +27,9 @@ import debian.changelog
 import debian.debian_support
 import gzip
 import os
-import requests
 import subprocess
+import re
+import requests
 import sys
 import yaml
 from collections import namedtuple
@@ -39,10 +40,11 @@ from collections import namedtuple
 # keep the list short to not increase the time it takes
 # to generate changelogs
 pkg_allowed_list = [
-    'apt', # removed during hook
-    'debconf', # removed during hook
-    'ca-certificates' # no changelog in folder
+    'apt',             # removed during hook
+    'debconf',         # removed during hook
+    'ca-certificates'  # no changelog in folder
 ]
+
 
 # Returns a dictionary from package name to version, using
 # the packages section.
@@ -58,9 +60,11 @@ def packages_from_manifest(manifest_p):
             pkg_dict[pkg_data[0]] = pkg_data[1]
         return pkg_dict
 
+
 def package_name(pkg):
     t = pkg.split(':')
     return t[0]
+
 
 def get_changelog_from_file(docs_d, pkg):
     chl_deb_path = docs_d + '/' + package_name(pkg) + '/changelog.Debian.gz'
@@ -74,14 +78,15 @@ def get_changelog_from_file(docs_d, pkg):
     else:
         raise FileNotFoundError("no supported changelog found for package " + pkg)
 
+
 def get_changelog_from_url(pkg, new_v, on_lp):
     url = 'https://changelogs.ubuntu.com/changelogs/binary/'
-    
+
     print(f"failed to resolve changelog for {pkg} locally, downloading from official repo")
     safe_name = package_name(pkg)
     if not on_lp and safe_name not in pkg_allowed_list:
         raise Exception(f"{pkg} has not been whitelisted for changelog retrieval")
-    
+
     if safe_name.startswith('lib'):
         url += safe_name[0:4]
     else:
@@ -89,8 +94,7 @@ def get_changelog_from_url(pkg, new_v, on_lp):
     url += '/' + safe_name + '/' + new_v + '/changelog'
     changelog_r = requests.get(url)
     if changelog_r.status_code != requests.codes.ok:
-        raise Exception('No changelog found in ' + url + ' - status:' +
-                        str(changelog_r.status_code))
+        raise Exception('No changelog found in ' + url + ' - status:' + str(changelog_r.status_code))
 
     return changelog_r.text
 
@@ -205,7 +209,7 @@ def read_remote_git_url() -> str:
 def log_between_commits(name, start, end):
     try:
         return subprocess.check_output(['git', 'shortlog', '--pretty=short', f'{start}..{end}']).decode()
-    except:
+    except Exception:
         # if there is no path from start..end then this might fail, however this
         # should only happen if the branch has diverged so much that the previous
         # release commit does not exist in the current fork. In this case let us
