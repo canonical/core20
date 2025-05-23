@@ -99,6 +99,11 @@ def get_changelog_from_url(pkg, new_v, on_lp):
     return changelog_r.text
 
 
+# Exception thrown for ESM packages with no local changelog
+class ESMpackageNoChangelog(Exception):
+    pass
+
+
 # Gets difference in changelog between old and new versions
 # Returns source package and the differences
 def get_changes_for_version(docs_d, pkg, old_v, new_v, indent, on_lp):
@@ -108,6 +113,8 @@ def get_changes_for_version(docs_d, pkg, old_v, new_v, indent, on_lp):
     try:
         changelog = get_changelog_from_file(docs_d, pkg)
     except Exception:
+        if re.match(r'.*\+esm[0-9]*$', new_v):
+            raise ESMpackageNoChangelog('ESM package ' + pkg + ' does not have changelog')
         changelog = get_changelog_from_url(pkg, new_v, on_lp)
 
     source_pkg = changelog[0:changelog.find(' ')]
@@ -153,12 +160,15 @@ def compare_manifests(old_manifest_p, new_manifest_p, docs_d, on_lp):
         try:
             old_v = old_packages[pkg]
             if old_v != new_v:
-                src, pkg_change = get_changes_for_version(docs_d, pkg, old_v,
-                                                          new_v, '  ', on_lp)
-                if src not in src_pkgs:
-                    src_pkgs[src] = SrcPkgData(old_v, new_v, pkg_change, [pkg])
-                else:
-                    src_pkgs[src].debs.append(pkg)
+                try:
+                    src, pkg_change = get_changes_for_version(docs_d, pkg, old_v,
+                                                              new_v, '  ', on_lp)
+                    if src not in src_pkgs:
+                        src_pkgs[src] = SrcPkgData(old_v, new_v, pkg_change, [pkg])
+                    else:
+                        src_pkgs[src].debs.append(pkg)
+                except ESMpackageNoChangelog as e:
+                    print(e)
         except KeyError:
             changes += pkg + ' (' + new_v + '): new primed package\n\n'
 
