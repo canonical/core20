@@ -69,19 +69,19 @@ def get_changelog_from_file(docs_d, pkg):
         with gzip.open(chl_deb_path) as chl_fh:
             return chl_fh.read().decode('utf-8')
     elif os.path.exists(chl_path):
-        with gzip.open(chl_deb_path) as chl_fh:
+        with gzip.open(chl_path) as chl_fh:
             return chl_fh.read().decode('utf-8')
     else:
         raise FileNotFoundError("no supported changelog found for package " + pkg)
 
 def get_changelog_from_url(pkg, new_v, on_lp):
     url = 'https://changelogs.ubuntu.com/changelogs/binary/'
-    
+
     print(f"failed to resolve changelog for {pkg} locally, downloading from official repo")
     safe_name = package_name(pkg)
     if not on_lp and safe_name not in pkg_allowed_list:
         raise Exception(f"{pkg} has not been whitelisted for changelog retrieval")
-    
+
     if safe_name.startswith('lib'):
         url += safe_name[0:4]
     else:
