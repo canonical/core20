@@ -45,6 +45,15 @@ pkg_allowed_list = [
     'ca-certificates'  # no changelog in folder
 ]
 
+# List of packages with no valid changelog. We only have gnutls-bin for the
+# moment. It does not have a valid changelog as
+# /usr/share/doc/gnutls-bin/changelog.Debian.gz is a symlink to
+# ../libgnutls-dane0/changelog.Debian.gz which is in turn a symlink to
+# ../libgnutls30/changelog.Debian.gz. However, libgnutls-dane0 is not in the
+# base (removed by 400-trim-pkcs-11.chroot) so the chain is broken. This is ok
+# as anyway we will get the changes from libgnutls30.
+pkg_no_changelog = ['gnutls-bin']
+
 
 # Returns a dictionary from package name to version, using
 # the packages section.
@@ -99,8 +108,8 @@ def get_changelog_from_url(pkg, new_v, on_lp):
     return changelog_r.text
 
 
-# Exception thrown for ESM packages with no local changelog
-class ESMpackageNoChangelog(Exception):
+# Exception thrown for packages with no local or remote changelog
+class PackageNoChangelog(Exception):
     pass
 
 
@@ -113,8 +122,8 @@ def get_changes_for_version(docs_d, pkg, old_v, new_v, indent, on_lp):
     try:
         changelog = get_changelog_from_file(docs_d, pkg)
     except Exception:
-        if re.match(r'.*\+esm[0-9]*$', new_v):
-            raise ESMpackageNoChangelog('ESM package ' + pkg + ' does not have changelog')
+        if re.match(r'.*\+esm[0-9]*$', new_v) or package_name(pkg) in pkg_no_changelog:
+            raise PackageNoChangelog('package ' + pkg + ' does not have changelog')
         changelog = get_changelog_from_url(pkg, new_v, on_lp)
 
     source_pkg = changelog[0:changelog.find(' ')]
@@ -167,7 +176,7 @@ def compare_manifests(old_manifest_p, new_manifest_p, docs_d, on_lp):
                         src_pkgs[src] = SrcPkgData(old_v, new_v, pkg_change, [pkg])
                     else:
                         src_pkgs[src].debs.append(pkg)
-                except ESMpackageNoChangelog as e:
+                except PackageNoChangelog as e:
                     print(e)
         except KeyError:
             changes += pkg + ' (' + new_v + '): new primed package\n\n'
