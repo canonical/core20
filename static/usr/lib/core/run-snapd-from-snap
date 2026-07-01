@@ -31,7 +31,7 @@ run_on_unseeded() {
     while IFS= read -r socket; do
         socket_args+=(--socket-property)
         socket_args+=("$socket")
-    done < <(grep -E '^ListenStream=.+' /snap/snapd/current/lib/systemd/system/snapd.socket)
+    done < <(grep -E '^ListenStream=/.+' /snap/snapd/current/lib/systemd/system/snapd.socket)
     systemd-run --unit=snapd-seeding --service-type=notify \
                 "${socket_args[@]}" \
                 --property KeyringMode=inherit "$SNAPD_BASE_DIR"/usr/lib/snapd/snapd
