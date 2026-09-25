@@ -11,15 +11,40 @@ on:
       - master
 
 jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: snapcore/action-build@v1
+      id: snapcraft
+      with:
+        snapcraft-channel: 8.x/stable
+    - uses: actions/upload-artifact@v4
+      with:
+        name: snap
+        path: ${{ steps.snapcraft.outputs.snap }}
+    - name: Install CVE scanner
+      run: |
+        sudo snap install review-tools
+    - name: run CVE scanner
+      run: |
+        # this produces a table of detected CVEs and their severity
+        review-tools.scan-snap "${{ steps.snapcraft.outputs.snap }}" > "${{ github.workspace }}/cve-scan.txt"
+    - uses: actions/upload-artifact@v4
+      with:
+        name: cve-scan
+        path: "${{ github.workspace }}/cve-scan.txt"
+  
   test:
-    runs-on: self-hosted
+    runs-on: [self-hosted, x64, linux, spread-enabled]
     steps:
       - name: Cleanup job workspace
         id: cleanup-job-workspace
         run: |
           rm -rf "${{ github.workspace }}"
           mkdir "${{ github.workspace }}"
-      - uses: actions/checkout@v2
+      
+      - uses: actions/checkout@v4
 
       - name: Run tests
         run: |
