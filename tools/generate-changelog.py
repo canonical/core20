@@ -122,7 +122,7 @@ def get_changes_for_version(docs_d, pkg, old_v, new_v, indent, on_lp):
     try:
         changelog = get_changelog_from_file(docs_d, pkg)
     except Exception:
-        if re.match(r'.*\+esm[0-9]*$', new_v) or package_name(pkg) in pkg_no_changelog:
+        if re.match(r'.*[+~]esm[0-9]*$', new_v) or package_name(pkg) in pkg_no_changelog:
             raise PackageNoChangelog('package ' + pkg + ' does not have changelog')
         changelog = get_changelog_from_url(pkg, new_v, on_lp)
 
